@@ -443,7 +443,13 @@ app.get('/admin', (req, res) => {
 </html>`;
 
 fs.writeFileSync(indexPath, updatedWebsiteCode);
+app.get('/admin-login', (req, res) => {
+    res.sendFile(__dirname + '/admin-login.html');
+});
 
+app.get('/admin', (req, res) => {
+    res.sendFile(__dirname + '/admin.html');
+});
 app.get('/', (req, res) => {
     res.sendFile(indexPath);
 });
