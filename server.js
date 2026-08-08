@@ -456,4 +456,13 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Zenova Peak Tech Hub server running smoothly on port ${PORT}`);
+});app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    
+    // Aapke official credentials
+    if (email === "admin@zenova.com" && password === "Niharika@86") {
+        res.redirect('/admin');
+    } else {
+        res.send("<h3>Invalid Login!</h3><p>Please check your email and password.</p><a href='/admin-login'>Go Back</a>");
+    }
 });
