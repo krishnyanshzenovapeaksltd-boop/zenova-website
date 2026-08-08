@@ -462,4 +462,14 @@ app.get('/', (req, res) => {
     }
 });
 });
-
+app.post('/api/login', (req, res) => {
+    console.log("Received login data:", req.body); // Yeh Render logs mein email aur password dikha dega
+    
+    const { email, password } = req.body;
+    
+    if (email === "admin@zenova.com" && password === "Niharika@86") {
+        res.redirect('/admin');
+    } else {
+        res.send(`<h3>Invalid Login!</h3><p>Received Email: ${email}, Password: ${password}</p><a href='/admin-login'>Go Back</a>`);
+    }
+});
