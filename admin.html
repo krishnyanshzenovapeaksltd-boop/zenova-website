@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Admin Dashboard - Zenova Peaks</title>
+    <style>
+        :root {
+            --primary: #0b132b;
+            --secondary: #1c2541;
+            --accent: #ffb703;
+            --text-light: #ffffff;
+            --border: #48cae4;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+            display: flex;
+        }
+        sidebar {
+            width: 260px;
+            background: var(--primary);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        sidebar h2 { color: var(--accent); font-size: 20px; text-align: center; margin-bottom: 30px; }
+        sidebar a {
+            display: block;
+            color: #cfd9df;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+        sidebar a:hover, sidebar a.active { background: var(--secondary); color: var(--accent); }
+        main {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .section-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button.btn-action {
+            background: var(--primary);
+            color: var(--accent);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button.btn-action:hover { background: var(--secondary); }
+        /* Invoice Preview Area */
+        .invoice-preview-box {
+            border: 2px dashed #0b132b;
+            padding: 30px;
+            background: #fff;
+            position: relative;
+            max-width: 800px;
+            margin: auto;
+        }
+        .stamp-overlay {
+            position: absolute;
+            bottom: 40px;
+            right: 50px;
+            width: 140px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <sidebar>
+        <h2>Zenova Pro Admin</h2>
+        <a href="#leads" class="active">📊 Public Form Leads</a>
+        <a href="#gallery">🖼️ Ad Gallery Manager</a>
+        <a href="#invoice">📄 Invoice Generator</a>
+        <a href="#support">💬 Support Inbox</a>
+        <a href="#settings">⚙️ Pro Customizations</a>
+    </sidebar>
+
+    <main>
+        <!-- Leads Section -->
+        <div id="leads" class="section-card">
+            <h3>Public Form Leads</h3>
+            <p>Manage customer submissions and instantly message clients via WhatsApp.</p>
+            <table width="100%" border="1" cellpadding="10" style="border-collapse: collapse; border-color: #ddd;">
+                <tr style="background: #0b132b; color: white;">
+                    <th>Client Name</th>
+                    <th>Phone / WhatsApp</th>
+                    <th>Service Requested</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>Chinedu Okafor</td>
+                    <td>+234 812 345 6789</td>
+                    <td>Business Registration (BN)</td>
+                    <td><a href="https://wa.me/2348123456789" target="_blank"><button class="btn-action" style="background:#25D366; color:white;">Chat WhatsApp</button></a></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Invoice Generator Section -->
+        <div id="invoice" class="section-card">
+            <h3>Editable Invoice Generator</h3>
+            <form id="invoiceForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" id="invClient" placeholder="Enter Client Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="invPhone" placeholder="+234 ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Business Name</label>
+                        <input type="text" id="invBusiness" placeholder="Client Business Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Total Amount (NGN)</label>
+                        <input type="text" id="invAmount" placeholder="₦ 50,000">
+                    </div>
+                </div>
+                <button type="button" class="btn-action" onclick="generateInvoicePDF()">Generate & Print Invoice</button>
+            </form>
+        </div>
+
+        <!-- Pro Settings Section -->
+        <div id="settings" class="section-card">
+            <h3>Pro Controls & Toggles</h3>
+            <div class="form-group">
+                <label><input type="checkbox" checked id="toggleBadge"> Enable BN 9701468 Verified Badge on Homepage</label>
+            </div>
+            <div class="form-group">
+                <label>Edit Main Headline Text:</label>
+                <input type="text" value="Start Your Business Today - 100% Online Across Nigeria">
+            </div>
+            <button class="btn-action">Save Changes</button>
+        </div>
+    </main>
+
+    <script>
+        function generateInvoicePDF() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
