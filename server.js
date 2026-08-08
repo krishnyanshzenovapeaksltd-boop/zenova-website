@@ -468,4 +468,3 @@ app.post('/api/login', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Zenova Peak Tech Hub server running smoothly on port ${PORT}`);
 });
-    res.sendFile(indexPath);
