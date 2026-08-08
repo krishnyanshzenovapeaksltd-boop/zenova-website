@@ -451,8 +451,11 @@ app.get('/admin-login', (req, res) => {
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + '/admin.html');
 });
-app.get('/', (req, res) => {
-    res.sendFile(indexPath);app.post('/api/login', (req, res) => {
+app.get('/', (req, res) => { 
+res.sendFile(indexPath);
+});
+
+app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
     
     if (email === "admin@zenova.com" && password === "Niharika@86") {
@@ -461,15 +464,8 @@ app.get('/', (req, res) => {
         res.send("<h3>Invalid Login!</h3><p>Please check your email and password.</p><a href='/admin-login'>Go Back</a>");
     }
 });
+
+app.listen(PORT, () => {
+    console.log(`Zenova Peak Tech Hub server running smoothly on port ${PORT}`);
 });
-app.post('/api/login', (req, res) => {
-    console.log("Received login data:", req.body); // Yeh Render logs mein email aur password dikha dega
-    
-    const { email, password } = req.body;
-    
-    if (email === "admin@zenova.com" && password === "Niharika@86") {
-        res.redirect('/admin');
-    } else {
-        res.send(`<h3>Invalid Login!</h3><p>Received Email: ${email}, Password: ${password}</p><a href='/admin-login'>Go Back</a>`);
-    }
-});
+    res.sendFile(indexPath);
