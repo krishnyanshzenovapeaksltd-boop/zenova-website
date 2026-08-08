@@ -348,7 +348,13 @@ const updatedWebsiteCode = `<!DOCTYPE html>
             </div>
         </div>
     </div>
+app.get('/admin-login', (req, res) => {
+    res.sendFile(__dirname + '/admin-login.html');
+});
 
+app.get('/admin', (req, res) => {
+    res.sendFile(__dirname + '/admin.html');
+});
     <footer>
         <p>&copy; 2026 Krishnyansh Zenova Peak Tech Hub (BN 9701468). Founder & CEO: Ruby Garg. All Rights Reserved.</p>
     </footer>
