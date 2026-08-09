@@ -167,7 +167,108 @@
         </div>
     </main>
 
-    <script>
+    <<!-- Complete Invoice Section with Logo & Stamp -->
+<div id="invoice" class="section-card" style="margin-top: 20px; background: #fff; padding: 20px; border-radius: 8px;">
+    <h3>Editable Invoice Generator</h3>
+    
+    <div style="margin-bottom: 15px;">
+        <label>Client Name:</label><br>
+        <input type="text" id="inv-client-name" placeholder="Enter Client Name" style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+    <div style="margin-bottom: 15px;">
+        <label>Phone Number:</label><br>
+        <input type="text" id="inv-phone" placeholder="+234 ..." style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+    <div style="margin-bottom: 15px;">
+        <label>Business Name:</label><br>
+        <input type="text" id="inv-business" placeholder="Client Business Name" style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+    <div style="margin-bottom: 15px;">
+        <label>Total Amount (NGN):</label><br>
+        <input type="text" id="inv-amount" value="₦ 50,000" style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+    <button type="button" onclick="generateAndPrintInvoice()" class="btn-action" style="background: #0b132b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Generate & Print Invoice</button>
+
+    <!-- Printable Preview Box (Hidden normally, shown during print) -->
+    <div id="printable-invoice" style="display: none; background: #fff; padding: 30px; font-family: 'Poppins', sans-serif; color: #333;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0b132b; padding-bottom: 15px; margin-bottom: 20px;">
+            <div>
+                <h2 style="margin: 0; color: #0b132b; font-size: 20px;">KRISHNYANSH ZENOVA PEAKS TECH HUB</h2>
+                <p style="margin: 5px 0 0 0; font-size: 13px; color: #555;">Business Registration, Consulting & Automation</p>
+                <p style="margin: 2px 0 0 0; font-size: 12px; color: #856404;">BN: 9701468 | Lagos, Nigeria</p>
+            </div>
+            <div>
+                <img src="/logo.png" alt="Logo" style="width: 85px; height: 85px; object-fit: contain;">
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px;">
+            <div>
+                <strong>Billed To:</strong><br>
+                <span id="preview-client">Client Name</span><br>
+                <span id="preview-business">Business Name</span><br>
+                <span id="preview-phone">Phone Number</span>
+            </div>
+            <div style="text-align: right;">
+                <strong>Invoice Date:</strong> <span id="inv-date"></span><br>
+                <strong>Status:</strong> <span style="color: green; font-weight: bold;">PAID / VERIFIED</span>
+            </div>
+        <<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #555;">Thank you for doing business with us!</p>
+                <p style="margin-top: 30px; font-size: 12px; border-top: 1px solid #333; display: inline-block; padding-top: 5px;">Authorized Signature</p>
+            </div>
+            <div style="text-align: center;">
+                <img src="/stamp.png" alt="Stamp" style="width: 120px; height: 120px; object-fit: contain;">
+            </div>
+        </div>
+    </div> <!-- Yeh wala div printable-invoice box ko close karta hai -->
+</div> <!-- Yeh wala div invoice-section ko close karta hai -->
+
+<script>
+    document.getElementById('inv-date').innerText = new Date().toLocaleDateString();
+
+    function generateAndPrintInvoice() {
+        document.getElementById('preview-client').innerText = document.getElementById('inv-client-name').value || "Valued Client";
+        document.getElementById('preview-business').innerText = document.getElementById('inv-business').value || "Business Name";
+        document.getElementById('preview-phone').innerText = document.getElementById('inv-phone').value || "";
+        document.getElementById('preview-amount').innerText = document.getElementById('inv-amount').value;
+
+        const printBox = document.getElementById('printable-invoice');
+        printBox.style.display = 'block';
+
+        window.print();
+
+        printBox.style.display = 'none';
+    }
+</script>/div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+            <thead>
+                <tr style="background: #0b132b; color: white;">
+                    <th style="padding: 10px; text-align: left;">Service Description</th>
+                    <th style="padding: 10px; text-align: right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 10px;">Professional Business Registration & Setup Services</td>
+                    <td style="padding: 10px; text-align: right;" id="preview-amount">₦ 50,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+            <div>
+                <p style="margin: 0; font-size: 13px; color: #555;">Thank you for doing business with us!</p>
+                <p style="margin-top: 30px; font-size: 12px; border-top: 1px solid #333; display: inline-block; padding-top: 5px;">Authorized Signature</p>
+            </div>
+            <div style="text-align: center;">
+                <img src="/stamp.png" alt="Stamp" style="width: 120px; height: 120px; object-fit: contain;">
+            </div>
+        </div>
+    </div>
+</div>script>
         function generateInvoicePDF() {
             window.print();
         }
