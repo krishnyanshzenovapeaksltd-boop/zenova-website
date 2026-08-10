@@ -317,5 +317,24 @@
             window.print();
         }
     </script>
+  <script>
+    document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('a, button');
+        if (trigger && trigger.getAttribute('href') && trigger.getAttribute('href').startsWith('#')) {
+            const targetId = trigger.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId) || document.getElementById(targetId + '-section');
+            
+            if (targetSection) {
+                e.preventDefault();
+                // Hide all sections
+                document.querySelectorAll('.admin-section, .section-card').forEach(sec => {
+                    sec.style.display = 'none';
+                });
+                // Show the clicked section
+                targetSection.style.display = 'block';
+            }
+        }
+    });
+</script>      
 </body>
 </html>
