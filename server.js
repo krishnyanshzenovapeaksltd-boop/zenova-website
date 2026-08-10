@@ -1,3 +1,5 @@
+const multer = require('multer');
+const upload = multer({ dest: __dirname + '/' });
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -464,7 +466,12 @@ app.post('/api/login', (req, res) => {
         res.send("<h3>Invalid Login!</h3><p>Please check your email and password.</p><a href='/admin-login'>Go Back</a>");
     }
 });
-
+app.post('/api/upload-ad', upload.single('adMedia'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+    res.send('Ad uploaded successfully! <a href="/admin">Go back to Admin Dashboard</a>');
+});
 app.listen(PORT, () => {
     console.log(`Zenova Peak Tech Hub server running smoothly on port ${PORT}`);
 });
