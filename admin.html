@@ -310,13 +310,11 @@
                 <img src="/stamp.png" alt="Stamp" style="width: 120px; height: 120px; object-fit: contain;">
             </div>
         </div>
-    </div>
-</div>script>
-        function generateInvoicePDF() {
-            window.print();
-        }
-    </script>
   <script>
+    function generateInvoicePDF() {
+        window.print();
+    }
+</script>
     document.addEventListener('click', function(e) {
         const trigger = e.target.closest('a, button');
         if (trigger && trigger.getAttribute('href') && trigger.getAttribute('href').startsWith('#')) {
