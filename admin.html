@@ -146,7 +146,31 @@
                 </tr>
             </table>
         </div>
+<!-- Ad Gallery Manager Section -->
+<div id="gallery" class="section-card" style="display: none; margin-top: 20px;">
+    <h3>Ad Gallery Manager</h3>
+    <p>Upload and manage promotional videos and images tailored for Facebook, Instagram, and WhatsApp status.</p>
+    <form action="/api/upload-ad" method="POST" enctype="multipart/form-data" style="margin-top: 15px;">
+        <input type="file" name="adMedia" accept="image/*,video/*" required style="margin-bottom: 10px; display: block;">
+        <button type="submit" style="background: #25D366; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">Upload Ad</button>
+    </form>
+</div>
 
+<!-- Support Inbox Section -->
+<div id="support" class="section-card" style="display: none; margin-top: 20px;">
+    <h3>Support Inbox</h3>
+    <p>View customer inquiries and support messages received from users.</p>
+    <table width="100%" border="1" cellpadding="10" style="border-collapse: collapse; border-color: #ddd; margin-top: 15px;">
+        <tr style="background: #0b132b; color: white;">
+            <th>Client Name</th>
+            <th>Message / Inquiry</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: center; color: #777;">No new support messages.</td>
+        </tr>
+    </table>
+</div>
         <!-- Invoice Generator Section -->
         <div id="invoice" class="section-card">
             <h3>Editable Invoice Generator</h3>
