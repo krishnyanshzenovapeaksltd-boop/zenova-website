@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro Admin Dashboard - Zenova Peaks</title>
     <style>
+@media print {
+    /* Hide everything on the page when printing */
+    body * {
+        visibility: hidden;
+    }
+    /* Show only the invoice box and its contents */
+    #printable-invoice, #printable-invoice * {
+        visibility: visible;
+    }
+    /* Position the invoice at the top left of the page */
+    #printable-invoice {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block !important;
+        background: white !important;
+    }
+}
+</style>
         :root {
             --primary: #0b132b;
             --secondary: #1c2541;
