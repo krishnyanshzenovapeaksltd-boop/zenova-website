@@ -40,26 +40,45 @@ app.post('/api/career/status', (req, res) => {
     res.json({ success: true });
 });
 
-// AltraAI Gemini API Route with exact 10 services pricing
+// AltraAI Chat Route using gemini-3.5-flash with memory
 app.post('/api/chat', (req, res) => {
-    const { message } = req.body;
+    const { history, message } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {
-        return res.json({ reply: "Welcome to Zenova Peak Tech Hub! For exact pricing on our 10 services, contact Founder Ruby Garg at +2349067862223." });
+        return res.json({ reply: "Welcome to AltraAI! For exact pricing or support, contact Founder Ruby Garg at +2349067862223." });
     }
 
-    const dataString = JSON.stringify({
-        contents: [{
-            parts: [{ 
-                text: `You are AltraAI, an official assistant for Krishnyansh Zenova Peak Tech Hub (BN 9701468, Founder: Ruby Garg, Phone: +2349067862223). Services & Pricing: 1. Consultancy ₦30K, 2. Altra AI Starter ₦55K+10K/mo, Premium ₦85K+15K/mo, Pro ₦150K+20K/mo, 3. GBP ₦35K, 4. Google Ads Starter ₦70K/mo, Growth ₦150K/mo, Pro ₦250K/mo, 5. Branding ₦30K+, 6. Web Dev Landing ₦120K, Backend ₦250K, FullStack ₦550K, 7. AI Video/Image ₦15K, 8. CAC BN ₦60K, Ltd ₦150K, NGO ₦220K, 9. SCUML/TIN ₦15K, 10. SMEDAN ₦10K. Answer query: ${message}` 
-            }]
-        }]
+    let contents = [
+        {
+            role: "user",
+            parts: [{ text: "System Instruction: You are AltraAI, an advanced AI assistant powered by gemini-3.5-flash for Krishnyansh Zenova Peak Tech Hub (BN 9701468, Founder: Ruby Garg, Phone: +2349067862223). Services & Exact Pricing: 1. Business Consultancy ₦30K, 2. Altra AI Automation: Starter ₦55K+10K/mo, Premium ₦85K+15K/mo, Pro ₦150K+20K/mo, 3. GBP with Maps ₦35K (3 months free, then ₦10K/mo), 4. Google Ads Management: Starter ₦70K/mo, Growth ₦150K/mo, Pro ₦250K/mo, 5. Branding Pack From ₦30K, 6. Website Dev: Landing ₦120K, Landing+Backend ₦250K, FullStack+Admin ₦550K, 7. AI Video & Image Studio ₦15K/ad, 8. CAC Registration: BN ₦60K, Ltd ₦150K, NGO ₦220K, 9. SCUML/TIN ₦15K, 10. SMEDAN ₦10K. Always be professional, concise, and helpful." }]
+        },
+        {
+            role: "model",
+            parts: [{ text: "Understood. I am AltraAI, powered by geminis 3.5 Flash engine, ready to assist users with Zenova Peak Tech Hub's services, pricing, and automation solutions." }]
+        }
+    ];
+
+    if (history && Array.isArray(history)) {
+        history.forEach(h => {
+            contents.push({
+                role: h.role === 'user' ? 'user' : 'model',
+                parts: [{ text: h.text }]
+            });
+        });
+    }
+
+    contents.push({
+        role: "user",
+        parts: [{ text: message }]
     });
+
+    const dataString = JSON.stringify({ contents });
 
     const options = {
         hostname: 'generativelanguage.googleapis.com',
-        path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+        path: `/v1beta/models/gemini-3.5-flash:generateContent?key=${GEMINI_API_KEY}`,
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Content-Length': dataString.length }
     };
