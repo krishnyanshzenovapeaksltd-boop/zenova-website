@@ -6,21 +6,38 @@
     <title>Zenova Peak Tech Hub - AltraAI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #050B14; color: #E2E8F0; font-family: sans-serif; }
-        .glass-card { background-color: #0D1B2A; border: 1px solid #1E3A5F; }
+        /* AI Graphics Futuristic Background Effect */
+        body {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 40%),
+                linear-gradient(to right, rgba(30, 58, 95, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(30, 58, 95, 0.2) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            color: #E2E8F0;
+            font-family: sans-serif;
+        }
+        .glass-card { 
+            background: rgba(13, 27, 42, 0.85); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3); 
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
         .gold-border { border-color: #D4AF37; }
         .gold-text { color: #D4AF37; }
+        .glow-logo { box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); }
     </style>
 </head>
-<body class="flex flex-col items-center min-h-screen p-4 pb-20">
+<body class="flex flex-col items-center min-h-screen p-4 pb-24">
 
     <!-- HEADER / BRANDING SECTION -->
     <header class="text-center my-4 w-full max-w-md">
         <h1 class="text-xl font-bold gold-text tracking-wider">ZENOVA PEAK TECH HUB</h1>
         <p class="text-[11px] text-gray-400 mt-1">by KRISHNYANSH ZENOVA PEAKS • BN 9701468</p>
         
-        <!-- Glowing Logo Badge -->
-        <div class="w-32 h-32 rounded-full border-2 gold-border mx-auto my-4 bg-[#0A1931] flex flex-col items-center justify-center shadow-lg shadow-[#D4AF37]/20">
+        <!-- Glowing AI Graphic Logo Badge -->
+        <div class="w-32 h-32 rounded-full border-2 gold-border mx-auto my-4 bg-[#0A1931] flex flex-col items-center justify-center glow-logo">
             <span class="text-[9px] text-white font-semibold">KRISHNYANSH</span>
             <span class="text-xs font-bold gold-text text-center">ZENOVA PEAKS</span>
             <span class="text-[9px] text-white tracking-widest">TECH HUB</span>
@@ -29,30 +46,30 @@
         <p class="text-xs gold-text italic">AltraAI: Your professional assistant for every need (Powered by Gemini)</p>
 
         <!-- Social Links Bar -->
-        <div class="flex justify-center gap-2 mt-3">
-            <a href="https://wa.me/2349067862223" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">💬 WhatsApp</a>
-            <a href="https://facebook.com" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">📘 Facebook</a>
-            <a href="https://instagram.com" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">📸 Instagram</a>
-            <a href="https://linkedin.com" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">💼 LinkedIn</a>
+        <div class="flex flex-wrap justify-center gap-2 mt-3">
+            <a href="https://wa.me/2349067862223" target="_blank" class="glass-card px-3 py-1 rounded-full text-xs gold-text font-medium">💬 WhatsApp</a>
+            <a href="https://facebook.com" target="_blank" class="glass-card px-3 py-1 rounded-full text-xs gold-text font-medium">📘 Facebook</a>
+            <a href="https://instagram.com" target="_blank" class="glass-card px-3 py-1 rounded-full text-xs gold-text font-medium">📸 Instagram</a>
+            <a href="https://linkedin.com" target="_blank" class="glass-card px-3 py-1 rounded-full text-xs gold-text font-medium">💼 LinkedIn</a>
         </div>
     </header>
 
     <!-- SERVICES SECTION -->
     <main class="w-full max-w-md">
-        <h2 class="text-center gold-text font-bold text-base my-3">OUR SERVICES:</h2>
+        <h2 class="text-center gold-text font-bold text-base my-3 tracking-wide">OUR SERVICES:</h2>
         
         <div class="grid grid-cols-3 gap-2">
-            <a href="https://wa.me/2349067862223?text=I%20need%20Business%20Consultancy" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">💼 Business Consultancy</a>
-            <a href="https://wa.me/2349067862223?text=I%20need%20Google%20Ads%20Set%20Up" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🎯 Google Ads Set Up</a>
-            <a href="https://wa.me/2349067862223?text=I%20need%20CAC%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">📄 CAC Registration</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Business%20Consultancy" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">💼 Business Consultancy</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Google%20Ads%20Set%20Up" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">🎯 Google Ads Set Up</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20CAC%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">📄 CAC Registration</a>
             
-            <a href="https://wa.me/2349067862223?text=I%20need%20Altra%20AI%20Automation" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🤖 Altra AI Automation</a>
-            <a href="https://wa.me/2349067862223?text=I%20need%20Branding%20Pack" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">✨ Business Branding</a>
-            <a href="https://wa.me/2349067862223?text=I%20need%20SCUML%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🛡️ SCUML/TIN Reg</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Altra%20AI%20Automation" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">🤖 Altra AI Automation</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Branding%20Pack" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">✨ Business Branding</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20SCUML%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">🛡️ SCUML/TIN Reg</a>
             
-            <a href="https://wa.me/2349067862223?text=I%20need%20GBP%20with%20Map" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">📍 GBP with Map</a>
-            <a href="https://wa.me/2349067862223?text=I%20need%20SMEDAN%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🏙️ SMEDAN Reg</a>
-            <a href="https://wa.me/2349067862223?text=I%20need%20Video%20Studio" class="glass-card p-2 rounded text-center text-[9px] flex items-center justify-center font-medium">+ AI Video & Studio</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20GBP%20with%20Map" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">📍 GBP with Map</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20SMEDAN%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">🏙️ SMEDAN Reg</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Video%20Studio" class="glass-card p-2 rounded text-center text-[9px] flex items-center justify-center font-medium hover:border-[#00f2fe] transition">+ AI Video & Studio</a>
         </div>
 
         <!-- CONTACT US FOOTER -->
@@ -62,26 +79,31 @@
             <p class="my-1">✉️ info@krishnyanshzenovapeaks.com</p>
             <p class="my-1">🌐 www.krishnyanshzenovapeaks.com</p>
             <p class="my-1">🛡️ BN No 9701468 • CAC Registered</p>
+            
+            <!-- Admin Panel Link -->
+            <div class="mt-4">
+                <a href="/admin-login" class="text-[11px] text-gray-400 underline hover:text-[#D4AF37]">🔐 Admin Panel Login</a>
+            </div>
         </footer>
     </main>
 
     <!-- FLOATING CHAT BUTTON -->
-    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-[#D4AF37] text-black w-14 h-14 rounded-full font-bold shadow-xl flex items-center justify-center text-xl">
+    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-[#D4AF37] text-black w-14 h-14 rounded-full font-bold shadow-2xl flex items-center justify-center text-xl z-50 hover:scale-105 transition">
         💬
     </button>
 
     <!-- CHAT MODAL -->
-    <div id="chatModal" class="fixed inset-0 bg-[#050B14] flex flex-col hidden z-50">
+    <div id="chatModal" class="fixed inset-0 bg-[#030712]/90 flex flex-col hidden z-50">
         <div class="flex justify-between items-center p-4 border-b border-[#1E3A5F] bg-[#0A1931]">
-            <span class="gold-text font-bold">AltraAI (Powered by Gemini)</span>
-            <button onclick="toggleChat()" class="text-white font-bold text-sm">✕ Close</button>
+            <span class="gold-text font-bold text-sm">AltraAI (Powered by Gemini)</span>
+            <button onclick="toggleChat()" class="text-white font-bold text-sm bg-red-600/30 px-3 py-1 rounded">✕ Close</button>
         </div>
-        <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-3">
-            <div class="glass-card p-3 rounded-lg max-w-[80%] text-xs">
+        <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-3 max-w-md mx-auto w-full">
+            <div class="glass-card p-3 rounded-lg max-w-[85%] text-xs">
                 Hello! I am AltraAI, powered by Gemini. Ask me anything about business, tech, or our services!
             </div>
         </div>
-        <div class="p-3 bg-[#0A1931] border-t border-[#1E3A5F] flex gap-2">
+        <div class="p-3 bg-[#0A1931] border-t border-[#1E3A5F] flex gap-2 max-w-md mx-auto w-full">
             <input type="text" id="userInput" placeholder="Ask AltraAI anything..." class="flex-1 glass-card p-2 rounded-full text-xs text-white px-4 outline-none">
             <button onclick="sendMessage()" class="bg-[#D4AF37] text-black px-4 rounded-full text-xs font-bold">Send</button>
         </div>
@@ -99,7 +121,7 @@
             if (!input.value.trim()) return;
 
             const userText = input.value;
-            chatBox.innerHTML += `<div class="bg-[#D4AF37] text-black p-3 rounded-lg max-w-[80%] ml-auto text-xs font-medium">${userText}</div>`;
+            chatBox.innerHTML += `<div class="bg-[#D4AF37] text-black p-3 rounded-lg max-w-[85%] ml-auto text-xs font-medium">${userText}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -110,9 +132,9 @@
                     body: JSON.stringify({ message: userText })
                 });
                 const data = await res.json();
-                chatBox.innerHTML += `<div class="glass-card p-3 rounded-lg max-w-[80%] text-xs">${data.reply}</div>`;
+                chatBox.innerHTML += `<div class="glass-card p-3 rounded-lg max-w-[85%] text-xs">${data.reply}</div>`;
             } catch (err) {
-                chatBox.innerHTML += `<div class="glass-card p-3 rounded-lg max-w-[80%] text-xs text-red-400">Connection error. Please try again.</div>`;
+                chatBox.innerHTML += `<div class="glass-card p-3 rounded-lg max-w-[85%] text-xs text-red-400">Connection error. Please try again.</div>`;
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
