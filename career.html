@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career & Freelancer Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1329; color: #ffffff; font-family: sans-serif; }
+        .card-box { background: linear-gradient(145deg, #111c38, #0f172a); border: 1px solid rgba(212, 175, 55, 0.3); }
+        .gold-text { color: #fbbf24; }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-10 flex flex-col justify-between">
+
+    <header class="max-w-4xl mx-auto w-full flex justify-between items-center border-b border-blue-950 pb-6 mb-8">
+        <div>
+            <h1 class="text-xl font-bold gold-text">💼 ZENOVAPEAK CAREER PORTAL</h1>
+            <p class="text-xs text-gray-400">Join our network of elite freelancers & professionals</p>
+        </div>
+        <a href="/" class="text-xs bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-bold transition">🌐 Home</a>
+    </header>
+
+    <main class="max-w-4xl mx-auto w-full">
+        <div class="card-box p-8 rounded-2xl max-w-xl mx-auto border-amber-500/50">
+            <h2 class="text-xl font-bold gold-text mb-2 text-center">🚀 Freelancer Application Form</h2>
+            <p class="text-xs text-gray-300 text-center mb-6">Submit your profile. All applications are directly reviewed and approved by CEO Ruby Garg.</p>
+            
+            <form id="careerForm" onsubmit="submitCareer(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="cName" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Your name">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="cEmail" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="name@example.com">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1">Skill / Expertise</label>
+                    <input type="text" id="cSkill" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="e.g. Full Stack Dev, Video Editor, Marketer">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1">Portfolio Link / Experience Summary</label>
+                    <textarea id="cBio" rows="3" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Share your previous work link..."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-black font-bold p-3 rounded-xl transition text-sm">
+                    Submit Application to CEO
+                </button>
+            </form>
+
+            <div id="careerSuccess" class="hidden mt-6 bg-blue-950/80 border border-blue-600 text-blue-300 p-4 rounded-xl text-center text-xs">
+                ✨ <strong class="text-sm block mb-1">Application Submitted!</strong>
+                Your application has been forwarded to Founder & CEO Ruby Garg for review and approval.
+            </div>
+        </div>
+    </main>
+
+    <footer class="max-w-4xl mx-auto w-full text-center text-xs text-gray-500 border-t border-blue-950 pt-6 mt-10">
+        <p>Krishnyansh Zenova Peak Tech Hub • Career Management</p>
+    </footer>
+
+    <script>
+        async function submitCareer(e) {
+            e.preventDefault();
+            const name = document.getElementById('cName').value;
+            const email = document.getElementById('cEmail').value;
+            const skill = document.getElementById('cSkill').value;
+            const bio = document.getElementById('cBio').value;
+
+            try {
+                await fetch('/api/career', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, skill, bio })
+                });
+                document.getElementById('careerForm').reset();
+                document.getElementById('careerSuccess').classList.remove('hidden');
+            } catch (err) {
+                alert('Submission failed. Try again.');
+            }
+        }
+    </script>
+</body>
+</html>
