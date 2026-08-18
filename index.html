@@ -1,300 +1,121 @@
-import React, { useState } from 'react';
-import { 
-  StyleSheet, Text, View, ScrollView, TouchableOpacity, 
-  Linking, TextInput, Modal, KeyboardAvoidingView, Platform, ActivityIndicator 
-} from 'react-native';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenova Peak Tech Hub - AltraAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #050B14; color: #E2E8F0; font-family: sans-serif; }
+        .glass-card { background-color: #0D1B2A; border: 1px solid #1E3A5F; }
+        .gold-border { border-color: #D4AF37; }
+        .gold-text { color: #D4AF37; }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen p-4 pb-20">
 
-export default function App() {
-  const [chatOpen, setChatOpen] = useState(false);
-  const [showFaq, setShowFaq] = useState(false);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  // Initial messages including AltraAI introduction
-  const [messages, setMessages] = useState([
-    { id: '1', from: 'bot', text: 'Hello! I am AltraAI, powered by Gemini. Your professional assistant for every need. Ask me anything about business, tech, teaching, or connect with us on social media!' }
-  ]);
-
-  // Expandable FAQ Database
-  const [faqs, setFaqs] = useState([
-    { id: '1', category: 'Business & CAC', question: 'How do I register a business?', answer: 'Altra AI handles full business registration, CAC, and SMEDAN filings starting from N45k.' },
-    { id: '2', category: 'Teaching & Education', question: 'Can AltraAI assist with teaching?', answer: 'Yes! AltraAI provides professional assistance, curriculum guidance, and instant answers for teaching needs.' },
-    { id: '3', category: 'Hospitality & Tourism', question: 'What solutions do you offer for hotels?', answer: 'We offer automated guest booking workflows and monthly online bookkeeping for the hospitality sector.' },
-    { id: '4', category: 'Technology & Tech', question: 'Do you build custom software and apps?', answer: 'We engineer custom web and mobile applications, automated AI workflows, and scalable tech solutions.' }
-  ]);
-
-  // Social & WhatsApp Redirect Helpers
-  const openWhatsApp = (serviceName = '') => {
-    const text = serviceName ? `Hello Zenova, I need ${serviceName}` : 'Hello Zenova, I want to connect with Altra AI.';
-    Linking.openURL(`https://wa.me/2349067862223?text=${encodeURIComponent(text)}`);
-  };
-
-  const openFacebook = () => {
-    Linking.openURL('https://facebook.com'); // Replace with your Facebook page URL if available
-  };
-
-  const openInstagram = () => {
-    Linking.openURL('https://instagram.com'); // Replace with your Instagram profile URL if available
-  };
-
-  // Live Gemini-Powered Altra AI Response Engine
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
-    const userMsg = input.trim();
-    const newMessages = [...messages, { id: Date.now().toString(), from: 'user', text: userMsg }];
-    setMessages(newMessages);
-    setInput('');
-    setLoading(true);
-
-    try {
-      // NOTE: Replace the string below with your active Gemini API key
-      const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"; 
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{ 
-              text: `You are AltraAI, powered by Gemini, a high-level professional assistant for every global industry, tech, teaching, and business automation created by Krishnyansh Zenova Peak Tech Hub (www.krishnyanshzenovapeaks.com, Phone: +2349067862223). Provide a professional, detailed, and helpful answer to: ${userMsg}` 
-            }]
-          }]
-        })
-      });
-
-      const data = await response.json();
-      let botReply = "I am here to assist you with any professional requirement, business automation, or technical query!";
-
-      if (data.candidates && data.candidates[0].content.parts[0].text) {
-        botReply = data.candidates[0].content.parts[0].text;
-      }
-
-      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), from: 'bot', text: botReply }]);
-    } catch (error) {
-      setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), from: 'bot', text: "Connection error. Please check your network or API configuration." }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+    <!-- HEADER / BRANDING SECTION -->
+    <header class="text-center my-4 w-full max-w-md">
+        <h1 class="text-xl font-bold gold-text tracking-wider">ZENOVA PEAK TECH HUB</h1>
+        <p class="text-[11px] text-gray-400 mt-1">by KRISHNYANSH ZENOVA PEAKS • BN 9701468</p>
         
-        {/* --- HEADER / BRANDING SECTION --- */}
-        <View style={styles.headerSection}>
-          <Text style={styles.mainTitle}>ZENOVA PEAK TECH HUB</Text>
-          <Text style={styles.subTitle}>by KRISHNYANSH ZENOVA PEAKS • BN 9701468</Text>
-          
-          {/* Futuristic Glowing Logo Badge */}
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>KRISHNYANSH</Text>
-            <Text style={styles.logoBrand}>ZENOVA PEAKS</Text>
-            <Text style={styles.logoSub}>TECH HUB</Text>
-          </View>
+        <!-- Glowing Logo Badge -->
+        <div class="w-32 h-32 rounded-full border-2 gold-border mx-auto my-4 bg-[#0A1931] flex flex-col items-center justify-center shadow-lg shadow-[#D4AF37]/20">
+            <span class="text-[9px] text-white font-semibold">KRISHNYANSH</span>
+            <span class="text-xs font-bold gold-text text-center">ZENOVA PEAKS</span>
+            <span class="text-[9px] text-white tracking-widest">TECH HUB</span>
+        </div>
 
-          <Text style={styles.taglineText}>AltraAI: Your professional assistant for every need (Powered by Gemini)</Text>
-          
-          {/* Social Links Bar */}
-          <View style={styles.socialBar}>
-            <TouchableOpacity style={styles.socialButton} onPress={openWhatsApp}>
-              <Text style={styles.socialButtonText}>💬 WhatsApp</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton} onPress={openFacebook}>
-              <Text style={styles.socialButtonText}>📘 Facebook</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton} onPress={openInstagram}>
-              <Text style={styles.socialButtonText}>📸 Instagram</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <p class="text-xs gold-text italic">AltraAI: Your professional assistant for every need (Powered by Gemini)</p>
 
-        {/* --- OUR SERVICES GRID SECTION --- */}
-        <Text style={styles.sectionHeading}>OUR SERVICES:</Text>
+        <!-- Social Links Bar -->
+        <div class="flex justify-center gap-2 mt-3">
+            <a href="https://wa.me/2349067862223" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">💬 WhatsApp</a>
+            <a href="https://facebook.com" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">📘 Facebook</a>
+            <a href="https://instagram.com" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">📸 Instagram</a>
+            <a href="https://linkedin.com" target="_blank" class="glass-card gold-border px-3 py-1 rounded-full text-xs gold-text font-medium">💼 LinkedIn</a>
+        </div>
+    </header>
+
+    <!-- SERVICES SECTION -->
+    <main class="w-full max-w-md">
+        <h2 class="text-center gold-text font-bold text-base my-3">OUR SERVICES:</h2>
         
-        <View style={styles.gridContainer}>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('Business Consultancy')}>
-            <Text style={styles.serviceText}>💼 Business Consultancy</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('Google Ads Set Up')}>
-            <Text style={styles.serviceText}>🎯 Google Ads Set Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('CAC Registration')}>
-            <Text style={styles.serviceText}>📄 CAC Registration (BN, Ltd, Ngo)</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('Altra AI Automation')}>
-            <Text style={styles.serviceText}>🤖 Altra AI Automation</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('Complete Business Branding Pack')}>
-            <Text style={styles.serviceText}>✨ Complete Business Branding Pack</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('SCUML/TIN Registration')}>
-            <Text style={styles.serviceText}>🛡️ SCUML/TIN Registration</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('GBP with Map')}>
-            <Text style={styles.serviceText}>📍 GBP with Map (Google Business Profile)</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('SMEDAN Registration')}>
-            <Text style={styles.serviceText}>🏙️ SMEDAN Registration</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.serviceBox} onPress={() => openWhatsApp('AI-Powered Video & Image Studio')}>
-            <Text style={styles.serviceText}>+ AI-Powered Video & Image Advertise Post Creator Studio</Text>
-          </TouchableOpacity>
-        </View>
+        <div class="grid grid-cols-3 gap-2">
+            <a href="https://wa.me/2349067862223?text=I%20need%20Business%20Consultancy" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">💼 Business Consultancy</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Google%20Ads%20Set%20Up" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🎯 Google Ads Set Up</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20CAC%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">📄 CAC Registration</a>
+            
+            <a href="https://wa.me/2349067862223?text=I%20need%20Altra%20AI%20Automation" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🤖 Altra AI Automation</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Branding%20Pack" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">✨ Business Branding</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20SCUML%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🛡️ SCUML/TIN Reg</a>
+            
+            <a href="https://wa.me/2349067862223?text=I%20need%20GBP%20with%20Map" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">📍 GBP with Map</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20SMEDAN%20Registration" class="glass-card p-2 rounded text-center text-[10px] flex items-center justify-center font-medium">🏙️ SMEDAN Reg</a>
+            <a href="https://wa.me/2349067862223?text=I%20need%20Video%20Studio" class="glass-card p-2 rounded text-center text-[9px] flex items-center justify-center font-medium">+ AI Video & Studio</a>
+        </div>
 
-        {/* --- CONTACT US FOOTER SECTION --- */}
-        <View style={styles.contactSection}>
-          <Text style={styles.sectionHeading}>CONTACT US:</Text>
-          <TouchableOpacity onPress={() => openWhatsApp()}>
-            <Text style={styles.contactText}>📞 +2349067862223 • 08073378155</Text>
-          </TouchableOpacity>
-          <Text style={styles.contactText}>✉️ info@krishnyanshzenovapeaks.com</Text>
-          <Text style={styles.contactText}>🌐 www.krishnyanshzenovapeaks.com</Text>
-          <Text style={styles.contactText}>🛡️ BN No 9701468 • CAC Registered</Text>
-          
-          {/* Footer Social Icons Row */}
-          <View style={[styles.socialBar, { marginTop: 12 }]}>
-            <TouchableOpacity onPress={openWhatsApp}><Text style={styles.footerLinkText}>WhatsApp</Text></TouchableOpacity>
-            <Text style={{ color: '#D4AF37' }}> • </Text>
-            <TouchableOpacity onPress={openFacebook}><Text style={styles.footerLinkText}>Facebook</Text></TouchableOpacity>
-            <Text style={{ color: '#D4AF37' }}> • </Text>
-            <TouchableOpacity onPress={openInstagram}><Text style={styles.footerLinkText}>Instagram</Text></TouchableOpacity>
-          </View>
-        </View>
+        <!-- CONTACT US FOOTER -->
+        <footer class="mt-6 pt-4 border-t border-[#1E3A5F] text-center text-xs text-gray-300">
+            <h3 class="gold-text font-bold mb-2">CONTACT US:</h3>
+            <p class="my-1">📞 +2349067862223 • 08073378155</p>
+            <p class="my-1">✉️ info@krishnyanshzenovapeaks.com</p>
+            <p class="my-1">🌐 www.krishnyanshzenovapeaks.com</p>
+            <p class="my-1">🛡️ BN No 9701468 • CAC Registered</p>
+        </footer>
+    </main>
 
-      </ScrollView>
+    <!-- FLOATING CHAT BUTTON -->
+    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-[#D4AF37] text-black w-14 h-14 rounded-full font-bold shadow-xl flex items-center justify-center text-xl">
+        💬
+    </button>
 
-      {/* --- FLOATING FAQ BUTTON (Bottom Left) --- */}
-      <TouchableOpacity 
-        onPress={() => setShowFaq(true)} 
-        style={styles.faqButton}
-      >
-        <Text style={{ fontSize: 22, color: '#050B14', fontWeight: 'bold' }}>?</Text>
-      </TouchableOpacity>
+    <!-- CHAT MODAL -->
+    <div id="chatModal" class="fixed inset-0 bg-[#050B14] flex flex-col hidden z-50">
+        <div class="flex justify-between items-center p-4 border-b border-[#1E3A5F] bg-[#0A1931]">
+            <span class="gold-text font-bold">AltraAI (Powered by Gemini)</span>
+            <button onclick="toggleChat()" class="text-white font-bold text-sm">✕ Close</button>
+        </div>
+        <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-3">
+            <div class="glass-card p-3 rounded-lg max-w-[80%] text-xs">
+                Hello! I am AltraAI, powered by Gemini. Ask me anything about business, tech, or our services!
+            </div>
+        </div>
+        <div class="p-3 bg-[#0A1931] border-t border-[#1E3A5F] flex gap-2">
+            <input type="text" id="userInput" placeholder="Ask AltraAI anything..." class="flex-1 glass-card p-2 rounded-full text-xs text-white px-4 outline-none">
+            <button onclick="sendMessage()" class="bg-[#D4AF37] text-black px-4 rounded-full text-xs font-bold">Send</button>
+        </div>
+    </div>
 
-      {/* --- FLOATING ALTRA AI CHAT BUTTON (Bottom Right) --- */}
-      <TouchableOpacity 
-        onPress={() => setChatOpen(true)} 
-        style={styles.chatButton}
-      >
-        <Text style={{ fontSize: 24 }}>💬</Text>
-      </TouchableOpacity>
+    <script>
+        function toggleChat() {
+            const modal = document.getElementById('chatModal');
+            modal.classList.toggle('hidden');
+        }
 
-      {/* --- FAQ POPUP MODAL --- */}
-      <Modal visible={showFaq} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <Text style={{ color: '#D4AF37', fontSize: 18, fontWeight: 'bold' }}>Frequently Asked Questions</Text>
-            <TouchableOpacity onPress={() => setShowFaq(false)}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>✕ Close</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView contentContainerStyle={{ padding: 20 }}>
-            {faqs.map((item) => (
-              <View key={item.id} style={styles.faqCard}>
-                <Text style={{ color: '#D4AF37', fontWeight: 'bold', fontSize: 14, marginBottom: 5 }}>{item.question}</Text>
-                <Text style={{ color: '#E2E8F0', fontSize: 13 }}>{item.answer}</Text>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-      </Modal>
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            if (!input.value.trim()) return;
 
-      {/* --- ALTRA AI CHAT MODAL (Gemini Powered) --- */}
-      <Modal visible={chatOpen} animationType="slide">
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <Text style={{ color: '#D4AF37', fontSize: 18, fontWeight: 'bold' }}>AltraAI (Powered by Gemini)</Text>
-            <TouchableOpacity onPress={() => setChatOpen(false)}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>✕ Close</Text>
-            </TouchableOpacity>
-          </View>
+            const userText = input.value;
+            chatBox.innerHTML += `<div class="bg-[#D4AF37] text-black p-3 rounded-lg max-w-[80%] ml-auto text-xs font-medium">${userText}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-          <ScrollView style={{ flex: 1, padding: 15 }}>
-            {messages.map((m) => (
-              <View key={m.id} style={[styles.chatBubble, m.from === 'user' ? styles.userBubble : styles.botBubble]}>
-                <Text style={{ color: m.from === 'user' ? '#050B14' : '#FFF', fontSize: 13 }}>{m.text}</Text>
-              </View>
-            ))}
-            {loading && <ActivityIndicator size="small" color="#D4AF37" style={{ marginVertical: 10 }} />}
-          </ScrollView>
-
-          <View style={styles.chatInputContainer}>
-            <TextInput
-              value={input}
-              onChangeText={setInput}
-              placeholder="Ask AltraAI anything..."
-              placeholderTextColor="#888"
-              style={styles.chatInput}
-            />
-            <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-              <Text style={{ color: '#050B14', fontWeight: 'bold' }}>Send</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </Modal>
-
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#050B14' },
-  scrollContainer: { padding: 20, alignItems: 'center', paddingBottom: 60 },
-  headerSection: { alignItems: 'center', marginBottom: 20, width: '100%' },
-  mainTitle: { fontSize: 22, fontWeight: 'bold', color: '#D4AF37', textAlign: 'center', letterSpacing: 1 },
-  subTitle: { fontSize: 11, color: '#A3B8CC', marginTop: 4, textAlign: 'center' },
-  
-  logoContainer: {
-    width: 130, height: 130, borderRadius: 65,
-    borderWidth: 3, borderColor: '#D4AF37',
-    justifyContent: 'center', alignItems: 'center',
-    backgroundColor: '#0A1931', marginTop: 15,
-    shadowColor: '#D4AF37', shadowOpacity: 0.6, shadowRadius: 10
-  },
-  logoText: { fontSize: 9, color: '#FFF', fontWeight: '600' },
-  logoBrand: { fontSize: 12, color: '#D4AF37', fontWeight: 'bold', textAlign: 'center' },
-  logoSub: { fontSize: 9, color: '#FFF', letterSpacing: 2 },
-  taglineText: { fontSize: 12, color: '#D4AF37', fontStyle: 'italic', marginTop: 12, textAlign: 'center' },
-
-  socialBar: { flexDirection: 'row', marginTop: 12, justifyContent: 'center', gap: 10 },
-  socialButton: { backgroundColor: '#0D1B2A', borderWidth: 1, borderColor: '#D4AF37', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 15 },
-  socialButtonText: { color: '#D4AF37', fontSize: 11, fontWeight: '600' },
-  footerLinkText: { color: '#D4AF37', fontSize: 12, textDecorationLine: 'underline' },
-
-  sectionHeading: { fontSize: 18, fontWeight: 'bold', color: '#D4AF37', marginVertical: 12, textAlign: 'center' },
-  
-  gridContainer: { width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  serviceBox: {
-    width: '31%', backgroundColor: '#0D1B2A', borderWidth: 1, borderColor: '#1E3A5F',
-    borderRadius: 8, padding: 10, marginBottom: 10, minHeight: 75, justifyContent: 'center', alignItems: 'center'
-  },
-  serviceText: { color: '#E2E8F0', fontSize: 10, textAlign: 'center', fontWeight: '500' },
-
-  contactSection: { marginTop: 15, alignItems: 'center', width: '100%', borderTopWidth: 1, borderColor: '#1E3A5F', paddingTop: 15 },
-  contactText: { color: '#CBD5E1', fontSize: 12, marginVertical: 3, textAlign: 'center' },
-
-  faqButton: {
-    position: 'absolute', bottom: 25, left: 20, backgroundColor: '#D4AF37',
-    width: 50, height: 50, borderRadius: 25, justifyContent: 'center', alignItems: 'center', elevation: 5
-  },
-  chatButton: {
-    position: 'absolute', bottom: 25, right: 20, backgroundColor: '#D4AF37',
-    width: 55, height: 55, borderRadius: 27.5, justifyContent: 'center', alignItems: 'center', elevation: 5
-  },
-  modalContainer: { flex: 1, backgroundColor: '#050B14', paddingTop: 40 },
-  modalHeader: { 
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
-    padding: 20, borderBottomWidth: 1, borderColor: '#1E3A5F' 
-  },
-  faqCard: { backgroundColor: '#0D1B2A', padding: 12, borderRadius: 8, marginBottom: 10, borderWidth: 1, borderColor: '#1E3A5F' },
-  chatBubble: { padding: 12, borderRadius: 10, marginVertical: 6, maxWidth: '80%' },
-  userBubble: { backgroundColor: '#D4AF37', alignSelf: 'flex-end' },
-  botBubble: { backgroundColor: '#0D1B2A', alignSelf: 'flex-start', borderWidth: 1, borderColor: '#1E3A5F' },
-  chatInputContainer: { flexDirection: 'row', padding: 15, borderTopWidth: 1, borderColor: '#1E3A5F', backgroundColor: '#0A1931' },
-  chatInput: { flex: 1, backgroundColor: '#0D1B2A', color: 'white', borderRadius: 20, paddingHorizontal: 15, paddingVertical: 10, marginRight: 10, borderWidth: 1, borderColor: '#1E3A5F' },
-  sendButton: { backgroundColor: '#D4AF37', justifyContent: 'center', paddingHorizontal: 20, borderRadius: 20 }
-});
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userText })
+                });
+                const data = await res.json();
+                chatBox.innerHTML += `<div class="glass-card p-3 rounded-lg max-w-[80%] text-xs">${data.reply}</div>`;
+            } catch (err) {
+                chatBox.innerHTML += `<div class="glass-card p-3 rounded-lg max-w-[80%] text-xs text-red-400">Connection error. Please try again.</div>`;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
