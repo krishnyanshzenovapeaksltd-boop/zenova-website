@@ -3,334 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Admin Dashboard - Zenova Peaks</title>
-<style>
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #printable-invoice, #printable-invoice * {
-        visibility: visible;
-    }
-    #printable-invoice {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        display: block !important;
-        background: white !important;
-    }
-}
-</style>
-
-<style>
-        :root {
-            --primary: #0b132b;
-            --secondary: #1c2541;
-            --accent: #ffb703;
-            --text-light: #ffffff;
-            --border: #48cae4;
-        }
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f6f9;
-            color: #333;
-            display: flex;
-        }
-        sidebar {
-            width: 260px;
-            background: var(--primary);
-            color: var(--text-light);
-            height: 100vh;
-            position: fixed;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        sidebar h2 { color: var(--accent); font-size: 20px; text-align: center; margin-bottom: 30px; }
-        sidebar a {
-            display: block;
-            color: #cfd9df;
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            transition: 0.3s;
-        }
-        sidebar a:hover, sidebar a.active { background: var(--secondary); color: var(--accent); }
-        main {
-            margin-left: 260px;
-            flex: 1;
-            padding: 40px;
-            box-sizing: border-box;
-        }
-        .section-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        button.btn-action {
-            background: var(--primary);
-            color: var(--accent);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        button.btn-action:hover { background: var(--secondary); }
-        /* Invoice Preview Area */
-        .invoice-preview-box {
-            border: 2px dashed #0b132b;
-            padding: 30px;
-            background: #fff;
-            position: relative;
-            max-width: 800px;
-            margin: auto;
-        }
-        .stamp-overlay {
-            position: absolute;
-            bottom: 40px;
-            right: 50px;
-            width: 140px;
-            opacity: 0.9;
-        }
+    <title>Zenova Master Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1329; color: #ffffff; font-family: sans-serif; }
+        .card-box { background: linear-gradient(145deg, #111c38, #0f172a); border: 1px solid rgba(212, 175, 55, 0.3); }
+        .gold-text { color: #fbbf24; }
     </style>
 </head>
-<body>
+<body class="min-h-screen p-6 md:p-10 flex flex-col justify-between">
 
-    <sidebar>
-        <h2>Zenova Pro Admin</h2>
-        <a href="#leads" class="active">📊 Public Form Leads</a>
-        <a href="#gallery">🖼️ Ad Gallery Manager</a>
-        <a href="#invoice">📄 Invoice Generator</a>
-        <a href="#support">💬 Support Inbox</a>
-        <a href="#settings">⚙️ Pro Customizations</a>
-    </sidebar>
-
-    <main>
-        <!-- Leads Section -->
-        <div id="leads" class="section-card">
-            <h3>Public Form Leads</h3>
-            <p>Manage customer submissions and instantly message clients via WhatsApp.</p>
-            <table width="100%" border="1" cellpadding="10" style="border-collapse: collapse; border-color: #ddd;">
-                <tr style="background: #0b132b; color: white;">
-                    <th>Client Name</th>
-                    <th>Phone / WhatsApp</th>
-                    <th>Service Requested</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>Chinedu Okafor</td>
-                    <td>+234 812 345 6789</td>
-                    <td>Business Registration (BN)</td>
-                    <td><a href="https://wa.me/2348123456789" target="_blank"><button class="btn-action" style="background:#25D366; color:white;">Chat WhatsApp</button></a></td>
-                </tr>
-            </table>
+    <header class="max-w-5xl mx-auto w-full flex justify-between items-center border-b border-blue-950 pb-6 mb-8">
+        <div>
+            <h1 class="text-xl font-bold gold-text">🔐 ZENOVA MASTER ADMIN PANEL</h1>
+            <p class="text-xs text-gray-400">Founder & CEO: Ruby Garg • BN 9701468</p>
         </div>
-<!-- Ad Gallery Manager Section -->
-<div id="gallery" class="section-card" style="display: none; margin-top: 20px;">
-    <h3>Ad Gallery Manager</h3>
-    <p>Upload and manage promotional videos and images tailored for Facebook, Instagram, and WhatsApp status.</p>
-    <form action="/api/upload-ad" method="POST" enctype="multipart/form-data" style="margin-top: 15px;">
-        <input type="file" name="adMedia" accept="image/*,video/*" required style="margin-bottom: 10px; display: block;">
-        <button type="submit" style="background: #25D366; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">Upload Ad</button>
-    </form>
-</div>
+        <a href="/" class="text-xs bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-bold transition">🌐 View Live Website</a>
+    </header>
 
-<!-- Support Inbox Section -->
-<div id="support" class="section-card" style="display: none; margin-top: 20px;">
-    <h3>Support Inbox</h3>
-    <p>View customer inquiries and support messages received from users.</p>
-    <table width="100%" border="1" cellpadding="10" style="border-collapse: collapse; border-color: #ddd; margin-top: 15px;">
-        <tr style="background: #0b132b; color: white;">
-            <th>Client Name</th>
-            <th>Message / Inquiry</th>
-            <th>Action</th>
-        </tr>
-        <tr>
-            <td colspan="3" style="text-align: center; color: #777;">No new support messages.</td>
-        </tr>
-    </table>
-</div>
-        <!-- Invoice Generator Section -->
-        <div id="invoice" class="section-card">
-            <h3>Editable Invoice Generator</h3>
-            <form id="invoiceForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Client Name</label>
-                        <input type="text" id="invClient" placeholder="Enter Client Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" id="invPhone" placeholder="+234 ...">
-                    </div>
-                    <div class="form-group">
-                        <label>Business Name</label>
-                        <input type="text" id="invBusiness" placeholder="Client Business Name">
-                    </div>
-                    <div class="form-group">
-                        <label>Total Amount (NGN)</label>
-                        <input type="text" id="invAmount" placeholder="₦ 50,000">
-                    </div>
+    <main class="max-w-5xl mx-auto w-full space-y-8">
+        
+        <!-- SUBMISSIONS VIEWER -->
+        <div class="card-box p-6 rounded-2xl">
+            <h2 class="text-lg font-bold gold-text mb-4">📥 Customer Registrations</h2>
+            <div id="subList" class="space-y-3 text-xs">
+                <p class="text-gray-400 italic">Loading registrations...</p>
+            </div>
+        </div>
+
+        <!-- CAREER / FREELANCER APPROVALS BY CEO -->
+        <div class="card-box p-6 rounded-2xl">
+            <h2 class="text-lg font-bold gold-text mb-4">💼 Freelancer Career Applications (CEO Approval)</h2>
+            <div id="careerList" class="space-y-3 text-xs">
+                <p class="text-gray-400 italic">Loading applications...</p>
+            </div>
+        </div>
+
+        <!-- CLIENT SUBSCRIPTION CONTROL -->
+        <div class="card-box p-6 rounded-2xl">
+            <h2 class="text-lg font-bold gold-text mb-4">⚙️ Client SaaS Subscription Controls</h2>
+            <div class="flex items-center justify-between bg-[#0b1329] border border-blue-900 p-4 rounded-xl text-xs">
+                <div>
+                    <p class="font-bold text-white">Client Portal Access (Master Switch)</p>
+                    <p class="text-gray-400 text-[10px]">Turn client omnichannel automation portals ON or OFF remotely.</p>
                 </div>
-                <button type="button" class="btn-action" onclick="generateInvoicePDF()">Generate & Print Invoice</button>
-            </form>
+                <button onclick="toggleGlobalSub(this)" id="subBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs">ACTIVE (ON)</button>
+            </div>
         </div>
 
-        <!-- Pro Settings Section -->
-        <div id="settings" class="section-card">
-            <h3>Pro Controls & Toggles</h3>
-            <div class="form-group">
-                <label><input type="checkbox" checked id="toggleBadge"> Enable BN 9701468 Verified Badge on Homepage</label>
-            </div>
-            <div class="form-group">
-                <label>Edit Main Headline Text:</label>
-                <input type="text" value="Start Your Business Today - 100% Online Across Nigeria">
-            </div>
-            <button class="btn-action">Save Changes</button>
-        </div>
     </main>
 
-    <<!-- Complete Invoice Section with Logo & Stamp -->
-<div id="invoice" class="section-card" style="margin-top: 20px; background: #fff; padding: 20px; border-radius: 8px;">
-    <h3>Editable Invoice Generator</h3>
-    
-    <div style="margin-bottom: 15px;">
-        <label>Client Name:</label><br>
-        <input type="text" id="inv-client-name" placeholder="Enter Client Name" style="width: 100%; padding: 8px; margin-top: 5px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-        <label>Phone Number:</label><br>
-        <input type="text" id="inv-phone" placeholder="+234 ..." style="width: 100%; padding: 8px; margin-top: 5px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-        <label>Business Name:</label><br>
-        <input type="text" id="inv-business" placeholder="Client Business Name" style="width: 100%; padding: 8px; margin-top: 5px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-        <label>Total Amount (NGN):</label><br>
-        <input type="text" id="inv-amount" value="₦ 50,000" style="width: 100%; padding: 8px; margin-top: 5px;">
-    </div>
-    <button type="button" onclick="generateAndPrintInvoice()" class="btn-action" style="background: #0b132b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Generate & Print Invoice</button>
+    <footer class="max-w-5xl mx-auto w-full text-center text-xs text-gray-500 border-t border-blue-950 pt-6 mt-10">
+        <p>Krishnyansh Zenova Peak Tech Hub • Master Control Suite</p>
+    </footer>
 
-    <!-- Printable Preview Box (Hidden normally, shown during print) -->
-    <div id="printable-invoice" style="display: none; background: #fff; padding: 30px; font-family: 'Poppins', sans-serif; color: #333;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0b132b; padding-bottom: 15px; margin-bottom: 20px;">
-            <div>
-                <h2 style="margin: 0; color: #0b132b; font-size: 20px;">KRISHNYANSH ZENOVA PEAKS TECH HUB</h2>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: #555;">Business Registration, Consulting & Automation</p>
-                <p style="margin: 2px 0 0 0; font-size: 12px; color: #856404;">BN: 9701468 | Lagos, Nigeria</p>
-            </div>
-            <div>
-                <img src="logo.png" alt="Logo" style="width: 85px; height: 85px; object-fit: contain;">
-            </div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px;">
-            <div>
-                <strong>Billed To:</strong><br>
-                <span id="preview-client">Client Name</span><br>
-                <span id="preview-business">Business Name</span><br>
-                <span id="preview-phone">Phone Number</span>
-            </div>
-            <div style="text-align: right;">
-                <strong>Invoice Date:</strong> <span id="inv-date"></span><br>
-                <strong>Status:</strong> <span style="color: green; font-weight: bold;">PAID / VERIFIED</span>
-            </div>
-        <<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
-            <div>
-                <p style="margin: 0; font-size: 13px; color: #555;">Thank you for doing business with us!</p>
-                <p style="margin-top: 30px; font-size: 12px; border-top: 1px solid #333; display: inline-block; padding-top: 5px;">Authorized Signature</p>
-            </div>
-            <div style="text-align: center;">
-                <img src="/stamp.png" alt="Stamp" style="width: 120px; height: 120px; object-fit: contain;">
-            </div>
-        </div>
-    </div> <!-- Yeh wala div printable-invoice box ko close karta hai -->
-</div> <!-- Yeh wala div invoice-section ko close karta hai -->
-
-<script>
-    document.getElementById('inv-date').innerText = new Date().toLocaleDateString();
-
-    function generateAndPrintInvoice() {
-        document.getElementById('preview-client').innerText = document.getElementById('inv-client-name').value || "Valued Client";
-        document.getElementById('preview-business').innerText = document.getElementById('inv-business').value || "Business Name";
-        document.getElementById('preview-phone').innerText = document.getElementById('inv-phone').value || "";
-        document.getElementById('preview-amount').innerText = document.getElementById('inv-amount').value;
-
-        const printBox = document.getElementById('printable-invoice');
-        printBox.style.display = 'block';
-
-        window.print();
-
-        printBox.style.display = 'none';
-    }
-</script>
-
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-            <thead>
-                <tr style="background: #0b132b; color: white;">
-                    <th style="padding: 10px; text-align: left;">Service Description</th>
-                    <th style="padding: 10px; text-align: right;">Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 10px;">Professional Business Registration & Setup Services</td>
-                    <td style="padding: 10px; text-align: right;" id="preview-amount">₦ 50,000</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px;">
-            <div>
-                <p style="margin: 0; font-size: 13px; color: #555;">Thank you for doing business with us!</p>
-                <p style="margin-top: 30px; font-size: 12px; border-top: 1px solid #333; display: inline-block; padding-top: 5px;">Authorized Signature</p>
-            </div>
-            <div style="text-align: center;">
-                <img src="/stamp.png" alt="Stamp" style="width: 120px; height: 120px; object-fit: contain;">
-            </div>
-        </div>
-  <script>
-    function generateInvoicePDF() {
-        window.print();
-    }
-</script>
     <script>
-    document.addEventListener('click', function(e) {
-        const trigger = e.target.closest('a, button');
-        if (trigger && trigger.getAttribute('href') && trigger.getAttribute('href').startsWith('#')) {
-            const targetId = trigger.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId) || document.getElementById(targetId + '-section');
-            
-            if (targetSection) {
-                e.preventDefault();
-                // Hide all sections
-                document.querySelectorAll('.admin-section, .section-card').forEach(sec => {
-                    sec.style.display = 'none';
-                });
-                // Show the clicked section
-                targetSection.style.display = 'block';
+        async function loadData() {
+            try {
+                // Submissions
+                const res1 = await fetch('/api/submissions');
+                const subs = await res1.json();
+                const subList = document.getElementById('subList');
+                subList.innerHTML = subs.length === 0 ? '<p class="text-gray-400">No submissions yet.</p>' : subs.map((item, idx) => `
+                    <div class="bg-[#0b1329] border border-blue-900 p-3 rounded-xl flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-amber-300">#${idx+1} - ${item.name} (${item.phone})</p>
+                            <p class="text-gray-300 text-[11px]">Service: ${item.service}</p>
+                        </div>
+                        <span class="text-[10px] text-gray-500">${item.date}</span>
+                    </div>
+                `).join('');
+
+                // Career Apps
+                const res2 = await fetch('/api/careers');
+                const careers = await res2.json();
+                const careerList = document.getElementById('careerList');
+                careerList.innerHTML = careers.length === 0 ? '<p class="text-gray-400">No career applications yet.</p>' : careers.map((item, idx) => `
+                    <div class="bg-[#0b1329] border border-blue-900 p-3 rounded-xl flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-amber-300">${item.name} (${item.email})</p>
+                            <p class="text-gray-300 text-[11px]">Skill: <strong>${item.skill}</strong> | Bio: ${item.bio}</p>
+                            <p class="text-amber-400 text-[10px] mt-1">Status: <span id="status-${idx}">${item.status}</span></p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="approveCareer(${idx}, 'APPROVED')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-[10px] font-bold">Approve</button>
+                            <button onclick="approveCareer(${idx}, 'REJECTED')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-[10px] font-bold">Reject</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
             }
         }
-    });
-</script>      
+
+        async function approveCareer(idx, status) {
+            await fetch('/api/career/status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ index: idx, status })
+            });
+            loadData();
+        }
+
+        function toggleGlobalSub(btn) {
+            if(btn.innerText.includes("ACTIVE")) {
+                btn.innerText = "SUSPENDED (OFF)";
+                btn.className = "bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xs";
+            } else {
+                btn.innerText = "ACTIVE (ON)";
+                btn.className = "bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs";
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
