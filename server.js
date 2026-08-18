@@ -1,11 +1,27 @@
+const express = require('express');
+const path = require('path');
+const app = express();
+
+app.use(express.json());
+app.use(express.static('.'));
+
+// Admin Panel Routes
+app.get('/admin-login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-login.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// AltraAI Gemini API Route
 app.post('/api/chat', async (req, res) => {
     try {
         const { message } = req.body;
         const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
         if (!GEMINI_API_KEY) {
-            console.log("ERROR: GEMINI_API_KEY is missing in environment variables!");
-            return res.status(500).json({ reply: "API Key missing on server." });
+            return res.status(500).json({ reply: "API Key missing in environment variables." });
         }
 
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
@@ -21,18 +37,15 @@ app.post('/api/chat', async (req, res) => {
         });
 
         const data = await response.json();
-        
-        // Console mein response print karke check karein ki Google kya bhej raha hai
-        console.log("Gemini Response Data:", JSON.stringify(data));
-
-        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-            return res.json({ reply: data.candidates[0].content.parts[0].text });
-        } else {
-            return res.json({ reply: "AI received the message but returned an unexpected format." });
+        let reply = "I am here to assist you!";
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            reply = data.candidates[0].content.parts[0].text;
         }
-
+        res.json({ reply });
     } catch (error) {
-        console.error("Fetch Error:", error);
-        res.status(500).json({ reply: "AI Server Connection Error." });
+        res.status(500).json({ reply: "AI Server Error." });
     }
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
