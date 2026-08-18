@@ -30,7 +30,6 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- NAVIGATION BAR -->
     <nav class="w-full px-8 py-4 flex justify-between items-center border-b border-blue-950/60 bg-[#0b1329]/95 sticky top-0 z-40 backdrop-blur-md">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full border border-amber-400 overflow-hidden bg-[#111c38] flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(251,191,36,0.3)]">
@@ -45,13 +44,12 @@
             <a href="#about" class="hover:text-amber-400 transition">About</a>
             <a href="#services" class="hover:text-amber-400 transition">Services</a>
             <a href="#why-us" class="hover:text-amber-400 transition">Why Choose Us</a>
-            <a href="#media-gallery" class="hover:text-amber-400 transition">Gallery & Video</a>
+            <a href="#media-gallery" class="hover:text-amber-400 transition">Gallery</a>
             <a href="#contact" class="hover:text-amber-400 transition">Contact</a>
             <a href="/admin-login" class="text-xs border border-amber-400/50 px-3 py-1.5 rounded text-amber-400 hover:bg-amber-400 hover:text-black transition">Admin</a>
         </div>
     </nav>
 
-    <!-- HERO SECTION (TAGLINE & STRATEGY) -->
     <header class="hero-bg py-20 px-6 text-center flex flex-col items-center justify-center border-b border-blue-950">
         <div class="inline-flex items-center gap-2 bg-blue-950/80 border border-amber-400/40 px-4 py-1.5 rounded-full text-xs mb-6 text-amber-300">
             <span>✔</span> BN 9701468 • Verified Corporate Hub
@@ -71,16 +69,15 @@
             </button>
         </div>
 
-        <!-- Social Platforms Bar -->
-        <div class="flex gap-6 mt-8 text-xs text-gray-400 flex-wrap justify-center">
-            <a href="https://facebook.com" target="_blank" class="hover:text-amber-400 transition">📘 Facebook</a> • 
-            <a href="https://instagram.com" target="_blank" class="hover:text-amber-400 transition">📸 Instagram</a> • 
-            <a href="https://linkedin.com" target="_blank" class="hover:text-amber-400 transition">💼 LinkedIn</a> • 
-            <a href="https://wa.me/2349067862223" target="_blank" class="hover:text-amber-400 transition">💬 WhatsApp</a>
+        <div class="flex gap-4 mt-8 text-xs text-amber-300 flex-wrap justify-center items-center bg-blue-950/60 border border-blue-900 px-6 py-3 rounded-full">
+            <span class="text-gray-300 font-semibold">Connect with us:</span>
+            <a href="https://wa.me/2349067862223" target="_blank" class="hover:underline font-bold">💬 WhatsApp</a> • 
+            <a href="https://facebook.com" target="_blank" class="hover:underline font-bold">📘 Facebook</a> • 
+            <a href="https://instagram.com" target="_blank" class="hover:underline font-bold">📸 Instagram</a> • 
+            <a href="https://linkedin.com" target="_blank" class="hover:underline font-bold">💼 LinkedIn</a>
         </div>
     </header>
 
-    <!-- ABOUT US SECTION -->
     <section id="about" class="max-w-4xl mx-auto px-6 py-16 text-center">
         <h2 class="text-2xl md:text-3xl font-bold gold-text mb-4">ABOUT US</h2>
         <p class="text-gray-300 text-base md:text-lg leading-relaxed">
@@ -88,7 +85,6 @@
         </p>
     </section>
 
-    <!-- WHY CHOOSE US SECTION -->
     <section id="why-us" class="bg-[#0f172a] py-16 px-6 border-y border-blue-950">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
@@ -115,7 +111,6 @@
         </div>
     </section>
 
-    <!-- ALL 9 SERVICES SECTION -->
     <main id="services" class="max-w-6xl mx-auto px-6 py-16 w-full">
         <div class="text-center mb-12">
             <h2 class="text-2xl md:text-3xl font-bold gold-text">WHAT WE CAN DO (OUR SERVICES)</h2>
@@ -123,7 +118,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- 1 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">📄</div>
@@ -133,7 +127,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20CAC%20Registration" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 2 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">🏆</div>
@@ -143,7 +136,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20SMEDAN%20Registration" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 3 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between border-amber-500/40">
                 <div>
                     <div class="text-2xl mb-3">🤖</div>
@@ -153,7 +145,6 @@
                 <button onclick="toggleChat()" class="mt-4 text-left text-xs font-semibold text-amber-400 hover:underline">Test AltraAI Live →</button>
             </div>
 
-            <!-- 4 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">📊</div>
@@ -163,7 +154,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20Business%20Plan" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 5 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">💼</div>
@@ -173,7 +163,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20Business%20Consultancy" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 6 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">📍</div>
@@ -183,7 +172,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20GBP%20with%20Map" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 7 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">🎯</div>
@@ -193,7 +181,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20Google%20Ads%20Set%20Up" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 8 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">✨</div>
@@ -203,7 +190,6 @@
                 <a href="https://wa.me/2349067862223?text=I%20need%20Branding%20Pack" target="_blank" class="mt-4 inline-block text-xs font-semibold text-amber-400 hover:underline">Get Started →</a>
             </div>
 
-            <!-- 9 -->
             <div class="card-box p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="text-2xl mb-3">🛡️</div>
@@ -214,7 +200,6 @@
             </div>
         </div>
 
-        <!-- GALLERY & SHORT VIDEO SECTION -->
         <section id="media-gallery" class="mt-20">
             <div class="text-center mb-10">
                 <h2 class="text-2xl md:text-3xl font-bold gold-text">GALLERY & VIDEO SHOWCASE</h2>
@@ -222,7 +207,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <!-- Short Video Showcase Simulation -->
                 <div class="card-box p-4 rounded-2xl text-center bg-[#070c1b]">
                     <h3 class="text-sm font-bold gold-text mb-3">🎬 Promotional Reel Preview</h3>
                     <div class="relative rounded-xl overflow-hidden border border-blue-900 bg-black/50 aspect-[9/16] max-w-[280px] mx-auto flex flex-col justify-between p-4">
@@ -238,7 +222,6 @@
                     </div>
                 </div>
 
-                <!-- Image Gallery Grid -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="card-box h-44 rounded-xl overflow-hidden flex flex-col items-center justify-center p-3 text-center">
                         <img src="logo.png" alt="Logo" class="max-h-16 object-contain mb-2">
@@ -261,7 +244,6 @@
         </section>
     </main>
 
-    <!-- FOOTER / CONTACT -->
     <footer id="contact" class="bg-[#070c1b] border-t border-blue-950 py-12 px-6 mt-20">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-6 text-center md:text-left">
             <div>
@@ -269,7 +251,13 @@
                 <p>Founder & CEO: <strong>Ruby Garg</strong></p>
                 <p>📞 +2349067862223 • 08073378155</p>
                 <p>✉️ info@krishnyanshzenovapeaks.com | 🌐 www.krishnyanshzenovapeaks.com</p>
-                <p class="text-xs text-gray-500 mt-1">🛡️ BN No 9701468 • CAC Registered in Nigeria</p>
+                <div class="flex gap-4 mt-3 justify-center md:justify-start text-xs text-amber-400 font-medium">
+                    <a href="https://wa.me/2349067862223" target="_blank" class="hover:underline">WhatsApp</a> • 
+                    <a href="https://facebook.com" target="_blank" class="hover:underline">Facebook</a> • 
+                    <a href="https://instagram.com" target="_blank" class="hover:underline">Instagram</a> • 
+                    <a href="https://linkedin.com" target="_blank" class="hover:underline">LinkedIn</a>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">🛡️ BN No 9701468 • CAC Registered in Nigeria</p>
             </div>
             <div class="flex flex-col items-center md:items-end gap-2">
                 <a href="/admin-login" class="text-xs text-amber-400 underline">🔐 Secure Admin Panel Login</a>
@@ -278,7 +266,6 @@
         </div>
     </footer>
 
-    <!-- ALTRA AI CHAT MODAL (Gemini Powered) -->
     <div id="chatModal" class="fixed inset-0 bg-black/80 flex flex-col hidden z-50 p-4 justify-center items-center backdrop-blur-sm">
         <div class="w-full max-w-lg bg-[#0f172a] border border-amber-500/50 rounded-2xl flex flex-col h-[500px] overflow-hidden shadow-2xl">
             <div class="flex justify-between items-center p-4 border-b border-blue-900 bg-[#111c38]">
