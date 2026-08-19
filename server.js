@@ -61,6 +61,21 @@ app.post('/api/admin/subscription', (req, res) => {
 });
 app.get('/api/subscriptions', (req, res) => res.json(clientSubscriptions));
 
+// Meta Webhook Verification
+app.get('/webhook', (req, res) => {
+    const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "zenova_secret_123";
+    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VERIFY_TOKEN) {
+        res.status(200).send(req.query['hub.challenge']);
+    } else {
+        res.sendStatus(403);
+    }
+});
+
+app.post('/webhook', (req, res) => {
+    console.log("Message received from Meta:", JSON.stringify(req.body, null, 2));
+    res.status(200).send('EVENT_RECEIVED');
+});
+
 // AltraAI Chat Route (Gemini 1.5 Flash with Memory & Full Context)
 app.post('/api/chat', (req, res) => {
     const { history, message } = req.body;
