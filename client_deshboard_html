@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <!-- INVOICE PREVIEW MATCHING YOUR TEMPLATE -->
+            <!-- INVOICE PREVIEW -->
             <div id="invoicePreview" class="bg-white text-black p-6 rounded-xl mb-4 font-sans text-xs">
                 <div class="flex justify-between border-b pb-4 mb-4">
                     <div>
