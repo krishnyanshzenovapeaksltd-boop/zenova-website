@@ -23,23 +23,23 @@
 
     <main class="max-w-5xl mx-auto w-full space-y-8">
         
-        <!-- FRONTEND EDITING & PROMO IMAGE UPLOAD -->
+        <!-- FRONTEND EDITING & ACTUAL IMAGE UPLOAD -->
         <div class="card-box p-6 rounded-2xl">
             <h2 class="text-lg font-bold gold-text mb-4">🎨 Frontend & Promotional Image Control</h2>
             <form onsubmit="updateContent(event)" class="space-y-4 text-xs">
                 <div>
                     <label class="block text-gray-300 mb-1">Edit Main Hero Title</label>
-                    <input type="text" id="editHero" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="Start Your Business Today – 100% Online Across Nigeria">
+                    <input type="text" id="editHero" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="Start Your Business Today – 100% Online Globally">
                 </div>
                 <div>
-                    <label class="block text-gray-300 mb-1">Upload / Promo Image Filename (e.g. promo.jpg)</label>
-                    <input type="text" id="editPromo" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="promo-banner.jpg">
+                    <label class="block text-gray-300 mb-1">Upload Promotional Image / Banner</label>
+                    <input type="file" id="promoFile" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-400 file:text-black hover:file:bg-amber-500">
                 </div>
                 <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-2.5 rounded-xl transition">
                     Save Changes to Website
                 </button>
             </form>
-            <p id="contentMsg" class="hidden text-green-400 text-xs mt-3">✔ Website updated successfully!</p>
+            <p id="contentMsg" class="hidden text-green-400 text-xs mt-3">✔ Website updated successfully with image!</p>
         </div>
 
         <!-- CUSTOMER REGISTRATIONS -->
@@ -68,7 +68,9 @@
         async function updateContent(e) {
             e.preventDefault();
             const heroTitle = document.getElementById('editHero').value;
-            const promoImage = document.getElementById('editPromo').value;
+            const fileInput = document.getElementById('promoFile');
+            const promoImage = fileInput.files.length > 0 ? fileInput.files[0].name : "promo.jpg";
+            
             await fetch('/api/content', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
