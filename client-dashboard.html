@@ -16,17 +16,17 @@
     <header class="max-w-5xl mx-auto w-full flex justify-between items-center border-b border-blue-950 pb-6 mb-8">
         <div>
             <h1 class="text-xl font-bold gold-text">⚡ CLIENT AUTOMATION & INVOICE PORTAL</h1>
-            <p class="text-xs text-gray-400">FB, Insta, WhatsApp Omnichannel & Invoice Generator</p>
+            <p class="text-xs text-gray-400">Managed by Krishnyansh Zenova Peak Tech Hub • Founder: Ruby Garg</p>
         </div>
         <a href="/" class="text-xs bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-bold transition">🌐 Home</a>
     </header>
 
     <main class="max-w-5xl mx-auto w-full space-y-8">
         
-        <!-- OMNICHANNEL BOT TRAINING FORM -->
+        <!-- OMNICHANNEL BOT TRAINING FORM (CLEAN & NO TECHNICAL KEYS) -->
         <div class="card-box p-6 rounded-2xl">
-            <h2 class="text-lg font-bold gold-text mb-2">🤖 Omnichannel AI Bot Setup</h2>
-            <p class="text-xs text-gray-300 mb-4">Connect your company info so the bot can auto-reply across Facebook, Instagram, and WhatsApp.</p>
+            <h2 class="text-lg font-bold gold-text mb-2">🤖 Omnichannel AI Bot Configuration</h2>
+            <p class="text-xs text-gray-300 mb-4">Provide your business details and pricing so our managed AI system can automatically reply to your customers across Facebook, Instagram, and WhatsApp.</p>
             
             <form onsubmit="saveBotConfig(event)" class="space-y-4 text-xs">
                 <div>
@@ -34,8 +34,8 @@
                     <input type="text" id="cbName" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="e.g. My Enterprise">
                 </div>
                 <div>
-                    <label class="block text-gray-300 mb-1">Services & Pricing Details for Bot</label>
-                    <textarea id="cbDetails" rows="3" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Provide info so bot answers customer chats accurately..."></textarea>
+                    <label class="block text-gray-300 mb-1">Services, Products & Pricing Details for Bot Training</label>
+                    <textarea id="cbDetails" rows="4" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Type your business services, descriptions, and exact prices here so the bot answers your customers accurately..."></textarea>
                 </div>
                 <div class="flex gap-4 text-gray-300 pt-1">
                     <label><input type="checkbox" checked> Facebook Messenger</label>
@@ -43,10 +43,10 @@
                     <label><input type="checkbox" checked> WhatsApp Business</label>
                 </div>
                 <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-2.5 rounded-xl transition">
-                    Save & Deploy Bot
+                    Save & Update Bot Training
                 </button>
             </form>
-            <p id="botMsg" class="hidden text-green-400 text-xs mt-3">✔ Bot successfully deployed across FB, Insta, and WhatsApp!</p>
+            <p id="botMsg" class="hidden text-green-400 text-xs mt-3">✔ Your bot training details have been successfully saved and synced!</p>
         </div>
 
         <!-- EDITABLE INVOICE GENERATOR -->
