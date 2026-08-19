@@ -23,7 +23,19 @@
 
     <main class="max-w-5xl mx-auto w-full space-y-8">
         
-        <!-- FRONTEND EDITING & ACTUAL IMAGE UPLOAD -->
+        <!-- SUBSCRIPTION ON/OFF CONTROL -->
+        <div class="card-box p-6 rounded-2xl">
+            <h2 class="text-lg font-bold gold-text mb-4">⚙️ Client SaaS Subscription Control</h2>
+            <div class="flex items-center justify-between bg-[#0b1329] border border-blue-900 p-4 rounded-xl text-xs">
+                <div>
+                    <p class="font-bold text-white">Client Portal Master Subscription</p>
+                    <p class="text-gray-400 text-[10px]">Toggle client portal access ON or OFF remotely.</p>
+                </div>
+                <button onclick="toggleMasterSub(this)" id="subToggleBtn" class="bg-green-600 text-white px-5 py-2.5 rounded-lg font-bold text-xs">ACTIVE (ON)</button>
+            </div>
+        </div>
+
+        <!-- FRONTEND EDITING & PROMO IMAGE -->
         <div class="card-box p-6 rounded-2xl">
             <h2 class="text-lg font-bold gold-text mb-4">🎨 Frontend & Promotional Image Control</h2>
             <form onsubmit="updateContent(event)" class="space-y-4 text-xs">
@@ -32,14 +44,14 @@
                     <input type="text" id="editHero" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="Start Your Business Today – 100% Online Globally">
                 </div>
                 <div>
-                    <label class="block text-gray-300 mb-1">Upload Promotional Image / Banner</label>
-                    <input type="file" id="promoFile" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-400 file:text-black hover:file:bg-amber-500">
+                    <label class="block text-gray-300 mb-1">Promotional Image Filename</label>
+                    <input type="text" id="editPromo" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="images/founder.jpg">
                 </div>
                 <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-2.5 rounded-xl transition">
                     Save Changes to Website
                 </button>
             </form>
-            <p id="contentMsg" class="hidden text-green-400 text-xs mt-3">✔ Website updated successfully with image!</p>
+            <p id="contentMsg" class="hidden text-green-400 text-xs mt-3">✔ Website updated successfully!</p>
         </div>
 
         <!-- CUSTOMER REGISTRATIONS -->
@@ -68,15 +80,29 @@
         async function updateContent(e) {
             e.preventDefault();
             const heroTitle = document.getElementById('editHero').value;
-            const fileInput = document.getElementById('promoFile');
-            const promoImage = fileInput.files.length > 0 ? fileInput.files[0].name : "promo.jpg";
-            
+            const promoImage = document.getElementById('editPromo').value;
             await fetch('/api/content', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ heroTitle, promoImage })
             });
             document.getElementById('contentMsg').classList.remove('hidden');
+        }
+
+        async function toggleMasterSub(btn) {
+            let newStatus = btn.innerText.includes("ACTIVE") ? "SUSPENDED" : "ACTIVE";
+            await fetch('/api/admin/subscription', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ clientId: 'client1', status: newStatus })
+            });
+            if(newStatus === "ACTIVE") {
+                btn.innerText = "ACTIVE (ON)";
+                btn.className = "bg-green-600 text-white px-5 py-2.5 rounded-lg font-bold text-xs";
+            } else {
+                btn.innerText = "SUSPENDED (OFF)";
+                btn.className = "bg-red-600 text-white px-5 py-2.5 rounded-lg font-bold text-xs";
+            }
         }
 
         async function loadData() {
