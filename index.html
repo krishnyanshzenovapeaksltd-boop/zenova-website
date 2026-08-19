@@ -29,6 +29,7 @@
         <div class="flex items-center gap-5 text-sm">
             <a href="#services" class="hover:text-amber-400 transition">Services</a>
             <a href="#about" class="hover:text-amber-400 transition">About</a>
+            <a href="#gallery" class="hover:text-amber-400 transition">Gallery</a>
             <a href="#register" class="hover:text-amber-400 transition">Register</a>
             <a href="/career" class="hover:text-amber-400 transition">Career</a>
             <a href="/client-dashboard" class="text-xs bg-amber-400 hover:bg-amber-500 text-black px-3 py-1.5 rounded font-bold transition">Client Portal</a>
@@ -49,13 +50,22 @@
             <a href="#register" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-8 py-3.5 rounded-xl shadow-lg transition text-xs">📝 Register For Service</a>
             <button onclick="toggleChat()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition text-xs">🤖 Ask AltraAI</button>
         </div>
+
+        <!-- SOCIAL MEDIA ICONS BAR -->
+        <div class="flex gap-4 mt-8 items-center justify-center bg-blue-950/60 border border-blue-900 px-6 py-3 rounded-full text-xs">
+            <span class="text-gray-300 font-semibold">Connect:</span>
+            <a href="https://wa.me/2349067862223" target="_blank" class="hover:text-amber-400 transition font-bold flex items-center gap-1">💬 WhatsApp</a>
+            <a href="https://facebook.com" target="_blank" class="hover:text-amber-400 transition font-bold flex items-center gap-1">📘 Facebook</a>
+            <a href="https://instagram.com" target="_blank" class="hover:text-amber-400 transition font-bold flex items-center gap-1">📸 Instagram</a>
+            <a href="https://linkedin.com" target="_blank" class="hover:text-amber-400 transition font-bold flex items-center gap-1">💼 LinkedIn</a>
+        </div>
     </header>
 
     <!-- ABOUT SECTION WITH FOUNDER PICTURE -->
     <section id="about" class="max-w-5xl mx-auto px-6 py-16 w-full">
         <div class="card-box p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 border-amber-400/50">
             <div class="w-48 h-48 rounded-2xl overflow-hidden border-2 border-amber-400 flex-shrink-0 shadow-[0_0_20px_rgba(251,191,36,0.3)] bg-[#070c1b]">
-                <img src="founder.jpg" alt="Ruby Garg - Founder & CEO" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/200?text=Ruby+Garg'">
+                <img src="images/founder.jpg" alt="Ruby Garg - Founder & CEO" class="w-full h-full object-cover" onerror="this.src='founder.jpg'">
             </div>
             <div>
                 <h2 class="text-2xl font-bold gold-text mb-2">About The Founder & CEO</h2>
@@ -64,6 +74,28 @@
                     As the Founder and CEO of Krishnyansh Zenova Peak Tech Hub (BN 9701468), Ruby Garg delivers cutting-edge corporate solutions, global tech infrastructure, and smart AI automation to clients worldwide.
                 </p>
                 <p class="text-xs text-amber-300 font-semibold">📞 Direct Contact / WhatsApp: +2349067862223</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="max-w-6xl mx-auto px-6 py-12 w-full">
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-bold gold-text">OUR WORK & CONSULTANCY GALLERY</h2>
+            <p class="text-gray-400 text-xs mt-1">A glimpse into our tech operations and expert sessions</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="card-box p-3 rounded-xl overflow-hidden">
+                <img src="images/gallery1.jpg" alt="Consultancy Session" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1531482615713-2afd69097998?w=500'">
+                <p class="text-xs text-gray-300 mt-2 text-center">Tech Infrastructure Setup</p>
+            </div>
+            <div class="card-box p-3 rounded-xl overflow-hidden">
+                <img src="images/gallery2.jpg" alt="Team Work" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500'">
+                <p class="text-xs text-gray-300 mt-2 text-center">Client Automation Strategy</p>
+            </div>
+            <div class="card-box p-3 rounded-xl overflow-hidden">
+                <img src="images/gallery3.jpg" alt="Workspace" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500'">
+                <p class="text-xs text-gray-300 mt-2 text-center">Full-Stack Engineering Hub</p>
             </div>
         </div>
     </section>
@@ -209,7 +241,7 @@
             </div>
         </div>
 
-        <!-- REGISTRATION FORM WITH GLOBAL COUNTRY CODES -->
+        <!-- REGISTRATION FORM -->
         <section id="register" class="mt-20 card-box p-8 rounded-2xl border-amber-500/50 max-w-2xl mx-auto">
             <h2 class="text-xl font-bold gold-text mb-2 text-center">📝 Service Registration Form</h2>
             <p class="text-xs text-gray-300 text-center mb-6">Serving globally. Note that CAC, SCUML & SMEDAN apply to Nigeria only.</p>
@@ -235,7 +267,6 @@
                             <option value="+33">🇫🇷 France (+33)</option>
                             <option value="+81">🇯🇵 Japan (+81)</option>
                             <option value="+61">🇦🇺 Australia (+61)</option>
-                            <option value="GLOBAL">🌍 Other Country Code</option>
                         </select>
                         <input type="text" id="custPhone" required class="flex-1 bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Phone number...">
                     </div>
@@ -293,7 +324,7 @@
             </div>
             <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
                 <div class="bg-blue-950/80 border border-blue-900 p-3 rounded-lg max-w-[85%] text-gray-200">
-                    Hello! I am AltraAI, powered by Gemini 3.5 Flash. Ask me anything or chat with me!
+                    Hello! I am AltraAI, powered by Gemini 1.5 Flash. Ask me anything or chat with me!
                 </div>
             </div>
             <div class="p-3 bg-[#111c38] border-t border-blue-900 flex gap-2">
