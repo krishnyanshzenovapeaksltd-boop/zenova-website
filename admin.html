@@ -23,7 +23,26 @@
 
     <main class="max-w-5xl mx-auto w-full space-y-8">
         
-        <!-- SUBMISSIONS VIEWER -->
+        <!-- FRONTEND EDITING & PROMO IMAGE UPLOAD -->
+        <div class="card-box p-6 rounded-2xl">
+            <h2 class="text-lg font-bold gold-text mb-4">🎨 Frontend & Promotional Image Control</h2>
+            <form onsubmit="updateContent(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-300 mb-1">Edit Main Hero Title</label>
+                    <input type="text" id="editHero" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="Start Your Business Today – 100% Online Across Nigeria">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1">Upload / Promo Image Filename (e.g. promo.jpg)</label>
+                    <input type="text" id="editPromo" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" value="promo-banner.jpg">
+                </div>
+                <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-2.5 rounded-xl transition">
+                    Save Changes to Website
+                </button>
+            </form>
+            <p id="contentMsg" class="hidden text-green-400 text-xs mt-3">✔ Website updated successfully!</p>
+        </div>
+
+        <!-- CUSTOMER REGISTRATIONS -->
         <div class="card-box p-6 rounded-2xl">
             <h2 class="text-lg font-bold gold-text mb-4">📥 Customer Registrations</h2>
             <div id="subList" class="space-y-3 text-xs">
@@ -31,23 +50,11 @@
             </div>
         </div>
 
-        <!-- CAREER / FREELANCER APPROVALS BY CEO -->
+        <!-- CAREER APPROVALS -->
         <div class="card-box p-6 rounded-2xl">
             <h2 class="text-lg font-bold gold-text mb-4">💼 Freelancer Career Applications (CEO Approval)</h2>
             <div id="careerList" class="space-y-3 text-xs">
                 <p class="text-gray-400 italic">Loading applications...</p>
-            </div>
-        </div>
-
-        <!-- CLIENT SUBSCRIPTION CONTROL -->
-        <div class="card-box p-6 rounded-2xl">
-            <h2 class="text-lg font-bold gold-text mb-4">⚙️ Client SaaS Subscription Controls</h2>
-            <div class="flex items-center justify-between bg-[#0b1329] border border-blue-900 p-4 rounded-xl text-xs">
-                <div>
-                    <p class="font-bold text-white">Client Portal Access (Master Switch)</p>
-                    <p class="text-gray-400 text-[10px]">Turn client omnichannel automation portals ON or OFF remotely.</p>
-                </div>
-                <button onclick="toggleGlobalSub(this)" id="subBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs">ACTIVE (ON)</button>
             </div>
         </div>
 
@@ -58,13 +65,23 @@
     </footer>
 
     <script>
+        async function updateContent(e) {
+            e.preventDefault();
+            const heroTitle = document.getElementById('editHero').value;
+            const promoImage = document.getElementById('editPromo').value;
+            await fetch('/api/content', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ heroTitle, promoImage })
+            });
+            document.getElementById('contentMsg').classList.remove('hidden');
+        }
+
         async function loadData() {
             try {
-                // Submissions
                 const res1 = await fetch('/api/submissions');
                 const subs = await res1.json();
-                const subList = document.getElementById('subList');
-                subList.innerHTML = subs.length === 0 ? '<p class="text-gray-400">No submissions yet.</p>' : subs.map((item, idx) => `
+                document.getElementById('subList').innerHTML = subs.length === 0 ? '<p class="text-gray-400">No submissions yet.</p>' : subs.map((item, idx) => `
                     <div class="bg-[#0b1329] border border-blue-900 p-3 rounded-xl flex justify-between items-center">
                         <div>
                             <p class="font-bold text-amber-300">#${idx+1} - ${item.name} (${item.phone})</p>
@@ -74,26 +91,22 @@
                     </div>
                 `).join('');
 
-                // Career Apps
                 const res2 = await fetch('/api/careers');
                 const careers = await res2.json();
-                const careerList = document.getElementById('careerList');
-                careerList.innerHTML = careers.length === 0 ? '<p class="text-gray-400">No career applications yet.</p>' : careers.map((item, idx) => `
+                document.getElementById('careerList').innerHTML = careers.length === 0 ? '<p class="text-gray-400">No applications.</p>' : careers.map((item, idx) => `
                     <div class="bg-[#0b1329] border border-blue-900 p-3 rounded-xl flex justify-between items-center">
                         <div>
                             <p class="font-bold text-amber-300">${item.name} (${item.email})</p>
                             <p class="text-gray-300 text-[11px]">Skill: <strong>${item.skill}</strong> | Bio: ${item.bio}</p>
-                            <p class="text-amber-400 text-[10px] mt-1">Status: <span id="status-${idx}">${item.status}</span></p>
+                            <p class="text-amber-400 text-[10px] mt-1">Status: ${item.status}</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="approveCareer(${idx}, 'APPROVED')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-[10px] font-bold">Approve</button>
-                            <button onclick="approveCareer(${idx}, 'REJECTED')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-[10px] font-bold">Reject</button>
+                            <button onclick="approveCareer(${idx}, 'APPROVED')" class="bg-green-600 text-white px-3 py-1.5 rounded text-[10px] font-bold">Approve</button>
+                            <button onclick="approveCareer(${idx}, 'REJECTED')" class="bg-red-600 text-white px-3 py-1.5 rounded text-[10px] font-bold">Reject</button>
                         </div>
                     </div>
                 `).join('');
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         async function approveCareer(idx, status) {
@@ -103,16 +116,6 @@
                 body: JSON.stringify({ index: idx, status })
             });
             loadData();
-        }
-
-        function toggleGlobalSub(btn) {
-            if(btn.innerText.includes("ACTIVE")) {
-                btn.innerText = "SUSPENDED (OFF)";
-                btn.className = "bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xs";
-            } else {
-                btn.innerText = "ACTIVE (ON)";
-                btn.className = "bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs";
-            }
         }
 
         loadData();
