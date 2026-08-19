@@ -28,6 +28,7 @@
         </div>
         <div class="flex items-center gap-5 text-sm">
             <a href="#services" class="hover:text-amber-400 transition">Services</a>
+            <a href="#about" class="hover:text-amber-400 transition">About</a>
             <a href="#register" class="hover:text-amber-400 transition">Register</a>
             <a href="/career" class="hover:text-amber-400 transition">Career</a>
             <a href="/client-dashboard" class="text-xs bg-amber-400 hover:bg-amber-500 text-black px-3 py-1.5 rounded font-bold transition">Client Portal</a>
@@ -35,35 +36,39 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION WITH FOUNDER PICTURE -->
-    <header class="hero-bg py-16 px-6 border-b border-blue-950">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-            <div class="text-center md:text-left max-w-xl">
-                <div class="inline-flex items-center gap-2 bg-blue-950/80 border border-amber-400/40 px-4 py-1.5 rounded-full text-xs mb-4 text-amber-300">
-                    <span>✔</span> BN 9701468 • Verified Corporate Hub
-                </div>
-                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4">
-                    Start Your Business Today – <span class="gold-text">100% Online Across Nigeria</span>
-                </h1>
-                <p class="text-gray-300 italic text-base mb-6 gold-text">"From Idea to Enterprise - We Make It Happen."</p>
-                <div class="flex flex-wrap justify-center md:justify-start gap-4">
-                    <a href="#register" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-3 rounded-xl shadow-lg transition text-xs">📝 Register For Service</a>
-                    <button onclick="toggleChat()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition text-xs">🤖 Ask AltraAI</button>
-                </div>
-            </div>
-            <!-- FOUNDER CARD -->
-            <div class="card-box p-4 rounded-2xl flex flex-col items-center text-center max-w-xs shadow-2xl">
-                <div class="w-36 h-36 rounded-xl overflow-hidden border-2 border-amber-400 mb-3 shadow-[0_0_15px_rgba(251,191,36,0.3)]">
-                    <img src="founder.jpg" alt="Ruby Garg - Founder & CEO" class="w-full h-full object-cover">
-                </div>
-                <h3 class="font-bold text-sm gold-text">Ruby Garg</h3>
-                <p class="text-xs text-gray-300 font-semibold">Founder & CEO</p>
-                <p class="text-[10px] text-gray-400 mt-1">📞 +2349067862223</p>
-            </div>
+    <!-- HERO SECTION -->
+    <header class="hero-bg py-20 px-6 text-center flex flex-col items-center justify-center border-b border-blue-950">
+        <div class="inline-flex items-center gap-2 bg-blue-950/80 border border-amber-400/40 px-4 py-1.5 rounded-full text-xs mb-4 text-amber-300">
+            <span>✔</span> BN 9701468 • Verified Corporate Hub
+        </div>
+        <h1 id="heroTitleText" class="text-4xl md:text-6xl font-extrabold max-w-4xl tracking-tight leading-tight mb-4">
+            Start Your Business Today – <span class="gold-text">100% Online Across Nigeria</span>
+        </h1>
+        <p class="text-gray-300 italic text-lg mb-6 gold-text">"From Idea to Enterprise - We Make It Happen."</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="#register" class="bg-amber-400 hover:bg-amber-500 text-black font-bold px-8 py-3.5 rounded-xl shadow-lg transition text-xs">📝 Register For Service</a>
+            <button onclick="toggleChat()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition text-xs">🤖 Ask AltraAI</button>
         </div>
     </header>
 
-    <!-- ALL 10 SERVICES WITH DETAILED PRICING -->
+    <!-- ABOUT SECTION WITH FOUNDER PICTURE -->
+    <section id="about" class="max-w-5xl mx-auto px-6 py-16 w-full">
+        <div class="card-box p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 border-amber-400/50">
+            <div class="w-48 h-48 rounded-2xl overflow-hidden border-2 border-amber-400 flex-shrink-0 shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                <img src="founder.jpg" alt="Ruby Garg - Founder & CEO" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold gold-text mb-2">About The Founder & CEO</h2>
+                <h3 class="text-lg font-bold text-white mb-2">Ruby Garg</h3>
+                <p class="text-gray-300 text-xs leading-relaxed mb-4">
+                    As the Founder and CEO of Krishnyansh Zenova Peak Tech Hub (BN 9701468), Ruby Garg is dedicated to empowering Nigerian entrepreneurs and businesses with cutting-edge corporate registration, smart AI automation, and full-stack digital solutions.
+                </p>
+                <p class="text-xs text-amber-300 font-semibold">📞 Direct Contact / WhatsApp: +2349067862223</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
     <main id="services" class="max-w-6xl mx-auto px-6 py-16 w-full">
         <div class="text-center mb-12">
             <h2 class="text-2xl md:text-3xl font-bold gold-text">OUR SERVICES & EXACT PRICING</h2>
@@ -246,7 +251,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer id="contact" class="bg-[#070c1b] border-t border-blue-950 py-12 px-6 mt-20">
+    <footer class="bg-[#070c1b] border-t border-blue-950 py-12 px-6 mt-20">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-400 gap-6 text-center md:text-left">
             <div>
                 <h3 class="gold-text font-bold text-base mb-2">KRISHNYANSH ZENOVA PEAK TECH HUB</h3>
@@ -254,7 +259,8 @@
                 <p class="text-xs text-gray-500 mt-1">🛡️ BN No 9701468 • CAC Registered in Nigeria</p>
             </div>
             <div class="flex flex-col items-center md:items-end gap-2">
-                <a href="/career" class="text-xs text-amber-400 font-bold underline">💼 Career / Freelancer Portal</a>
+                <a href="#about" class="text-xs text-amber-400 underline">About Founder</a>
+                <a href="/career" class="text-xs text-amber-400 font-bold underline">💼 Career Portal</a>
                 <a href="/client-dashboard" class="text-xs text-amber-400 font-bold underline">🚀 Client Automation Portal</a>
                 <a href="/admin" class="text-xs text-amber-400 underline">🔐 Admin Panel Login</a>
             </div>
@@ -270,7 +276,7 @@
             </div>
             <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
                 <div class="bg-blue-950/80 border border-blue-900 p-3 rounded-lg max-w-[85%] text-gray-200">
-                    Hello! I am AltraAI, powered by Gemini. Ask me anything about our 10 professional services and exact pricing!
+                    Hello! I am AltraAI, powered by Gemini 3.5 Flash. Ask me anything or chat with me!
                 </div>
             </div>
             <div class="p-3 bg-[#111c38] border-t border-blue-900 flex gap-2">
@@ -281,6 +287,7 @@
     </div>
 
     <script>
+        let chatHistory = [];
         function toggleChat() { document.getElementById('chatModal').classList.toggle('hidden'); }
         
         async function submitRegistration(e) {
@@ -310,14 +317,18 @@
             chatBox.innerHTML += `<div class="bg-amber-400 text-black p-3 rounded-lg max-w-[85%] ml-auto text-xs font-semibold">${userText}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            chatHistory.push({ role: 'user', text: userText });
+
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: userText })
+                    body: JSON.stringify({ history: chatHistory, message: userText })
                 });
                 const data = await res.json();
                 chatBox.innerHTML += `<div class="bg-blue-950/80 border border-blue-900 p-3 rounded-lg max-w-[85%] text-gray-200 text-xs">${data.reply}</div>`;
+                chatHistory.push({ role: 'model', text: data.reply });
             } catch (err) {
                 chatBox.innerHTML += `<div class="bg-red-950/50 border border-red-900 p-3 rounded-lg max-w-[85%] text-red-300 text-xs">Connection error.</div>`;
             }
