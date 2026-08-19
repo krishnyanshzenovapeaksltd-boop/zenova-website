@@ -9,8 +9,8 @@ app.use(express.static(__dirname));
 let submissions = [];
 let careers = [];
 let siteContent = {
-    heroTitle: "Start Your Business Today – 100% Online Across Nigeria",
-    promoImage: "promo-banner.jpg"
+    heroTitle: "Start Your Business Today – 100% Online Globally",
+    promoImage: "founder.jpg"
 };
 
 // Routes
@@ -39,7 +39,7 @@ app.post('/api/career/status', (req, res) => {
     res.json({ success: true });
 });
 
-// Frontend Content Edit Endpoints
+// Content Endpoints
 app.get('/api/content', (req, res) => res.json(siteContent));
 app.post('/api/content', (req, res) => {
     const { heroTitle, promoImage } = req.body;
@@ -48,7 +48,7 @@ app.post('/api/content', (req, res) => {
     res.json({ success: true });
 });
 
-// AltraAI Chat Route using gemini-3.5-flash with Full Context & Memory
+// Fully Fixed AltraAI Chat Route using gemini-3.5-flash
 app.post('/api/chat', (req, res) => {
     const { history, message } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -57,16 +57,17 @@ app.post('/api/chat', (req, res) => {
         return res.json({ reply: "Hello! Welcome to Krishnyansh Zenova Peak Tech Hub. For exact pricing or support, contact Founder Ruby Garg directly on WhatsApp at +2349067862223." });
     }
 
-    let contents = [
-        {
-            role: "user",
-            parts: [{ text: "System Instruction: You are AltraAI, an advanced, friendly, and expert AI assistant for Krishnyansh Zenova Peak Tech Hub (BN 9701468, Founder: Ruby Garg, Phone: +2349067862223). You can chat naturally like Gemini or Meta AI, answer general greetings, and provide exact pricing for our 10 services: 1. Business Consultancy ₦30K, 2. Altra AI Automation: Starter ₦55K+10K/mo, Premium ₦85K+15K/mo, Pro ₦150K+20K/mo, 3. GBP with Maps ₦35K (3 months free, then ₦10K/mo), 4. Google Ads Management: Starter ₦70K/mo, Growth ₦150K/mo, Pro ₦250K/mo, 5. Branding Pack From ₦30K, 6. Website Dev: Landing ₦120K, Landing+Backend ₦250K, FullStack+Admin ₦550K, 7. AI Video & Image Studio ₦15K/ad, 8. CAC Registration: BN ₦60K, Ltd ₦150K, NGO ₦220K, 9. SCUML/TIN ₦15K, 10. SMEDAN ₦10K. Always be intelligent, polite, and helpful." }]
-        },
-        {
-            role: "model",
-            parts: [{ text: "Understood! I am AltraAI, powered by Gemini 3.5 Flash. I am ready to assist users conversationally and provide precise information about Zenova Peak Tech Hub." }]
-        }
-    ];
+    let contents = [];
+
+    // System instruction & persona context
+    contents.push({
+        role: "user",
+        parts: [{ text: "System Instruction: You are AltraAI, an advanced, friendly, and expert AI assistant for Krishnyansh Zenova Peak Tech Hub (BN 9701468, Founder: Ruby Garg, Phone: +2349067862223). We serve clients globally. Note that CAC Registration, SMEDAN, and SCUML/TIN services are exclusively for Nigeria. Services & Exact Pricing: 1. Business Consultancy ₦30K, 2. Altra AI Automation: Starter ₦55K+10K/mo, Premium ₦85K+15K/mo, Pro ₦150K+20K/mo, 3. GBP with Maps ₦35K (3 months free, then ₦10K/mo), 4. Google Ads Management: Starter ₦70K/mo, Growth ₦150K/mo, Pro ₦250K/mo, 5. Branding Pack From ₦30K, 6. Website Dev: Landing ₦120K, Landing+Backend ₦250K, FullStack+Admin ₦550K, 7. AI Video & Image Studio ₦15K/ad, 8. CAC Registration (Nigeria Only): BN ₦60K, Ltd ₦150K, NGO ₦220K, 9. SCUML/TIN (Nigeria Only) ₦15K, 10. SMEDAN (Nigeria Only) ₦10K. Always reply conversationally and intelligently like Gemini or Meta AI." }]
+    });
+    contents.push({
+        role: "model",
+        parts: [{ text: "Understood! I am AltraAI, ready to chat and help users with Zenova Peak Tech Hub's global and Nigerian services." }]
+    });
 
     if (history && Array.isArray(history)) {
         history.forEach(h => {
@@ -94,18 +95,21 @@ app.post('/api/chat', (req, res) => {
         apiRes.on('end', () => {
             try {
                 const parsedData = JSON.parse(responseBody);
-                if (parsedData.candidates && parsedData.candidates[0].content) {
+                if (parsedData.candidates && parsedData.candidates[0].content && parsedData.candidates[0].content.parts[0].text) {
                     res.json({ reply: parsedData.candidates[0].content.parts[0].text });
                 } else {
+                    console.error("API Error Response:", responseBody);
                     res.json({ reply: "Hello! Reach out to Founder Ruby Garg on WhatsApp at +2349067862223 for instant bookings." });
                 }
             } catch (e) {
+                console.error("JSON Parse Error:", e);
                 res.json({ reply: "For immediate assistance, message Founder Ruby Garg at +2349067862223." });
             }
         });
     });
 
-    apiReq.on('error', () => {
+    apiReq.on('error', (error) => {
+        console.error("HTTPS Error:", error);
         res.json({ reply: "Connection error. Contact Ruby Garg at +2349067862223." });
     });
 
