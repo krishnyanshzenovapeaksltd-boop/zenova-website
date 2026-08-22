@@ -36,7 +36,8 @@ const response = await ai.models.generateContent({
         ]
     });
 
-        res.json({ reply: response.text });
+     const aiText = response.text || (response.candidates && response.candidates[0].content.parts[0].text) || "Got it! How else can I help?";
+res.json({ reply: aiText });   
     } catch (error) {
         console.error("Gemini API Error:", error);
         res.status(500).json({ error: "Altra AI backend is currently busy. Please try again." });
