@@ -14,41 +14,45 @@ app.use(express.static(path.join(__dirname)));
 // Initialize Gemini SDK securely using Render's environment variable
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
+// Leads storage array (if not already defined near the top)
+let leads = [];
+
 // Live Altra AI Endpoint
 app.post('/api/altra-ai-chat', async (req, res) => {
     try {
-       const prompt = req.body.message || req.body.prompt;
+        const prompt = req.body.message || req.body.prompt;
         if (!prompt) {
             return res.status(400).json({ error: "Prompt is required." });
         }
 
-const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
-        contents: [
-            {
-                role: 'user',
-                parts: [{ text: "You are AltraAI, a professional business automation assistant for Krishnyansh Zenova Peak Tech Hub. Your goal is to answer questions about our tech and automation services, and politely ask visitors for their name and phone number so our team can follow up." }]
-            },
-            {
-                role: 'user',
-                parts: [{ text: prompt }]
-            }
-        ]
-    });
+        // Automatic lead detection: if user types contact details or phone number
+        if (prompt.length > 5 && (prompt.includes('@') || /\d{7,}/.test(prompt))) {
+            leads.push({
+                info: prompt,
+                date: new Date().toLocaleDateString(),
+                source: "Altra AI Chat Widget"
+            });
+        }
 
-     const aiText = response.text || (response.candidates && response.candidates[0].content.parts[0].text) || "Got it! How else can I help?";
-res.json({ reply: aiText });   
+        const response = await ai.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: [
+                {
+                    role: 'user',
+                    parts: [{ text: "You are AltraAI, a professional business automation assistant for Krishnyansh Zenova Peak Tech Hub. Answer questions about our tech and automation services, and politely ask visitors for their name and phone number so our team can follow up." }]
+                },
+                {
+                    role: 'user',
+                    parts: [{ text: prompt }]
+                }
+            ]
+        });
+
+        const replyText = response.text || "Hello! How can I help your business?";
+        res.json({ reply: replyText });
+
     } catch (error) {
         console.error("Gemini API Error:", error);
-        res.status(500).json({ error: "Altra AI backend is currently busy. Please try again." });
+        res.status(500).json({ reply: "Sorry, I am having trouble connecting right now. Please try again!" });
     }
-});
-
-// Fallback route to serve index.html for main web traffic
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.listen(PORT, () => {
-    console.log(`Zenova Peak Tech Hub server is running live on port ${PORT}`);
 });
