@@ -75,5 +75,42 @@
             alert("Redirecting to client subscription tiers management dashboard.");
         }
     </script>
+    <script>
+async function loadSubmissions() {
+    try {
+        const response = await fetch('/api/submissions');
+        const data = await response.json();
+        
+        // Assuming you have containers with these IDs in your admin panel
+        const regContainer = document.getElementById('registrationsList');
+        const careerContainer = document.getElementById('careersList');
+
+        if (regContainer && data.registrations) {
+            regContainer.innerHTML = data.registrations.map(r => `
+                <div class="bg-slate-950 p-3 rounded mb-2 border border-slate-800 text-xs">
+                    <p><strong>Name:</strong> ${r.name || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${r.email || 'N/A'}</p>
+                    <p><strong>Date:</strong> ${r.date || new Date().toLocaleDateString()}</p>
+                </div>
+            `).join('') || '<p class="text-xs text-gray-500">No registrations found.</p>';
+        }
+
+        if (careerContainer && data.careers) {
+            careerContainer.innerHTML = data.careers.map(c => `
+                <div class="bg-slate-950 p-3 rounded mb-2 border border-slate-800 text-xs">
+                    <p><strong>Applicant:</strong> ${c.name || 'N/A'}</p>
+                    <p><strong>Role:</strong> ${c.role || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${c.email || 'N/A'}</p>
+                </div>
+            `).join('') || '<p class="text-xs text-gray-500">No career applications found.</p>';
+        }
+    } catch (err) {
+        console.error("Error loading submissions:", err);
+    }
+}
+
+// Load submissions when the admin panel opens
+window.onload = loadSubmissions;
+</script>
 </body>
 </html>
