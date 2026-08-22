@@ -5,27 +5,32 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
+// Middleware
 app.use(express.json());
-
-// Serve static HTML/CSS files from the root directory
 app.use(express.static(path.join(__dirname)));
 
-// Initialize Gemini SDK securely using Render's environment variable
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Initialize Gemini SDK safely
+const apiKey = process.env.GEMINI_API_KEY;
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
-// Leads storage array (if not already defined near the top)
+// Storage arrays
+let registrations = [];
+let careerApplications = [];
 let leads = [];
 
 // Live Altra AI Endpoint
 app.post('/api/altra-ai-chat', async (req, res) => {
     try {
+        if (!ai) {
+            return res.status(500).json({ reply: "Gemini API key is not configured on the server." });
+        }
+
         const prompt = req.body.message || req.body.prompt;
         if (!prompt) {
             return res.status(400).json({ error: "Prompt is required." });
         }
 
-        // Automatic lead detection: if user types contact details or phone number
+        // Automatic lead detection
         if (prompt.length > 5 && (prompt.includes('@') || /\d{7,}/.test(prompt))) {
             leads.push({
                 info: prompt,
@@ -55,4 +60,31 @@ app.post('/api/altra-ai-chat', async (req, res) => {
         console.error("Gemini API Error:", error);
         res.status(500).json({ reply: "Sorry, I am having trouble connecting right now. Please try again!" });
     }
+});
+
+// Registration Endpoint
+app.post('/api/register', (req, res) => {
+    const data = req.body;
+    registrations.push({ ...data, date: new Date().toLocaleDateString() });
+    res.json({ success: true, message: "Registration saved successfully!" });
+});
+
+// Career Endpoint
+app.post('/api/career', (req, res) => {
+    const data = req.body;
+    careerApplications.push({ ...data, date: new Date().toLocaleDateString() });
+    res.json({ success: true, message: "Career application submitted successfully!" });
+});
+
+// Admin Submissions Endpoint
+app.get('/api/submissions', (req, res) => {
+    res.json({
+        registrations: registrations,
+        careers: careerApplications,
+        leads: leads
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
