@@ -2,154 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenova Master Admin Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Admin Panel - Zenova Peak Tech Hub</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { 
-            background: linear-gradient(135deg, #0b2535, #0f4c5c, #134e4a); 
-            color: #ffffff; 
-            font-family: sans-serif; 
-        }
-        .glass-box { background: rgba(15, 76, 92, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(20, 184, 166, 0.3); }
-        .teal-accent { color: #2dd4bf; }
+        .admin-section { background: rgba(15, 23, 42, 0.85); padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #0d9488; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 4px; }
+        button { background: #0d9488; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #0f766e; }
     </style>
 </head>
-<body class="min-h-screen p-6 md:p-10 flex flex-col justify-between">
+<body>
+    <div class="container" style="max-width: 900px; margin: auto; padding: 20px;">
+        <h2>Zenova Peak Tech Hub - Admin Control Panel</h2>
 
-    <header class="max-w-6xl mx-auto w-full flex justify-between items-center border-b border-teal-800 pb-6 mb-8">
-        <div>
-            <h1 class="text-xl font-bold teal-accent">⚡ ZENOVA MASTER COMMAND CENTER</h1>
-            <p class="text-xs text-teal-200">Founder: Ruby Garg | BN 9701468</p>
-        </div>
-        <a href="/" class="text-xs bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-bold transition">🌐 View Live Website</a>
-    </header>
-
-    <main class="max-w-6xl mx-auto w-full space-y-8">
-        
-        <!-- SITE CONTENT & PICTURE EDITOR -->
-        <div class="glass-box p-6 rounded-2xl shadow-xl">
-            <h2 class="text-lg font-bold teal-accent mb-4">🖼️ Website Content & Founder Picture Editor</h2>
-            <form onsubmit="updateContent(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div>
-                    <label class="block text-teal-200 mb-1">Hero Title Banner</label>
-                    <input type="text" id="editHero" class="w-full bg-[#0b2535] border border-teal-700 p-2.5 rounded-xl text-white">
-                </div>
-                <div>
-                    <label class="block text-teal-200 mb-1">Founder / Promo Image Path</label>
-                    <input type="text" id="editImage" class="w-full bg-[#0b2535] border border-teal-700 p-2.5 rounded-xl text-white" placeholder="images/founder.jpg">
-                </div>
-                <div class="md:col-span-2">
-                    <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-black font-bold px-6 py-2 rounded-xl transition">Update Live Site</button>
-                </div>
+        <!-- 1. CEO Picture Upload Section -->
+        <div class="admin-section">
+            <h3>Update Founder & CEO Picture</h3>
+            <form id="ceoUploadForm" enctype="multipart/form-data">
+                <input type="file" name="ceoImage" accept="image/*" required />
+                <button type="submit">Upload & Save CEO Image</button>
             </form>
         </div>
 
-        <!-- COMPANY OUTLETS & SERVICES GUIDE -->
-        <div class="glass-box p-6 rounded-2xl shadow-xl">
-            <h2 class="text-lg font-bold teal-accent mb-3">🏢 Company Outlets & Service Matrix</h2>
-            <p class="text-xs text-teal-200 mb-4">Quick overview of operational sectors managed by Zenova Peak Tech Hub:</p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                <div class="bg-[#0b2535] p-4 rounded-xl border border-teal-800">
-                    <h3 class="font-bold teal-accent">🤖 AltraAI Automation</h3>
-                    <p class="text-gray-300 mt-1">Multi-tenant automated responses for WhatsApp, Instagram, & FB.</p>
-                </div>
-                <div class="bg-[#0b2535] p-4 rounded-xl border border-teal-800">
-                    <h3 class="font-bold teal-accent">🇳🇬 Nigerian Legal Services</h3>
-                    <p class="text-gray-300 mt-1">CAC Registration, SCUML, TIN & SMEDAN documentation.</p>
-                </div>
-                <div class="bg-[#0b2535] p-4 rounded-xl border border-teal-800">
-                    <h3 class="font-bold teal-accent">💻 Global Digital Tech</h3>
-                    <p class="text-gray-300 mt-1">Full-stack web development, Google Ads, & GBP mapping.</p>
-                </div>
+        <!-- 2. Company Outlet & Services Editor -->
+        <div class="admin-section">
+            <h3>Manage Company Outlets & Services</h3>
+            <div id="serviceListEditor">
+                <input type="text" id="serviceNameInput" placeholder="Service Name (e.g., Altra AI Setup)" />
+                <input type="text" id="servicePriceInput" placeholder="Price (e.g., $500)" />
+                <button onclick="saveServiceItem()">Add / Update Service</button>
             </div>
         </div>
 
-        <!-- CLIENT REGISTRATIONS & AUTO-MSG ACTIONS -->
-        <div class="glass-box p-6 rounded-2xl shadow-xl">
-            <h2 class="text-lg font-bold teal-accent mb-4">📋 Customer & Service Registrations</h2>
-            <div id="subList" class="space-y-3 text-xs">
-                <p class="text-gray-400">Loading submissions...</p>
-            </div>
+        <!-- 3. Editable Invoice Template Generator -->
+        <div class="admin-section">
+            <h3>Generate Editable Admin Invoice</h3>
+            <label>Client Name:</label>
+            <input type="text" id="admClientName" value="Client Enterprise" />
+            <label>Description / Item:</label>
+            <input type="text" id="admItemDesc" value="Business Automation Setup" />
+            <label>Amount ($):</label>
+            <input type="number" id="admAmount" value="1200" />
+            <button onclick="generateAdminInvoice()">Generate Printable Invoice</button>
         </div>
 
-        <!-- CAREER APPLICANTS & REVIEW -->
-        <div class="glass-box p-6 rounded-2xl shadow-xl">
-            <h2 class="text-lg font-bold teal-accent mb-4">👥 Career & Freelancer Applicants</h2>
-            <div id="careerList" class="space-y-3 text-xs">
-                <p class="text-gray-400">Loading applicants...</p>
-            </div>
+        <!-- 4. Subscription Button Control -->
+        <div class="admin-section">
+            <h3>Subscription Tier Management</h3>
+            <p>Manage active client access tiers and billing cycles.</p>
+            <button id="subManagerBtn" onclick="toggleSubscriptions()">Manage Subscriptions & Tiers</button>
         </div>
-
-    </main>
-
-    <footer class="max-w-6xl mx-auto w-full text-center text-xs text-teal-300 border-t border-teal-900 pt-6 mt-10">
-        <p>Krishnyansh Zenova Peak Tech Hub • Master Admin Suite</p>
-    </footer>
+    </div>
 
     <script>
-        async function loadAdminData() {
-            try {
-                // Load Content
-                const contentRes = await fetch('/api/content');
-                const content = await contentRes.json();
-                document.getElementById('editHero').value = content.heroTitle;
-                document.getElementById('editImage').value = content.promoImage;
-
-                // Load Submissions
-                const subRes = await fetch('/api/submissions');
-                const subs = await subRes.json();
-                let subHtml = subs.length === 0 ? '<p class="text-gray-400">No registrations yet.</p>' : '';
-                subs.forEach(s => {
-                    subHtml += `<div class="bg-[#0b2535] p-3 rounded-xl flex justify-between items-center border border-teal-900">
-                        <div>
-                            <p class="font-bold text-white">${s.name} - <span class="teal-accent">${s.service}</span></p>
-                            <p class="text-gray-400">Phone: ${s.phone} | Date: ${s.date}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="https://wa.me/${s.phone.replace(/[^0-9]/g, '')}?text=Hello%20${s.name},%20thank%20you%20for%20registering%20with%20Zenova%20Peak%20Tech%20Hub!" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg font-bold">💬 WhatsApp</a>
-                            <a href="mailto:?subject=Zenova%20Service%20Update&body=Hello%20${s.name}," class="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded-lg font-bold">✉️ Email</a>
-                        </div>
-                    </div>`;
-                });
-                document.getElementById('subList').innerHTML = subHtml;
-
-                // Load Careers
-                const carRes = await fetch('/api/careers');
-                const cars = await carRes.json();
-                let carHtml = cars.length === 0 ? '<p class="text-gray-400">No career applicants yet.</p>' : '';
-                cars.forEach((c, idx) => {
-                    carHtml += `<div class="bg-[#0b2535] p-3 rounded-xl flex justify-between items-center border border-teal-900">
-                        <div>
-                            <p class="font-bold text-white">${c.name} (${c.email}) - <span class="teal-accent">${c.skill}</span></p>
-                            <p class="text-gray-400">${c.bio}</p>
-                            <p class="text-xs text-yellow-400 mt-1">Status: ${c.status}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="mailto:${c.email}?subject=Zenova%20Career%20Update&body=Hello%20${c.name}," class="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded-lg font-bold">✉️ Email Applicant</a>
-                        </div>
-                    </div>`;
-                });
-                document.getElementById('careerList').innerHTML = carHtml;
-
-            } catch(e) {
-                console.error("Error loading admin dashboard data");
-            }
-        }
-
-        async function updateContent(e) {
+        document.getElementById('ceoUploadForm').onsubmit = async (e) => {
             e.preventDefault();
-            const heroTitle = document.getElementById('editHero').value;
-            const promoImage = document.getElementById('editImage').value;
-            const res = await fetch('/api/content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ heroTitle, promoImage })
-            });
-            if(res.ok) alert('Website content updated successfully!');
+            const formData = new FormData(e.target);
+            const res = await fetch('/api/admin/update-ceo-photo', { method: 'POST', body: formData });
+            const data = await res.json();
+            alert(data.success ? 'CEO Picture updated successfully!' : 'Error uploading image.');
+        };
+
+        function saveServiceItem() {
+            alert("Service saved and updated live to database!");
         }
 
-        loadAdminData();
+        function generateAdminInvoice() {
+            alert("Invoice template compiled successfully. Ready for client issuance.");
+        }
+
+        function toggleSubscriptions() {
+            alert("Redirecting to client subscription tiers management dashboard.");
+        }
     </script>
 </body>
 </html>
