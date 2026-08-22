@@ -22,10 +22,19 @@ app.post('/api/altra-ai-chat', async (req, res) => {
             return res.status(400).json({ error: "Prompt is required." });
         }
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
-            contents: prompt,
-        });
+const response = await ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: [
+            {
+                role: 'user',
+                parts: [{ text: "You are AltraAI, a professional business automation assistant for Krishnyansh Zenova Peak Tech Hub. Your goal is to answer questions about our tech and automation services, and politely ask visitors for their name and phone number so our team can follow up." }]
+            },
+            {
+                role: 'user',
+                parts: [{ text: prompt }]
+            }
+        ]
+    });
 
         res.json({ reply: response.text });
     } catch (error) {
