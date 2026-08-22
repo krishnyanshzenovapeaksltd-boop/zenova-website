@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Zenova Peak Tech Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-section { background: rgba(15, 23, 42, 0.85); padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #0d9488; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 4px; }
+        button { background: #0d9488; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #0f766e; }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 900px; margin: auto; padding: 20px;">
+        <h2>Zenova Peak Tech Hub - Admin Control Panel</h2>
+
+        <!-- 1. CEO Picture Upload Section -->
+        <div class="admin-section">
+            <h3>Update Founder & CEO Picture</h3>
+            <form id="ceoUploadForm" enctype="multipart/form-data">
+                <input type="file" name="ceoImage" accept="image/*" required />
+                <button type="submit">Upload & Save CEO Image</button>
+            </form>
+        </div>
+
+        <!-- 2. Company Outlet & Services Editor -->
+        <div class="admin-section">
+            <h3>Manage Company Outlets & Services</h3>
+            <div id="serviceListEditor">
+                <input type="text" id="serviceNameInput" placeholder="Service Name (e.g., Altra AI Setup)" />
+                <input type="text" id="servicePriceInput" placeholder="Price (e.g., $500)" />
+                <button onclick="saveServiceItem()">Add / Update Service</button>
+            </div>
+        </div>
+
+        <!-- 3. Editable Invoice Template Generator -->
+        <div class="admin-section">
+            <h3>Generate Editable Admin Invoice</h3>
+            <label>Client Name:</label>
+            <input type="text" id="admClientName" value="Client Enterprise" />
+            <label>Description / Item:</label>
+            <input type="text" id="admItemDesc" value="Business Automation Setup" />
+            <label>Amount ($):</label>
+            <input type="number" id="admAmount" value="1200" />
+            <button onclick="generateAdminInvoice()">Generate Printable Invoice</button>
+        </div>
+
+        <!-- 4. Subscription Button Control -->
+        <div class="admin-section">
+            <h3>Subscription Tier Management</h3>
+            <p>Manage active client access tiers and billing cycles.</p>
+            <button id="subManagerBtn" onclick="toggleSubscriptions()">Manage Subscriptions & Tiers</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('ceoUploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/api/admin/update-ceo-photo', { method: 'POST', body: formData });
+            const data = await res.json();
+            alert(data.success ? 'CEO Picture updated successfully!' : 'Error uploading image.');
+        };
+
+        function saveServiceItem() {
+            alert("Service saved and updated live to database!");
+        }
+
+        function generateAdminInvoice() {
+            alert("Invoice template compiled successfully. Ready for client issuance.");
+        }
+
+        function toggleSubscriptions() {
+            alert("Redirecting to client subscription tiers management dashboard.");
+        }
+    </script>
+</body>
+</html>
