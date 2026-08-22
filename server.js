@@ -1,14 +1,20 @@
 const express = require('express');
 const { GoogleGenAI } = require('@google/genai');
+const path = require('path');
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Middleware to parse JSON bodies
 app.use(express.json());
-app.use(express.static('public'));
 
-// Initialize Gemini SDK with environment key
+// Serve static HTML/CSS files from the root directory
+app.use(express.static(path.join(__dirname)));
+
+// Initialize Gemini SDK securely using Render's environment variable
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// Live Altra AI Endpoint replacing dummy logic
+// Live Altra AI Endpoint
 app.post('/api/altra-ai-chat', async (req, res) => {
     try {
         const { prompt } = req.body;
@@ -24,10 +30,15 @@ app.post('/api/altra-ai-chat', async (req, res) => {
         res.json({ reply: response.text });
     } catch (error) {
         console.error("Gemini API Error:", error);
-        res.status(500).json({ error: "Altra AI backend is currently processing high traffic. Please try again." });
+        res.status(500).json({ error: "Altra AI backend is currently busy. Please try again." });
     }
 });
 
-app.listen(3000, () => {
-    console.log('Zenova Peak Tech Hub server running live on port 3000');
+// Fallback route to serve index.html for main web traffic
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(PORT, () => {
+    console.log(`Zenova Peak Tech Hub server is running live on port ${PORT}`);
 });
