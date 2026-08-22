@@ -377,7 +377,8 @@
                     body: JSON.stringify({ history: chatHistory, message: userText })
                 });
                 const data = await res.json();
-                chatBox.innerHTML += `<div class="bg-blue-950/80 border border-blue-900 p-3 rounded-lg max-w-[85%] text-gray-200 text-xs">${data.reply}</div>`;
+               const aiReply = data.reply || data.response || data.message || "Hello!How can I help your business?";
+               chatBox.innerHTML += `<div class="bg-blue-950/80 border border-blue-900 p-3 rounded-lg max-w-[85%] text-gray-200">${aiReply}</div>`;
                 chatHistory.push({ role: 'model', text: data.reply });
             } catch (err) {
                 chatBox.innerHTML += `<div class="bg-red-950/50 border border-red-900 p-3 rounded-lg max-w-[85%] text-red-300 text-xs">Connection error.</div>`;
