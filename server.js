@@ -17,7 +17,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // Live Altra AI Endpoint
 app.post('/api/altra-ai-chat', async (req, res) => {
     try {
-        const { prompt } = req.body;
+       const prompt = req.body.message || req.body.prompt;
         if (!prompt) {
             return res.status(400).json({ error: "Prompt is required." });
         }
