@@ -371,7 +371,7 @@
             chatHistory.push({ role: 'user', text: userText });
 
             try {
-                const res = await fetch('/api/chat', {
+                const res = await fetch('/api/altra-ai-chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ history: chatHistory, message: userText })
