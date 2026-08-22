@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Zenova Peak Tech Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 900px; margin: auto; padding: 40px 20px;">
+        <header style="text-align: center; margin-bottom: 30px;">
+            <h1>About Zenova Peak Tech Hub</h1>
+            <a href="index.html" style="color: #2dd4bf; text-decoration: none;">&larr; Back to Home</a>
+        </header>
+
+        <!-- Founder & CEO Section -->
+        <div class="about-card" style="background: rgba(30, 41, 59, 0.85); padding: 30px; border-radius: 12px; border: 1px solid #0d9488; text-align: center;">
+            
+            <!-- CEO Picture with Fixed Visibility Sizing -->
+            <div class="ceo-profile-container" style="margin-bottom: 20px;">
+                <img src="https://via.placeholder.com/250x250/0f172a/2dd4bf?text=CEO+Photo" alt="Founder and CEO" class="ceo-profile-img">
+            </div>
+
+            <h2>Ruby Garg</h2>
+            <h4 style="color: #2dd4bf; margin-top: 5px;">Founder & CEO</h4>
+            
+            <p style="margin-top: 20px; line-height: 1.6; color: #cbd5e1;">
+                Zenova Peak Tech Hub is a CAC registered business management consultancy providing online business registration and advanced multi-tenant AI automation via Altra AI. We empower entrepreneurs from idea to enterprise seamlessly across digital platforms.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
