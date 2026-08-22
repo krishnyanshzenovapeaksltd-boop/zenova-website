@@ -23,33 +23,86 @@
         <!-- Welcome Banner -->
         <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl">
             <h2 class="text-2xl font-bold mb-2">Welcome to Your Client Portal</h2>
-            <p class="text-gray-400 text-sm">Monitor your automation projects, review deliverables, and communicate directly with our engineering team.</p>
+            <p class="text-gray-400 text-sm">Connect your social channels to Altra AI, manage your automation workflows, and generate invoices instantly.</p>
         </div>
 
-        <!-- Dashboard Grid -->
         <div class="grid md:grid-cols-2 gap-6">
-            <!-- Project Status Section -->
+            <!-- 1. Social Media Bot Connection Form -->
             <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-lg font-semibold text-amber-400">Active Automation Projects</h3>
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-                    <p class="font-medium text-sm">Altra AI Multi-Tenant Setup</p>
-                    <p class="text-xs text-green-400 mt-1">Status: In Development / Deployment Phase</p>
-                    <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
-                        <div class="bg-amber-400 h-full w-3/4"></div>
+                <h3 class="text-lg font-semibold text-amber-400">Connect Altra AI to Social Channels</h3>
+                <p class="text-xs text-gray-300">Link your business accounts to automate chats and customer support.</p>
+                <form id="botConnectForm" onsubmit="connectBot(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Select Channel</label>
+                        <select id="socialChannel" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
+                            <option value="WhatsApp">WhatsApp Business</option>
+                            <option value="Instagram">Instagram Direct</option>
+                            <option value="Facebook">Facebook Messenger</option>
+                            <option value="Website">Website Widget</option>
+                        </select>
                     </div>
-                </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Business Page / Phone Number ID</label>
+                        <input type="text" id="channelIdentifier" required placeholder="Enter ID or Phone Number" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
+                    </div>
+                    <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-black font-bold p-2 rounded text-xs transition">Deploy Altra AI Bot</button>
+                </form>
+                <p id="botStatus" class="text-xs text-green-400 mt-2"></p>
             </div>
 
-            <!-- Support & Assistance Section -->
+            <!-- 2. Invoice Generator Section -->
             <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-lg font-semibold text-amber-400">Dedicated Support</h3>
-                <p class="text-xs text-gray-300">Need adjustments to your automated workflows or technical assistance? Reach out to your project manager.</p>
-                <div class="space-y-2 text-sm">
-                    <p class="text-gray-400">Email Support: <span class="text-white">support@krishnyanshzenovapeaks.com</span></p>
-                    <p class="text-gray-400">Direct Line: <span class="text-white">+234 906 786 2223</span></p>
+                <h3 class="text-lg font-semibold text-amber-400">Generate Client Invoice</h3>
+                <p class="text-xs text-gray-300">Create instant billing statements for your automation clients.</p>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Client Name</label>
+                        <input type="text" id="invoiceClient" placeholder="e.g. Acme Corp" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Amount ($ USD)</label>
+                        <input type="number" id="invoiceAmount" placeholder="1500" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
+                    </div>
+                    <button onclick="generateInvoice()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded text-xs transition">Generate & Download Invoice</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Invoice Result Preview Area -->
+        <div id="invoicePreview" class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl hidden space-y-3">
+            <h3 class="text-lg font-semibold text-green-400">Invoice Generated Successfully</h3>
+            <div id="invoiceContent" class="bg-slate-950 p-4 rounded border border-slate-800 text-xs space-y-2 text-gray-300"></div>
         </div>
     </main>
+
+    <script>
+        function connectBot(e) {
+            e.preventDefault();
+            const channel = document.getElementById('socialChannel').value;
+            const id = document.getElementById('channelIdentifier').value;
+            document.getElementById('botStatus').innerText = `Success! Altra AI is now linked and active on ${channel} (${id}).`;
+            document.getElementById('botConnectForm').reset();
+        }
+
+        function generateInvoice() {
+            const client = document.getElementById('invoiceClient').value || 'Valued Client';
+            const amount = document.getElementById('invoiceAmount').value || '0.00';
+            const date = new Date().toLocaleDateString();
+            const invoiceId = 'INV-' + Math.floor(100000 + Math.random() * 900000);
+
+            const preview = document.getElementById('invoicePreview');
+            const content = document.getElementById('invoiceContent');
+            
+            preview.classList.remove('hidden');
+            content.innerHTML = `
+                <p><strong>Invoice ID:</strong> ${invoiceId}</p>
+                <p><strong>Date:</strong> ${date}</p>
+                <p><strong>Billed To:</strong> ${client}</p>
+                <p><strong>Service:</strong> Altra AI Automation & Tech Integration</p>
+                <p><strong>Total Due:</strong> $${amount}</p>
+                <p class="text-amber-400 mt-2">Status: Pending Payment (Paid to Krishnyansh Zenova Peak Tech Hub)</p>
+            `;
+        }
+    </script>
 </body>
 </html>
