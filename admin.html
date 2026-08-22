@@ -81,29 +81,69 @@ async function loadSubmissions() {
         const response = await fetch('/api/submissions');
         const data = await response.json();
         
-        // Assuming you have containers with these IDs in your admin panel
+      async function loadSubmissions() {
+    try {
+        const response = await fetch('/api/submissions');
+        const data = await response.json();
+        
         const regContainer = document.getElementById('registrationsList');
         const careerContainer = document.getElementById('careersList');
 
         if (regContainer && data.registrations) {
-            regContainer.innerHTML = data.registrations.map(r => `
-                <div class="bg-slate-950 p-3 rounded mb-2 border border-slate-800 text-xs">
-                    <p><strong>Name:</strong> ${r.name || 'N/A'}</p>
-                    <p><strong>Email:</strong> ${r.email || 'N/A'}</p>
-                    <p><strong>Date:</strong> ${r.date || new Date().toLocaleDateString()}</p>
-                </div>
-            `).join('') || '<p class="text-xs text-gray-500">No registrations found.</p>';
+            regContainer.innerHTML = data.registrations.map(r => {
+                const phone = r.phone || '+2349067862223';
+                const email = r.email || '';
+                const name = r.name || 'Valued Client';
+                
+                const whatsappMsg = encodeURIComponent(`Hello ${name}, thank you for registering with Krishnyansh Zenova Peak Tech Hub! We have received your details.`);
+                const emailSubject = encodeURIComponent("Update regarding your registration");
+                const emailBody = encodeURIComponent(`Hello ${name},\n\nThank you for registering with us. We have received your submission and our team will get in touch shortly.\n\nBest regards,\nZenova Peak Tech Hub`);
+
+                return `
+                    <div class="bg-slate-950 p-4 rounded mb-3 border border-slate-800 text-xs space-y-2">
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Phone:</strong> ${phone}</p>
+                        <p><strong>Date:</strong> ${r.date}</p>
+                        <div class="flex gap-2 mt-2">
+                            <a href="mailto:${email}?subject=${emailSubject}&body=${emailBody}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded transition font-medium">✉️ Reply via Email</a>
+                            <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${whatsappMsg}" target="_blank" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded transition font-medium">💬 Reply via WhatsApp</a>
+                        </div>
+                    </div>
+                `;
+            }).join('') || '<p class="text-xs text-gray-500">No registrations found.</p>';
         }
 
         if (careerContainer && data.careers) {
-            careerContainer.innerHTML = data.careers.map(c => `
-                <div class="bg-slate-950 p-3 rounded mb-2 border border-slate-800 text-xs">
-                    <p><strong>Applicant:</strong> ${c.name || 'N/A'}</p>
-                    <p><strong>Role:</strong> ${c.role || 'N/A'}</p>
-                    <p><strong>Email:</strong> ${c.email || 'N/A'}</p>
-                </div>
-            `).join('') || '<p class="text-xs text-gray-500">No career applications found.</p>';
+            careerContainer.innerHTML = data.careers.map(c => {
+                const phone = c.phone || '+2349067862223';
+                const email = c.email || '';
+                const name = c.name || 'Applicant';
+                const role = c.role || 'Position';
+
+                const whatsappMsg = encodeURIComponent(`Hello ${name}, thank you for applying for the ${role} position at Krishnyansh Zenova Peak Tech Hub.`);
+                const emailSubject = encodeURIComponent(`Your application for ${role}`);
+                const emailBody = encodeURIComponent(`Dear ${name},\n\nThank you for applying for the ${role} role with us. We have received your application and our HR team will review it soon.\n\nBest regards,\nZenova Peak Tech Hub`);
+
+                return `
+                    <div class="bg-slate-950 p-4 rounded mb-3 border border-slate-800 text-xs space-y-2">
+                        <p><strong>Applicant:</strong> ${name}</p>
+                        <p><strong>Role:</strong> ${role}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Phone:</strong> ${phone}</p>
+                        <p><strong>Date:</strong> ${c.date}</p>
+                        <div class="flex gap-2 mt-2">
+                            <a href="mailto:${email}?subject=${emailSubject}&body=${emailBody}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded transition font-medium">✉️ Reply via Email</a>
+                            <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${whatsappMsg}" target="_blank" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded transition font-medium">💬 Reply via WhatsApp</a>
+                        </div>
+                    </div>
+                `;
+            }).join('') || '<p class="text-xs text-gray-500">No career applications found.</p>';
         }
+    } catch (err) {
+        console.error("Error loading submissions:", err);
+    }
+} 
     } catch (err) {
         console.error("Error loading submissions:", err);
     }
