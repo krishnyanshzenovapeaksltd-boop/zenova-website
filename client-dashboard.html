@@ -2,78 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Client portal- Zenova Peak Tech Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .admin-section { background: rgba(15, 23, 42, 0.85); padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #0d9488; }
-        input, select, textarea { width: 100%; padding: 8px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 4px; }
-        button { background: #0d9488; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
-        button:hover { background: #0f766e; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal - Krishnyansh Zenova Peak Tech Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container" style="max-width: 900px; margin: auto; padding: 20px;">
-        <h2>Zenova Peak Tech Hub - Admin Control Panel</h2>
+<body class="bg-slate-950 text-gray-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-slate-900 border-b border-blue-900 px-6 py-4 flex justify-between items-center">
+        <div>
+            <h1 class="text-lg font-bold text-amber-400">Zenova Peak Tech Hub</h1>
+            <p class="text-xs text-gray-400">Client Portal Dashboard</p>
+        </div>
+        <div>
+            <a href="index.html" class="text-xs bg-blue-900 hover:bg-blue-800 px-4 py-2 rounded-lg transition">Back to Home</a>
+        </div>
+    </nav>
 
-        <!-- 1. CEO Picture Upload Section -->
-        <div class="admin-section">
-            <h3>Update Founder & CEO Picture</h3>
-            <form id="ceoUploadForm" enctype="multipart/form-data">
-                <input type="file" name="ceoImage" accept="image/*" required />
-                <button type="submit">Upload & Save CEO Image</button>
-            </form>
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto p-6 space-y-6">
+        <!-- Welcome Banner -->
+        <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl">
+            <h2 class="text-2xl font-bold mb-2">Welcome to Your Client Portal</h2>
+            <p class="text-gray-400 text-sm">Monitor your automation projects, review deliverables, and communicate directly with our engineering team.</p>
         </div>
 
-        <!-- 2. Company Outlet & Services Editor -->
-        <div class="admin-section">
-            <h3>Manage Company Outlets & Services</h3>
-            <div id="serviceListEditor">
-                <input type="text" id="serviceNameInput" placeholder="Service Name (e.g., Altra AI Setup)" />
-                <input type="text" id="servicePriceInput" placeholder="Price (e.g., $500)" />
-                <button onclick="saveServiceItem()">Add / Update Service</button>
+        <!-- Dashboard Grid -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Project Status Section -->
+            <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl space-y-4">
+                <h3 class="text-lg font-semibold text-amber-400">Active Automation Projects</h3>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <p class="font-medium text-sm">Altra AI Multi-Tenant Setup</p>
+                    <p class="text-xs text-green-400 mt-1">Status: In Development / Deployment Phase</p>
+                    <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                        <div class="bg-amber-400 h-full w-3/4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support & Assistance Section -->
+            <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl space-y-4">
+                <h3 class="text-lg font-semibold text-amber-400">Dedicated Support</h3>
+                <p class="text-xs text-gray-300">Need adjustments to your automated workflows or technical assistance? Reach out to your project manager.</p>
+                <div class="space-y-2 text-sm">
+                    <p class="text-gray-400">Email Support: <span class="text-white">support@krishnyanshzenovapeaks.com</span></p>
+                    <p class="text-gray-400">Direct Line: <span class="text-white">+234 906 786 2223</span></p>
+                </div>
             </div>
         </div>
-
-        <!-- 3. Editable Invoice Template Generator -->
-        <div class="admin-section">
-            <h3>Generate Editable Admin Invoice</h3>
-            <label>Client Name:</label>
-            <input type="text" id="admClientName" value="Client Enterprise" />
-            <label>Description / Item:</label>
-            <input type="text" id="admItemDesc" value="Business Automation Setup" />
-            <label>Amount ($):</label>
-            <input type="number" id="admAmount" value="1200" />
-            <button onclick="generateAdminInvoice()">Generate Printable Invoice</button>
-        </div>
-
-        <!-- 4. Subscription Button Control -->
-        <div class="admin-section">
-            <h3>Subscription Tier Management</h3>
-            <p>Manage active client access tiers and billing cycles.</p>
-            <button id="subManagerBtn" onclick="toggleSubscriptions()">Manage Subscriptions & Tiers</button>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('ceoUploadForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const res = await fetch('/api/admin/update-ceo-photo', { method: 'POST', body: formData });
-            const data = await res.json();
-            alert(data.success ? 'CEO Picture updated successfully!' : 'Error uploading image.');
-        };
-
-        function saveServiceItem() {
-            alert("Service saved and updated live to database!");
-        }
-
-        function generateAdminInvoice() {
-            alert("Invoice template compiled successfully. Ready for client issuance.");
-        }
-
-        function toggleSubscriptions() {
-            alert("Redirecting to client subscription tiers management dashboard.");
-        }
-    </script>
+    </main>
 </body>
 </html>
