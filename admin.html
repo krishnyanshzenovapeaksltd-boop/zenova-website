@@ -1,156 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel - Zenova Peak Tech Hub</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .admin-section { background: rgba(15, 23, 42, 0.85); padding: 20px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #0d9488; }
-        input, select, textarea { width: 100%; padding: 8px; margin: 8px 0; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 4px; }
-        button { background: #0d9488; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
-        button:hover { background: #0f766e; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Zenova 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI',sans-serif;} .card-box{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a;} .gold-text{color:#fbf24a;}</style>
+<script>if(localStorage.getItem("zenova_admin_logged")!=="1"){window.location.href="./admin-login.html";}</script>
 </head>
 <body>
-    <div class="container" style="max-width: 900px; margin: auto; padding: 20px;">
-        <h2>Zenova Peak Tech Hub - Admin Control Panel</h2>
-
-        <!-- 1. CEO Picture Upload Section -->
-        <div class="admin-section">
-            <h3>Update Founder & CEO Picture</h3>
-            <form id="ceoUploadForm" enctype="multipart/form-data">
-                <input type="file" name="ceoImage" accept="image/*" required />
-                <button type="submit">Upload & Save CEO Image</button>
-            </form>
-        </div>
-
-        <!-- 2. Company Outlet & Services Editor -->
-        <div class="admin-section">
-            <h3>Manage Company Outlets & Services</h3>
-            <div id="serviceListEditor">
-                <input type="text" id="serviceNameInput" placeholder="Service Name (e.g., Altra AI Setup)" />
-                <input type="text" id="servicePriceInput" placeholder="Price (e.g., $500)" />
-                <button onclick="saveServiceItem()">Add / Update Service</button>
-            </div>
-        </div>
-
-        <!-- 3. Editable Invoice Template Generator -->
-        <div class="admin-section">
-            <h3>Generate Editable Admin Invoice</h3>
-            <label>Client Name:</label>
-            <input type="text" id="admClientName" value="Client Enterprise" />
-            <label>Description / Item:</label>
-            <input type="text" id="admItemDesc" value="Business Automation Setup" />
-            <label>Amount ($):</label>
-            <input type="number" id="admAmount" value="1200" />
-            <button onclick="generateAdminInvoice()">Generate Printable Invoice</button>
-        </div>
-
-        <!-- 4. Subscription Button Control -->
-        <div class="admin-section">
-            <h3>Subscription Tier Management</h3>
-            <p>Manage active client access tiers and billing cycles.</p>
-            <button id="subManagerBtn" onclick="toggleSubscriptions()">Manage Subscriptions & Tiers</button>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('ceoUploadForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const res = await fetch('/api/admin/update-ceo-photo', { method: 'POST', body: formData });
-            const data = await res.json();
-            alert(data.success ? 'CEO Picture updated successfully!' : 'Error uploading image.');
-        };
-
-        function saveServiceItem() {
-            alert("Service saved and updated live to database!");
-        }
-
-        function generateAdminInvoice() {
-            alert("Invoice template compiled successfully. Ready for client issuance.");
-        }
-
-        function toggleSubscriptions() {
-            alert("Redirecting to client subscription tiers management dashboard.");
-        }
-    </script>
-    <script>
-async function loadSubmissions() {
-    try {
-        const response = await fetch('/api/submissions');
-        const data = await response.json();
-        
-      async function loadSubmissions() {
-    try {
-        const response = await fetch('/api/submissions');
-        const data = await response.json();
-        
-        const regContainer = document.getElementById('registrationsList');
-        const careerContainer = document.getElementById('careersList');
-
-        if (regContainer && data.registrations) {
-            regContainer.innerHTML = data.registrations.map(r => {
-                const phone = r.phone || '+2349067862223';
-                const email = r.email || '';
-                const name = r.name || 'Valued Client';
-                
-                const whatsappMsg = encodeURIComponent(`Hello ${name}, thank you for registering with Krishnyansh Zenova Peak Tech Hub! We have received your details.`);
-                const emailSubject = encodeURIComponent("Update regarding your registration");
-                const emailBody = encodeURIComponent(`Hello ${name},\n\nThank you for registering with us. We have received your submission and our team will get in touch shortly.\n\nBest regards,\nZenova Peak Tech Hub`);
-
-                return `
-                    <div class="bg-slate-950 p-4 rounded mb-3 border border-slate-800 text-xs space-y-2">
-                        <p><strong>Name:</strong> ${name}</p>
-                        <p><strong>Email:</strong> ${email}</p>
-                        <p><strong>Phone:</strong> ${phone}</p>
-                        <p><strong>Date:</strong> ${r.date}</p>
-                        <div class="flex gap-2 mt-2">
-                            <a href="mailto:${email}?subject=${emailSubject}&body=${emailBody}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded transition font-medium">✉️ Reply via Email</a>
-                            <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${whatsappMsg}" target="_blank" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded transition font-medium">💬 Reply via WhatsApp</a>
-                        </div>
-                    </div>
-                `;
-            }).join('') || '<p class="text-xs text-gray-500">No registrations found.</p>';
-        }
-
-        if (careerContainer && data.careers) {
-            careerContainer.innerHTML = data.careers.map(c => {
-                const phone = c.phone || '+2349067862223';
-                const email = c.email || '';
-                const name = c.name || 'Applicant';
-                const role = c.role || 'Position';
-
-                const whatsappMsg = encodeURIComponent(`Hello ${name}, thank you for applying for the ${role} position at Krishnyansh Zenova Peak Tech Hub.`);
-                const emailSubject = encodeURIComponent(`Your application for ${role}`);
-                const emailBody = encodeURIComponent(`Dear ${name},\n\nThank you for applying for the ${role} role with us. We have received your application and our HR team will review it soon.\n\nBest regards,\nZenova Peak Tech Hub`);
-
-                return `
-                    <div class="bg-slate-950 p-4 rounded mb-3 border border-slate-800 text-xs space-y-2">
-                        <p><strong>Applicant:</strong> ${name}</p>
-                        <p><strong>Role:</strong> ${role}</p>
-                        <p><strong>Email:</strong> ${email}</p>
-                        <p><strong>Phone:</strong> ${phone}</p>
-                        <p><strong>Date:</strong> ${c.date}</p>
-                        <div class="flex gap-2 mt-2">
-                            <a href="mailto:${email}?subject=${emailSubject}&body=${emailBody}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded transition font-medium">✉️ Reply via Email</a>
-                            <a href="https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${whatsappMsg}" target="_blank" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded transition font-medium">💬 Reply via WhatsApp</a>
-                        </div>
-                    </div>
-                `;
-            }).join('') || '<p class="text-xs text-gray-500">No career applications found.</p>';
-        }
-    } catch (err) {
-        console.error("Error loading submissions:", err);
-    }
-} 
-    } catch (err) {
-        console.error("Error loading submissions:", err);
-    }
-}
-
-// Load submissions when the admin panel opens
-window.onload = loadSubmissions;
+<header class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center"><h1 class="font-black"><span class="gold-text">ZENOVA</span> ADMIN — 2026 LOCK</h1><div class="flex gap-2"><a href="./index.html" target="_blank" class="bg-slate-700 px-3 py-2 rounded text-sm">View Site</a><button onclick="lockAdmin()" class="bg-red-600 px-3 py-2 rounded text-sm">Logout</button></div></header>
+<div class="flex flex-col md:flex-row"><aside class="w-full md:w-64 bg-slate-900 p-4 border-r border-slate-800">
+<button onclick="showTab('dashboard')" class="w-full text-left p-3 rounded bg-yellow-400 text-black font-bold mb-1">📊 Dashboard</button>
+<button onclick="showTab('services')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">🛠️ Services</button>
+<button onclick="showTab('gallery')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">🖼️ Gallery</button>
+<button onclick="showTab('about')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">👩 Founder Fix</button>
+<button onclick="showTab('subscription')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">💳 Subscription Btn</button>
+<button onclick="showTab('clients')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">👥 Clients On/Off</button>
+<button onclick="showTab('forms')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">📝 Forms + AutoReply</button>
+<button onclick="showTab('invoice')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">🧾 Invoice + Send</button>
+<button onclick="showTab('settings')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">⚙️ Password 2026</button>
+</aside>
+<main class="flex-1 p-4 space-y-6">
+<div id="tab-dashboard" class="tab"><h2 class="text-2xl font-black">Dashboard</h2><div class="grid grid-cols-2 gap-4 mt-4"><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Services</p><p id="statServices" class="text-2xl font-black gold-text">10</p></div><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Leads</p><p id="statForms" class="text-2xl font-black">0</p></div><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Gallery</p><p id="statGallery" class="text-2xl font-black">3</p></div><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Clients</p><p id="statClients" class="text-2xl font-black text-green-400">0</p></div></div></div>
+<div id="tab-services" class="tab hidden"><h2 class="text-xl font-black mb-3">Services Control</h2><div id="servicesList" class="space-y-2"></div><button onclick="addService()" class="mt-3 bg-slate-700 px-4 py-2 rounded">+ Add</button><button onclick="saveServices()" class="ml-2 bg-yellow-400 text-black px-4 py-2 rounded font-bold">Save</button></div>
+<div id="tab-gallery" class="tab hidden"><h2 class="text-xl font-black mb-3">Gallery — Fix Photo</h2><p class="text-sm bg-yellow-900/30 p-2 rounded mb-3">Rename founder & CEO.png → founder.jpg in GitHub</p><div id="galleryList" class="grid grid-cols-2 gap-3"></div><div class="mt-3 card-box p-3 rounded"><input id="newGalleryTitle" placeholder="Title" class="w-full p-2 rounded bg-slate-900 border border-slate-700 mb-2"><input id="newGalleryImg" placeholder="founder.jpg" class="w-full p-2 rounded bg-slate-900 border border-slate-700 mb-2"><button onclick="addGallery()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Add</button></div></div>
+<div id="tab-about" class="tab hidden"><h2 class="text-xl font-black mb-3">About / Founder Fix</h2><div class="card-box p-4 rounded space-y-2"><input id="aboutImg" value="founder.jpg" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="aboutName" value="Ruby Garg" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><textarea id="aboutText" rows="3" class="w-full p-2 rounded bg-slate-900 border border-slate-700">As the Founder and CEO of Krishnyansh Zenova Peaks ltd. (RC- 9810296), Ruby Garg delivers cutting-edge corporate solutions.</textarea><button onclick="saveAbout()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Save — Fixes Photo</button></div></div>
+<div id="tab-subscription" class="tab hidden"><h2 class="text-xl font-black mb-3">Subscription Button</h2><div class="card-box p-4 rounded space-y-3"><div class="flex justify-between"><span>Show Button?</span><input type="checkbox" id="subBtnToggle" checked onchange="toggleSubBtn()" class="w-6 h-6"></div><input id="subBtnText" value="Subscribe Now — From ₦10K/mo" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="subBtnLink" value="https://wa.me/2349067862223" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><button onclick="saveSubBtn()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Save</button></div></div>
+<div id="tab-clients" class="tab hidden"><h2 class="text-xl font-black mb-3">Clients On/Off</h2><div class="card-box p-3 rounded flex gap-2 mb-3"><input id="clientName" placeholder="Name" class="flex-1 p-2 rounded bg-slate-900 border border-slate-700"><input id="clientPhone" placeholder="234..." class="flex-1 p-2 rounded bg-slate-900 border border-slate-700"><button onclick="addClient()" class="bg-yellow-400 text-black px-3 py-2 rounded font-bold">Add</button></div><div id="clientsList"></div></div>
+<div id="tab-forms" class="tab hidden"><h2 class="text-xl font-black mb-3">Forms + Auto Reply</h2><div class="card-box p-3 rounded"><button onclick="loadForms()" class="bg-slate-700 px-3 py-1 rounded mr-2">Load</button><button onclick="clearForms()" class="bg-red-700 px-3 py-1 rounded">Clear</button><textarea id="autoReplyMsg" rows="3" class="w-full p-2 rounded bg-slate-900 border border-slate-700 mt-2">Hello {name}! Thank you for registering for {service} at Zenova RC 9810296. Ruby Garg will contact you soon.</textarea><button onclick="saveAutoReply()" class="mt-2 bg-yellow-400 text-black px-3 py-1 rounded font-bold">Save Reply</button></div><div id="formsList" class="mt-3 space-y-2"></div></div>
+<div id="tab-invoice" class="tab hidden"><h2 class="text-xl font-black mb-3">Invoice Generator — Admin Only</h2><div class="card-box p-4 rounded grid gap-3"><input id="invClient" placeholder="Client Name" class="p-2 rounded bg-slate-900 border border-slate-700"><input id="invService" placeholder="Service" class="p-2 rounded bg-slate-900 border border-slate-700"><input id="invAmount" type="number" placeholder="Amount" class="p-2 rounded bg-slate-900 border border-slate-700"><input id="invPhone" placeholder="WhatsApp 234..." class="p-2 rounded bg-slate-900 border border-slate-700"><select id="invStatus" class="p-2 rounded bg-slate-900 border border-slate-700"><option>Paid</option><option>Pending</option></select><button onclick="generateInvoice()" class="bg-yellow-400 text-black py-2 rounded font-black">Generate PDF</button><button id="sendInvBtn" onclick="sendInvoice()" class="bg-green-600 py-2 rounded font-bold hidden">Send WhatsApp</button></div></div>
+<div id="tab-settings" class="tab hidden"><h2 class="text-xl font-black mb-3">Password 2026</h2><div class="card-box p-4 rounded max-w-sm space-y-2"><p class="text-sm">Default: <b>Zenova@2026</b></p><input id="newPass" type="password" placeholder="New Password" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="confirmPass" type="password" placeholder="Confirm" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><button onclick="changePassword()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Update</button></div></div>
+</main></div>
+<script>
+function lockAdmin(){localStorage.removeItem("zenova_admin_logged");location.href="./admin-login.html";}
+function showTab(id){document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));document.getElementById("tab-"+id).classList.remove("hidden");}
+function initAdmin(){loadServices();loadGallery();loadAbout();loadSubBtn();loadClients();loadForms();}
+function updateStats(){}
+const defaultServices=[{title:"Business Consultancy",price:"₦30,000"},{title:"AI Automation",price:"From ₦55K"},{title:"GBP Maps",price:"₦35,000"},{title:"Google Ads",price:"From ₦70K"},{title:"Branding",price:"From ₦50K"},{title:"Website Dev",price:"From ₦120K"},{title:"AI Video",price:"₦15,000"},{title:"CAC",price:"From ₦60K"},{title:"SCUML",price:"₦15K"},{title:"SMEDAN",price:"₦10K"}];
+function loadServices(){let s=JSON.parse(localStorage.getItem("zenova_services")||JSON.stringify(defaultServices));let list=document.getElementById("servicesList");list.innerHTML="";s.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded flex gap-2"><input value="${it.title}" onchange="editService(${i},'title',this.value)" class="flex-1 p-1 rounded bg-slate-900 border border-slate-700 text-sm"><input value="${it.price}" onchange="editService(${i},'price',this.value)" class="w-24 p-1 rounded bg-slate-900 border border-slate-700 text-sm"><button onclick="deleteService(${i})" class="bg-red-700 px-2 rounded">x</button></div>`;});}
+function editService(i,k,v){let s=JSON.parse(localStorage.getItem("zenova_services")||JSON.stringify(defaultServices));s[i][k]=v;localStorage.setItem("zenova_services",JSON.stringify(s));}
+function deleteService(i){let s=JSON.parse(localStorage.getItem("zenova_services"));s.splice(i,1);localStorage.setItem("zenova_services",JSON.stringify(s));loadServices();}
+function addService(){let s=JSON.parse(localStorage.getItem("zenova_services")||JSON.stringify(defaultServices));s.push({title:"New",price:"₦0"});localStorage.setItem("zenova_services",JSON.stringify(s));loadServices();}
+function saveServices(){alert("Saved!");}
+function loadGallery(){let g=JSON.parse(localStorage.getItem("zenova_gallery")||"[]");if(g.length===0)g=[{title:"Tech Setup",img:"founder.jpg"}];let list=document.getElementById("galleryList");list.innerHTML="";g.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded"><img src="./${it.img}" class="w-full h-20 object-cover rounded mb-1" onerror="this.src='https://via.placeholder.com/150'"><input value="${it.title}" onchange="editGallery(${i},'title',this.value)" class="w-full p-1 text-xs rounded bg-slate-900 border border-slate-700"><input value="${it.img}" onchange="editGallery(${i},'img',this.value)" class="w-full p-1 text-[10px] rounded bg-slate-900 border border-slate-700 mt-1"><button onclick="deleteGallery(${i})" class="mt-1 bg-red-700 px-2 py-1 rounded text-xs">Del</button></div>`;});localStorage.setItem("zenova_gallery",JSON.stringify(g));}
+function editGallery(i,k,v){let g=JSON.parse(localStorage.getItem("zenova_gallery"));g[i][k]=v;localStorage.setItem("zenova_gallery",JSON.stringify(g));}
+function deleteGallery(i){let g=JSON.parse(localStorage.getItem("zenova_gallery"));g.splice(i,1);localStorage.setItem("zenova_gallery",JSON.stringify(g));loadGallery();}
+function addGallery(){let t=document.getElementById("newGalleryTitle").value;let img=document.getElementById("newGalleryImg").value;if(!t||!img){alert("Enter");return;}let g=JSON.parse(localStorage.getItem("zenova_gallery"));g.push({title:t,img:img});localStorage.setItem("zenova_gallery",JSON.stringify(g));loadGallery();}
+function loadAbout(){document.getElementById("aboutImg").value=localStorage.getItem("zenova_about_img")||"founder.jpg";document.getElementById("aboutName").value=localStorage.getItem("zenova_about_name")||"Ruby Garg";document.getElementById("aboutText").value=localStorage.getItem("zenova_about_text")||"Founder & CEO";}
+function saveAbout(){localStorage.setItem("zenova_about_img",document.getElementById("aboutImg").value);localStorage.setItem("zenova_about_name",document.getElementById("aboutName").value);localStorage.setItem("zenova_about_text",document.getElementById("aboutText").value);alert("Saved! Photo = "+document.getElementById("aboutImg").value);}
+function loadSubBtn(){let s=localStorage.getItem("zenova_sub_show");if(s!==null)document.getElementById("subBtnToggle").checked=s==="1";document.getElementById("subBtnText").value=localStorage.getItem("zenova_sub_text")||"Subscribe Now";document.getElementById("subBtnLink").value=localStorage.getItem("zenova_sub_link")||"https://wa.me/2349067862223";}
+function toggleSubBtn(){localStorage.setItem("zenova_sub_show",document.getElementById("subBtnToggle").checked?"1":"0");}
+function saveSubBtn(){localStorage.setItem("zenova_sub_text",document.getElementById("subBtnText").value);localStorage.setItem("zenova_sub_link",document.getElementById("subBtnLink").value);localStorage.setItem("zenova_sub_show",document.getElementById("subBtnToggle").checked?"1":"0");alert("Saved");}
+function loadClients(){let c=JSON.parse(localStorage.getItem("zenova_clients")||"[]");let list=document.getElementById("clientsList");list.innerHTML="";c.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded flex justify-between"><span>${it.name} ${it.active?'●':'○'} ${it.phone}</span><span><input type="checkbox" ${it.active?'checked':''} onchange="toggleClient(${i})"> <button onclick="deleteClient(${i})" class="bg-red-700 px-2 rounded ml-2">x</button></span></div>`;});}
+function addClient(){let n=document.getElementById("clientName").value;let p=document.getElementById("clientPhone").value;if(!n)return;let c=JSON.parse(localStorage.getItem("zenova_clients")||"[]");c.push({name:n,phone:p,active:true});localStorage.setItem("zenova_clients",JSON.stringify(c));loadClients();}
+function toggleClient(i){let c=JSON.parse(localStorage.getItem("zenova_clients"));c[i].active=!c[i].active;localStorage.setItem("zenova_clients",JSON.stringify(c));loadClients();}
+function deleteClient(i){let c=JSON.parse(localStorage.getItem("zenova_clients"));c.splice(i,1);localStorage.setItem("zenova_clients",JSON.stringify(c));loadClients();}
+function loadForms(){let l=JSON.parse(localStorage.getItem("zenova_leads")||"[]");let list=document.getElementById("formsList");list.innerHTML=l.length? "": "<p class='text-sm text-slate-500'>No leads</p>";l.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded"><b>${it.name||'Unknown'} - ${it.service||''}</b><p class="text-xs">${it.phone||''}</p><button onclick="autoReply(${i})" class="bg-green-600 px-2 py-1 rounded text-xs mt-1">WhatsApp Reply</button></div>`;});}
+function clearForms(){if(confirm("Clear?")){localStorage.removeItem("zenova_leads");loadForms();}}
+function saveAutoReply(){localStorage.setItem("zenova_auto_reply",document.getElementById("autoReplyMsg").value);alert("Saved");}
+function autoReply(i){let l=JSON.parse(localStorage.getItem("zenova_leads"));let lead=l[i];let tpl=localStorage.getItem("zenova_auto_reply")||"Hello {name}!";let msg=tpl.replace("{name}",lead.name||"there").replace("{service}",lead.service||"service");let ph=(lead.phone||"").replace(/\D/g,"");if(ph.startsWith("0"))ph="234"+ph.substring(1);window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`,"_blank");}
+let lastData=null;function generateInvoice(){let cl=document.getElementById("invClient").value;let sv=document.getElementById("invService").value;let am=document.getElementById("invAmount").value;let ph=document.getElementById("invPhone").value;let st=document.getElementById("invStatus").value;if(!cl||!am){alert("Enter client & amount");return;}let inv="ZP-"+Date.now().toString().slice(-6);lastData={client:cl,service:sv,amount:am,phone:ph,status:st,invNo:inv};let {jsPDF}=window.jspdf;let doc=new jsPDF();doc.text("INVOICE - Krishnyansh Zenova Peaks Ltd RC 9810296",20,20);doc.text(`Invoice: ${inv} Date: ${new Date().toLocaleDateString()}`,20,30);doc.text(`Bill To: ${cl}`,20,40);doc.text(`Service: ${sv}`,20,46);doc.text(`Amount: NGN ${am} Status: ${st}`,20,52);doc.save(inv+".pdf");document.getElementById("sendInvBtn").classList.remove("hidden");}
+function sendInvoice(){if(!lastData)return;let ph=lastData.phone.replace(/\D/g,"");if(ph.startsWith("0"))ph="234"+ph.substring(1);let msg=`Hello ${lastData.client}! Invoice ${lastData.invNo} for ${lastData.service} NGN ${lastData.amount} ${lastData.status} - Zenova RC 9810296`;window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`,"_blank");}
+function changePassword(){let np=document.getElementById("newPass").value;let cp=document.getElementById("confirmPass").value;if(!np||np!==cp){alert("No match");return;}localStorage.setItem("zenova_admin_pass",np);alert("Changed to "+np);}
+document.addEventListener("DOMContentLoaded",initAdmin);
 </script>
 </body>
 </html>
