@@ -1,70 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Krishnyansh Zenova Peaks</title>
-    <style>
-        body {
-            background-color: #0b132b;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-card {
-            background: #1c2541;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid #ffb703;
-        }
-        h2 { text-align: center; color: #ffb703; margin-bottom: 24px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; }
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #48cae4;
-            background: #0b132b;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #ffb703;
-            color: #0b132b;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-        button:hover { background: #e0a800; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login - Krishnyansh Zenova Peaks Ltd</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI',sans-serif;} .card-box{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a;} .gold-text{color:#fbf24a;}</style>
 </head>
-<body>
-    <div class="login-card">
-        <h2>Zenova Pro Admin</h2>
-        <form action="/api/login" method="POST">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" name="email" required placeholder="admin@zenova.com">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" required placeholder="••••••••">
-            </div>
-            <button type="submit">Login to Dashboard</button>
-        </form>
-    </div>
+<body class="min-h-screen flex items-center justify-center p-4">
+<div class="card-box rounded-2xl p-8 w-full max-w-md text-center">
+<img src="./logo.png" alt="logo" class="w-16 h-16 mx-auto rounded-full bg-white p-1 mb-3" onerror="this.style.display='none'">
+<h1 class="text-2xl font-black gold-text">ADMIN LOCK</h1>
+<p class="text-sm text-slate-400 mt-1">Krishnyansh Zenova Peaks Ltd<br>RC 9810296 — Zenova Peak Tech Hub</p>
+<p class="text-xs text-slate-500 mt-2">Secure Access — 2026</p>
+<input id="adminPass" type="password" placeholder="Enter Admin Password" class="mt-6 w-full p-3 rounded-lg bg-slate-900 border border-slate-700 text-white outline-none focus:border-yellow-400" onkeypress="if(event.key==='Enter') unlockAdmin()">
+<button onclick="unlockAdmin()" class="mt-4 w-full bg-yellow-400 text-black font-black py-3 rounded-lg hover:bg-yellow-300">🔓 Unlock Admin Panel</button>
+<p class="text-xs text-slate-500 mt-3">Default: <b>Zenova@2026</b></p>
+<p id="lockMsg" class="text-red-400 text-sm mt-2 hidden">Wrong password! Try Zenova@2026</p>
+<div class="mt-6 pt-4 border-t border-slate-700 text-xs text-slate-400"><p>🌐 <a href="./index.html" class="text-yellow-400 underline">Back to Website</a></p></div>
+</div>
+<script>
+const DEFAULT_PASS = "Zenova@2026";
+function getPass(){ return localStorage.getItem("zenova_admin_pass") || DEFAULT_PASS; }
+function unlockAdmin(){
+  const input = document.getElementById("adminPass").value.trim();
+  if(input === getPass()){
+    localStorage.setItem("zenova_admin_logged","1");
+    window.location.href="./admin.html";
+  }else{
+    document.getElementById("lockMsg").classList.remove("hidden");
+    document.getElementById("adminPass").value="";
+  }
+}
+if(localStorage.getItem("zenova_admin_logged")==="1"){ window.location.href="./admin.html"; }
+</script>
 </body>
 </html>
