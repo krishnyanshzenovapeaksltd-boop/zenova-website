@@ -1,108 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Portal - Krishnyansh Zenova Peak Tech Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Automation - Global | AltraAI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI',sans-serif;}.card-box{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a;}.gold-text{color:#fbf24a;}</style>
 </head>
-<body class="bg-slate-950 text-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-slate-900 border-b border-blue-900 px-6 py-4 flex justify-between items-center">
-        <div>
-            <h1 class="text-lg font-bold text-amber-400">Zenova Peak Tech Hub</h1>
-            <p class="text-xs text-gray-400">Client Portal Dashboard</p>
-        </div>
-        <div>
-            <a href="index.html" class="text-xs bg-blue-900 hover:bg-blue-800 px-4 py-2 rounded-lg transition">Back to Home</a>
-        </div>
-    </nav>
+<body class="min-h-screen">
+<header class="bg-slate-900 p-4 flex justify-between items-center sticky top-0 z-50 border-b border-slate-800">
+<div><h1 class="font-black"><span class="gold-text">AltraAI</span> GLOBAL AUTOMATION</h1><p class="text-[10px] text-slate-400">RC 9810296 | Global Service — Flutterwave Ready</p></div>
+<a href="./index.html" class="bg-slate-700 px-3 py-2 rounded text-xs">Home</a>
+</header>
 
-    <!-- Main Content -->
-    <main class="max-w-5xl mx-auto p-6 space-y-6">
-        <!-- Welcome Banner -->
-        <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl">
-            <h2 class="text-2xl font-bold mb-2">Welcome to Your Client Portal</h2>
-            <p class="text-gray-400 text-sm">Connect your social channels to Altra AI, manage your automation workflows, and generate invoices instantly.</p>
-        </div>
+<div class="p-4 max-w-5xl mx-auto space-y-6">
+<div id="step1" class="card-box p-5 rounded-2xl">
+<h2 class="text-xl font-black gold-text">Step 1: Company Details for Bot Training 🤖</h2>
+<div class="grid md:grid-cols-2 gap-3 mt-4">
+<input id="cName" placeholder="Full Name *" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="cPhone" placeholder="WhatsApp Global +234, +1, +44..." class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="cCompany" placeholder="Company Name *" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="cEmail" placeholder="Business Email *" class="p-3 rounded bg-slate-900 border border-slate-700">
+<select id="cNature" class="p-3 rounded bg-slate-900 border border-slate-700">
+<option value="">Nature of Company *</option><option>Real Estate</option><option>Fashion</option><option>Restaurant</option><option>Tech/IT</option><option>E-commerce</option><option>Education</option><option>Health</option><option>Other</option>
+</select>
+<!-- COUNTRY FIELD - HOW ADDED -->
+<select id="cCountry" class="p-3 rounded bg-slate-900 border border-slate-700">
+<option value="">Select Country *</option>
+<option value="Nigeria">🇳🇬 Nigeria</option>
+<option value="USA">🇺🇸 USA</option>
+<option value="UK">🇬🇧 UK</option>
+<option value="Canada">🇨🇦 Canada</option>
+<option value="Ghana">🇬🇭 Ghana</option>
+<option value="Kenya">🇰🇪 Kenya</option>
+<option value="South Africa">🇿🇦 South Africa</option>
+<option value="UAE">🇦🇪 UAE / Dubai</option>
+<option value="India">🇮🇳 India</option>
+<option value="Australia">🇦🇺 Australia</option>
+<option value="Other">🌍 Other</option>
+</select>
+</div>
+<textarea id="cAbout" rows="3" placeholder="Describe business for Bot Training *" class="w-full mt-3 p-3 rounded bg-slate-900 border border-slate-700"></textarea>
+<button onclick="saveStep1()" class="mt-4 w-full bg-yellow-400 text-black font-black py-3 rounded">Save & Continue →</button>
+</div>
 
-        <div class="grid md:grid-cols-2 gap-6">
-            <!-- 1. Social Media Bot Connection Form -->
-            <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-lg font-semibold text-amber-400">Connect Altra AI to Social Channels</h3>
-                <p class="text-xs text-gray-300">Link your business accounts to automate chats and customer support.</p>
-                <form id="botConnectForm" onsubmit="connectBot(event)" class="space-y-3">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Select Channel</label>
-                        <select id="socialChannel" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
-                            <option value="WhatsApp">WhatsApp Business</option>
-                            <option value="Instagram">Instagram Direct</option>
-                            <option value="Facebook">Facebook Messenger</option>
-                            <option value="Website">Website Widget</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Business Page / Phone Number ID</label>
-                        <input type="text" id="channelIdentifier" required placeholder="Enter ID or Phone Number" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
-                    </div>
-                    <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-black font-bold p-2 rounded text-xs transition">Deploy Altra AI Bot</button>
-                </form>
-                <p id="botStatus" class="text-xs text-green-400 mt-2"></p>
-            </div>
+<div id="step2" class="card-box p-5 rounded-2xl hidden">
+<h2 class="text-xl font-black gold-text">Step 2: Link Business Pages 🔗</h2>
+<div class="grid md:grid-cols-2 gap-3 mt-4">
+<input id="sFB" placeholder="Facebook Page URL" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="sIG" placeholder="Instagram Page" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="sWA" placeholder="WhatsApp Business" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="sLI" placeholder="LinkedIn Page" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="sWEB" placeholder="Website URL" class="p-3 rounded bg-slate-900 border border-slate-700">
+<input id="sYT" placeholder="YouTube Channel" class="p-3 rounded bg-slate-900 border border-slate-700">
+</div>
+<div class="flex gap-2 mt-4"><button onclick="showStep(1)" class="flex-1 bg-slate-700 py-3 rounded">Back</button><button onclick="saveStep2()" class="flex-[2] bg-yellow-400 text-black font-black py-3 rounded">Train Bot →</button></div>
+</div>
 
-            <!-- 2. Invoice Generator Section -->
-            <div class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl space-y-4">
-                <h3 class="text-lg font-semibold text-amber-400">Generate Client Invoice</h3>
-                <p class="text-xs text-gray-300">Create instant billing statements for your automation clients.</p>
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Client Name</label>
-                        <input type="text" id="invoiceClient" placeholder="e.g. Acme Corp" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1">Amount ($ USD)</label>
-                        <input type="number" id="invoiceAmount" placeholder="1500" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white">
-                    </div>
-                    <button onclick="generateInvoice()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-2 rounded text-xs transition">Generate & Download Invoice</button>
-                </div>
-            </div>
-        </div>
+<div id="step3" class="card-box p-5 rounded-2xl hidden">
+<h2 class="text-xl font-black gold-text">Step 3: Bot Training 🤖</h2>
+<div id="botSummary" class="text-xs text-slate-400 mt-3"></div>
+<div class="w-full bg-slate-800 h-2 rounded mt-3"><div id="trainBar" class="bg-yellow-400 h-2 rounded" style="width:0%"></div></div>
+<p id="trainText" class="text-xs mt-1">0%</p>
+<div class="bg-white text-black p-3 rounded mt-4 text-xs"><b>Bot Preview:</b> <span id="botReply">Training...</span></div>
+<div class="flex gap-2 mt-4"><button onclick="showStep(2)" class="flex-1 bg-slate-700 py-3 rounded">Back</button><button onclick="showStep(4)" class="flex-[2] bg-green-600 font-black py-3 rounded">Choose Plan →</button></div>
+</div>
 
-        <!-- Invoice Result Preview Area -->
-        <div id="invoicePreview" class="bg-slate-900 border border-blue-900/50 p-6 rounded-2xl shadow-xl hidden space-y-3">
-            <h3 class="text-lg font-semibold text-green-400">Invoice Generated Successfully</h3>
-            <div id="invoiceContent" class="bg-slate-950 p-4 rounded border border-slate-800 text-xs space-y-2 text-gray-300"></div>
-        </div>
-    </main>
+<div id="step4" class="card-box p-5 rounded-2xl hidden">
+<h2 class="text-xl font-black gold-text text-center">Step 4: AltraAI Plans — Global 💳</h2>
+<div class="grid md:grid-cols-3 gap-4 mt-6">
+<div class="card-box p-5 rounded-2xl border-2 border-blue-500"><h3 class="font-black text-blue-400">Starter</h3><p class="text-2xl font-black">₦25K <span class="text-xs">/ $25</span></p><button onclick="selectPlan('Starter',25000,25)" class="mt-3 w-full bg-blue-600 py-2 rounded font-bold">Select Starter</button></div>
+<div class="card-box p-5 rounded-2xl border-2 border-yellow-400"><h3 class="font-black gold-text">Premium</h3><p class="text-2xl font-black">₦55K <span class="text-xs">/ $55</span></p><button onclick="selectPlan('Premium',55000,55)" class="mt-3 w-full bg-yellow-400 text-black py-2 rounded font-black">Select Premium</button></div>
+<div class="card-box p-5 rounded-2xl border-2 border-purple-500"><h3 class="font-black text-purple-400">Pro</h3><p class="text-2xl font-black">₦95K <span class="text-xs">/ $95</span></p><button onclick="selectPlan('Pro',95000,95)" class="mt-3 w-full bg-purple-600 py-2 rounded font-bold">Select Pro</button></div>
+</div>
 
-    <script>
-        function connectBot(e) {
-            e.preventDefault();
-            const channel = document.getElementById('socialChannel').value;
-            const id = document.getElementById('channelIdentifier').value;
-            document.getElementById('botStatus').innerText = `Success! Altra AI is now linked and active on ${channel} (${id}).`;
-            document.getElementById('botConnectForm').reset();
-        }
+<div id="paymentBox" class="mt-8 card-box p-5 rounded-2xl hidden">
+<h3 class="font-black">Payment — Global Ready 🌍</h3>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+<div class="bg-slate-900 p-4 rounded">
+<p class="text-xs text-slate-400">Plan</p><p id="selectedPlan" class="font-black gold-text">-</p>
+<p class="text-xs text-slate-400 mt-2">Amount</p><p id="selectedAmount" class="font-black">₦0</p><p id="selectedUSD" class="text-xs text-green-400">~ $0 USD</p>
+<select id="currencySel" onchange="updateCurrency()" class="w-full mt-3 p-2 rounded bg-slate-800 border border-slate-700 text-xs">
+<option value="NGN">🇳🇬 Nigeria - Bank Transfer</option><option value="USD">🌍 Global - Flutterwave USD</option><option value="GBP">🇬🇧 UK - GBP</option>
+</select>
+</div>
+<div class="bg-white text-black p-4 rounded">
+<div id="bankBox"><h4 class="font-black text-sm">🏦 Bank Transfer</h4><p class="text-xs mt-2">BANK: <b id="bankName">__________ (Add later)</b></p><p class="text-xs">Account Name: <b id="bankAccName">Krishnyansh Zenova Peaks Ltd</b></p><p class="text-xs">Account No: <b id="bankAccNo">__________ (Add later)</b></p></div>
+<div id="flutterBox" class="hidden"><h4 class="font-black text-sm">💳 Flutterwave Global</h4><p class="text-xs mt-2">FLW_PUBLIC_KEY: <span id="flwKeyDisplay">FLWPUBK-XXXX — Add later</span></p><button onclick="payWithFlutterwave()" class="mt-3 w-full bg-[#f5a623] text-black font-black py-3 rounded">💳 Pay Globally with Flutterwave</button></div>
+</div>
+</div>
+<div class="mt-4 grid md:grid-cols-2 gap-3">
+<input id="payRef" placeholder="Payment Ref" class="p-3 rounded bg-slate-900 border border-slate-700">
+<button onclick="confirmPayment()" class="bg-green-600 font-black py-3 rounded">✅ I Paid — Activate</button>
+</div>
+<div class="flex gap-2 mt-3">
+<button onclick="editBank()" class="bg-slate-700 px-3 py-2 rounded text-xs">Edit Bank</button>
+<button onclick="editFlutterwave()" class="bg-[#f5a623] text-black px-3 py-2 rounded text-xs font-bold">Set Flutterwave Key</button>
+</div>
+</div>
+<div id="successBox" class="hidden text-center py-8"><div class="text-6xl">🎉</div><h2 class="text-2xl font-black gold-text mt-3">Bot Activated!</h2><p class="text-sm">Your AltraAI for <span id="successCompany"></span> is live!</p></div>
+</div>
+</div>
 
-        function generateInvoice() {
-            const client = document.getElementById('invoiceClient').value || 'Valued Client';
-            const amount = document.getElementById('invoiceAmount').value || '0.00';
-            const date = new Date().toLocaleDateString();
-            const invoiceId = 'INV-' + Math.floor(100000 + Math.random() * 900000);
-
-            const preview = document.getElementById('invoicePreview');
-            const content = document.getElementById('invoiceContent');
-            
-            preview.classList.remove('hidden');
-            content.innerHTML = `
-                <p><strong>Invoice ID:</strong> ${invoiceId}</p>
-                <p><strong>Date:</strong> ${date}</p>
-                <p><strong>Billed To:</strong> ${client}</p>
-                <p><strong>Service:</strong> Altra AI Automation & Tech Integration</p>
-                <p><strong>Total Due:</strong> $${amount}</p>
-                <p class="text-amber-400 mt-2">Status: Pending Payment (Paid to Krishnyansh Zenova Peak Tech Hub)</p>
-            `;
-        }
-    </script>
+<script>
+function showStep(n){[1,2,3,4].forEach(i=>{document.getElementById('step'+i).classList.add('hidden');});document.getElementById('step'+n).classList.remove('hidden');}
+function saveStep1(){
+  const d={name:cName.value,phone:cPhone.value,company:cCompany.value,email:cEmail.value,nature:cNature.value,country:cCountry.value,about:cAbout.value};
+  if(!d.name||!d.phone||!d.company||!d.country){alert('Fill Name, Phone, Company, Country *');return;}
+  localStorage.setItem('altra_client_step1',JSON.stringify(d));
+  showStep(2);
+}
+function saveStep2(){
+  const s={fb:sFB.value,ig:sIG.value,wa:sWA.value,li:sLI.value,web:sWEB.value,yt:sYT.value};
+  localStorage.setItem('altra_client_social',JSON.stringify(s));
+  const step1=JSON.parse(localStorage.getItem('altra_client_step1'));
+  botSummary.innerHTML=`Company: ${step1.company} (${step1.nature}) | Country: ${step1.country} | ${step1.about.substring(0,100)}...`;
+  let w=0; const iv=setInterval(()=>{w+=20;trainBar.style.width=w+'%';trainText.innerText=w+'%'; if(w>=100){clearInterval(iv); botReply.innerText=`Hello! Welcome to ${step1.company} in ${step1.country}! ${step1.about.substring(0,120)}...`;}},300);
+  showStep(3);
+}
+let currentPlan=null,currentAmount=0,currentUSD=0;
+function selectPlan(name,ngn,usd){
+  currentPlan=name;currentAmount=ngn;currentUSD=usd;
+  paymentBox.classList.remove('hidden');
+  selectedPlan.innerText='AltraAI '+name;
+  selectedAmount.innerText='₦'+ngn.toLocaleString();
+  selectedUSD.innerText='~ $'+usd+' USD';
+  bankName.innerText=localStorage.getItem('zenova_bank_name')||'__________ (Add later)';
+  bankAccName.innerText=localStorage.getItem('zenova_bank_acc_name')||'Krishnyansh Zenova Peaks Ltd';
+  bankAccNo.innerText=localStorage.getItem('zenova_bank_acc_no')||'__________ (Add later)';
+  flwKeyDisplay.innerText=localStorage.getItem('zenova_flw_key')||'FLWPUBK-XXXX — Add later';
+  updateCurrency();
+}
+function updateCurrency(){
+  const cur=currencySel.value;
+  if(cur==='NGN'){bankBox.classList.remove('hidden');flutterBox.classList.add('hidden'); selectedAmount.innerText='₦'+currentAmount.toLocaleString();}
+  else{bankBox.classList.add('hidden');flutterBox.classList.remove('hidden'); selectedAmount.innerText='$'+currentUSD+' '+cur;}
+}
+function editBank(){
+  const b=prompt('BANK Name:'); const n=prompt('Account Name:'); const a=prompt('Account No:');
+  if(b) localStorage.setItem('zenova_bank_name',b); if(n) localStorage.setItem('zenova_bank_acc_name',n); if(a) localStorage.setItem('zenova_bank_acc_no',a); selectPlan(currentPlan,currentAmount,currentUSD);
+}
+function editFlutterwave(){
+  const k=prompt('Flutterwave Public Key FLWPUBK-...:'); if(k) localStorage.setItem('zenova_flw_key',k); flwKeyDisplay.innerText=k||'FLWPUBK-XXXX';
+}
+function payWithFlutterwave(){
+  const key=localStorage.getItem('zenova_flw_key');
+  if(!key||key.includes('XXXX')){alert('Flutterwave key not added yet — Ruby will add later. Placeholder for global service.');return;}
+  const step1=JSON.parse(localStorage.getItem('altra_client_step1')||'{}');
+  FlutterwaveCheckout({public_key:key,tx_ref:'ZP-'+Date.now(),amount:currencySel.value==='USD'?currentUSD:currentAmount,currency:currencySel.value,payment_options:'card,mobilemoney,ussd',customer:{email:step1.email||'client@example.com',phone_number:step1.phone,name:step1.name},customizations:{title:'AltraAI '+currentPlan,description:'Automation'}});
+}
+function confirmPayment(){
+  const ref=payRef.value; if(!ref){alert('Enter ref');return;}
+  const step1=JSON.parse(localStorage.getItem('altra_client_step1')); const social=JSON.parse(localStorage.getItem('altra_client_social')||'{}');
+  let all=JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]'); all.push({...step1,...social,plan:currentPlan,amount:currentAmount,usd:currentUSD,currency:currencySel.value,ref:ref,date:new Date().toLocaleString()}); localStorage.setItem('altra_all_subscriptions',JSON.stringify(all));
+  paymentBox.classList.add('hidden'); successCompany.innerText=step1.company; successBox.classList.remove('hidden');
+  const msg=`New Global AltraAI! Company: ${step1.company} Country: ${step1.country} Plan: ${currentPlan} Amount: ${currencySel.value} ${currentUSD||currentAmount} Phone: ${step1.phone}`;
+  window.open(`https://wa.me/2349067862223?text=${encodeURIComponent(msg)}`,'_blank');
+}
+</script>
 </body>
 </html>
