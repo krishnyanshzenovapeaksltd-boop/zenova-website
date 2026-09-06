@@ -3,68 +3,375 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - Zenova 2026</title>
+<title>Admin Panel - Global + Stamp + Subscribe | Zenova 2026</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI',sans-serif;} .card-box{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a;} .gold-text{color:#fbf24a;}</style>
-<script>if(localStorage.getItem("zenova_admin_logged")!=="1"){window.location.href="./admin-login.html";}</script>
+<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI',sans-serif;}.card-box{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a;}.gold-text{color:#fbf24a;}</style>
 </head>
-<body>
-<header class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center"><h1 class="font-black"><span class="gold-text">ZENOVA</span> ADMIN — 2026 LOCK</h1><div class="flex gap-2"><a href="./index.html" target="_blank" class="bg-slate-700 px-3 py-2 rounded text-sm">View Site</a><button onclick="lockAdmin()" class="bg-red-600 px-3 py-2 rounded text-sm">Logout</button></div></header>
-<div class="flex flex-col md:flex-row"><aside class="w-full md:w-64 bg-slate-900 p-4 border-r border-slate-800">
-<button onclick="showTab('dashboard')" class="w-full text-left p-3 rounded bg-yellow-400 text-black font-bold mb-1">📊 Dashboard</button>
-<button onclick="showTab('services')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">🛠️ Services</button>
-<button onclick="showTab('gallery')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">🖼️ Gallery</button>
-<button onclick="showTab('about')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">👩 Founder Fix</button>
-<button onclick="showTab('subscription')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">💳 Subscription Btn</button>
-<button onclick="showTab('clients')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">👥 Clients On/Off</button>
-<button onclick="showTab('forms')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">📝 Forms + AutoReply</button>
-<button onclick="showTab('invoice')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">🧾 Invoice + Send</button>
-<button onclick="showTab('settings')" class="w-full text-left p-3 rounded hover:bg-slate-800 mb-1">⚙️ Password 2026</button>
+<body class="min-h-screen">
+<div id="lockScreen" class="min-h-screen flex items-center justify-center p-4">
+<div class="card-box rounded-2xl p-8 w-full max-w-md text-center">
+<img src="./logo.png" alt="logo" class="w-16 h-16 mx-auto rounded-full bg-white p-1 mb-3" onerror="this.style.display='none'">
+<h1 class="text-2xl font-black gold-text">ADMIN LOCK — 2026 GLOBAL</h1>
+<p class="text-sm text-slate-400 mt-1">RC 9810296 | Stamp + Country + Subscribe</p>
+<input id="adminPass" type="password" placeholder="Zenova@2026" class="mt-6 w-full p-3 rounded-lg bg-slate-900 border border-slate-700">
+<button onclick="unlockAdmin()" class="mt-4 w-full bg-yellow-400 text-black font-black py-3 rounded-lg">Unlock</button>
+<p id="lockMsg" class="text-red-400 text-sm mt-2 hidden">Wrong password!</p>
+</div>
+</div>
+
+<div id="adminPanel" class="hidden">
+<header class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-50">
+<div class="flex items-center gap-2"><h1 class="font-black"><span class="gold-text">ZENOVA</span> ADMIN GLOBAL</h1><span class="text-xs bg-green-900 text-green-300 px-2 py-1 rounded">RC 9810296</span><span class="text-[10px] bg-yellow-400 text-black px-2 py-1 rounded font-bold">Stamp + Subscribe</span></div>
+<div class="flex gap-2"><button onclick="exportSiteData()" class="bg-blue-600 px-3 py-2 rounded text-xs font-bold">Export</button><button onclick="lockAdmin()" class="bg-red-600 px-3 py-2 rounded text-xs font-bold">Lock</button></div>
+</header>
+
+<div class="flex flex-col md:flex-row">
+<aside class="w-full md:w-64 bg-slate-900 p-4 border-r border-slate-800">
+<nav class="space-y-1">
+<button onclick="showTab('dashboard')" class="w-full text-left p-3 rounded bg-yellow-400 text-black font-bold">📊 Dashboard</button>
+<button onclick="showTab('clients')" class="w-full text-left p-3 rounded hover:bg-slate-800">🌍 Clients — Country</button>
+<button onclick="showTab('subscribe')" class="w-full text-left p-3 rounded hover:bg-slate-800">💳 Subscribe Buttons — GBP/Google/AI</button>
+<button onclick="showTab('global')" class="w-full text-left p-3 rounded hover:bg-slate-800">🏦 Bank + Flutterwave</button>
+<button onclick="showTab('invoice')" class="w-full text-left p-3 rounded hover:bg-slate-800">🧾 Invoice + Stamp</button>
+<button onclick="showTab('forms')" class="w-full text-left p-3 rounded hover:bg-slate-800">📝 Forms & Subs</button>
+<button onclick="showTab('settings')" class="w-full text-left p-3 rounded hover:bg-slate-800">⚙️ Settings + Stamp</button>
+</nav>
+<div class="mt-6 p-3 bg-slate-800 rounded text-xs">
+<p>Official Stamp</p>
+<img id="adminStampPreview" src="./stamp_400.png" class="w-20 h-20 mx-auto mt-2 rounded-full bg-white p-1">
+<p class="mt-1 text-[10px] text-center">BN: 9701468 • Verified Lagos</p>
+</div>
 </aside>
+
 <main class="flex-1 p-4 space-y-6">
-<div id="tab-dashboard" class="tab"><h2 class="text-2xl font-black">Dashboard</h2><div class="grid grid-cols-2 gap-4 mt-4"><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Services</p><p id="statServices" class="text-2xl font-black gold-text">10</p></div><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Leads</p><p id="statForms" class="text-2xl font-black">0</p></div><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Gallery</p><p id="statGallery" class="text-2xl font-black">3</p></div><div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Clients</p><p id="statClients" class="text-2xl font-black text-green-400">0</p></div></div></div>
-<div id="tab-services" class="tab hidden"><h2 class="text-xl font-black mb-3">Services Control</h2><div id="servicesList" class="space-y-2"></div><button onclick="addService()" class="mt-3 bg-slate-700 px-4 py-2 rounded">+ Add</button><button onclick="saveServices()" class="ml-2 bg-yellow-400 text-black px-4 py-2 rounded font-bold">Save</button></div>
-<div id="tab-gallery" class="tab hidden"><h2 class="text-xl font-black mb-3">Gallery — Fix Photo</h2><p class="text-sm bg-yellow-900/30 p-2 rounded mb-3">Rename founder & CEO.png → founder.jpg in GitHub</p><div id="galleryList" class="grid grid-cols-2 gap-3"></div><div class="mt-3 card-box p-3 rounded"><input id="newGalleryTitle" placeholder="Title" class="w-full p-2 rounded bg-slate-900 border border-slate-700 mb-2"><input id="newGalleryImg" placeholder="founder.jpg" class="w-full p-2 rounded bg-slate-900 border border-slate-700 mb-2"><button onclick="addGallery()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Add</button></div></div>
-<div id="tab-about" class="tab hidden"><h2 class="text-xl font-black mb-3">About / Founder Fix</h2><div class="card-box p-4 rounded space-y-2"><input id="aboutImg" value="founder.jpg" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="aboutName" value="Ruby Garg" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><textarea id="aboutText" rows="3" class="w-full p-2 rounded bg-slate-900 border border-slate-700">As the Founder and CEO of Krishnyansh Zenova Peaks ltd. (RC- 9810296), Ruby Garg delivers cutting-edge corporate solutions.</textarea><button onclick="saveAbout()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Save — Fixes Photo</button></div></div>
-<div id="tab-subscription" class="tab hidden"><h2 class="text-xl font-black mb-3">Subscription Button</h2><div class="card-box p-4 rounded space-y-3"><div class="flex justify-between"><span>Show Button?</span><input type="checkbox" id="subBtnToggle" checked onchange="toggleSubBtn()" class="w-6 h-6"></div><input id="subBtnText" value="Subscribe Now — From ₦10K/mo" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="subBtnLink" value="https://wa.me/2349067862223" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><button onclick="saveSubBtn()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Save</button></div></div>
-<div id="tab-clients" class="tab hidden"><h2 class="text-xl font-black mb-3">Clients On/Off</h2><div class="card-box p-3 rounded flex gap-2 mb-3"><input id="clientName" placeholder="Name" class="flex-1 p-2 rounded bg-slate-900 border border-slate-700"><input id="clientPhone" placeholder="234..." class="flex-1 p-2 rounded bg-slate-900 border border-slate-700"><button onclick="addClient()" class="bg-yellow-400 text-black px-3 py-2 rounded font-bold">Add</button></div><div id="clientsList"></div></div>
-<div id="tab-forms" class="tab hidden"><h2 class="text-xl font-black mb-3">Forms + Auto Reply</h2><div class="card-box p-3 rounded"><button onclick="loadForms()" class="bg-slate-700 px-3 py-1 rounded mr-2">Load</button><button onclick="clearForms()" class="bg-red-700 px-3 py-1 rounded">Clear</button><textarea id="autoReplyMsg" rows="3" class="w-full p-2 rounded bg-slate-900 border border-slate-700 mt-2">Hello {name}! Thank you for registering for {service} at Zenova RC 9810296. Ruby Garg will contact you soon.</textarea><button onclick="saveAutoReply()" class="mt-2 bg-yellow-400 text-black px-3 py-1 rounded font-bold">Save Reply</button></div><div id="formsList" class="mt-3 space-y-2"></div></div>
-<div id="tab-invoice" class="tab hidden"><h2 class="text-xl font-black mb-3">Invoice Generator — Admin Only</h2><div class="card-box p-4 rounded grid gap-3"><input id="invClient" placeholder="Client Name" class="p-2 rounded bg-slate-900 border border-slate-700"><input id="invService" placeholder="Service" class="p-2 rounded bg-slate-900 border border-slate-700"><input id="invAmount" type="number" placeholder="Amount" class="p-2 rounded bg-slate-900 border border-slate-700"><input id="invPhone" placeholder="WhatsApp 234..." class="p-2 rounded bg-slate-900 border border-slate-700"><select id="invStatus" class="p-2 rounded bg-slate-900 border border-slate-700"><option>Paid</option><option>Pending</option></select><button onclick="generateInvoice()" class="bg-yellow-400 text-black py-2 rounded font-black">Generate PDF</button><button id="sendInvBtn" onclick="sendInvoice()" class="bg-green-600 py-2 rounded font-bold hidden">Send WhatsApp</button></div></div>
-<div id="tab-settings" class="tab hidden"><h2 class="text-xl font-black mb-3">Password 2026</h2><div class="card-box p-4 rounded max-w-sm space-y-2"><p class="text-sm">Default: <b>Zenova@2026</b></p><input id="newPass" type="password" placeholder="New Password" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="confirmPass" type="password" placeholder="Confirm" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><button onclick="changePassword()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Update</button></div></div>
-</main></div>
+<div id="tab-dashboard" class="tab">
+<h2 class="text-2xl font-black">Global Dashboard 🌍</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Total Clients</p><p id="statClients" class="text-2xl font-black">0</p></div>
+<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Countries</p><p id="statCountries" class="text-2xl font-black gold-text">0</p></div>
+<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Subscriptions</p><p id="statSubs" class="text-2xl font-black">0</p></div>
+<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Revenue</p><p id="statRevenue" class="text-2xl font-black text-green-400">₦0</p></div>
+</div>
+<div id="countryBreakdown" class="card-box p-4 rounded-xl mt-4"></div>
+<div class="card-box p-4 rounded-xl mt-4">
+<h3 class="font-bold text-sm">🔘 Subscribe Buttons Status</h3>
+<div id="subscribeStatus" class="mt-2 text-xs space-y-1"></div>
+</div>
+</div>
+
+<div id="tab-clients" class="tab hidden">
+<h2 class="text-2xl font-black">🌍 Clients — Country Control + Subscribe ON/OFF with Contact</h2>
+<div class="card-box p-4 rounded-xl mb-4">
+<h3 class="font-bold text-sm mb-2">Add Client with Contact No for Subscribe Button</h3>
+<div class="grid md:grid-cols-2 gap-2">
+<input id="clientName" placeholder="Client Name" class="p-2 rounded bg-slate-900 border border-slate-700">
+<input id="clientPhone" placeholder="Client Contact No e.g. 234906... / +1..." class="p-2 rounded bg-slate-900 border border-slate-700">
+<input id="clientCompany" placeholder="Company Name" class="p-2 rounded bg-slate-900 border border-slate-700">
+<select id="clientCountry" class="p-2 rounded bg-slate-900 border border-slate-700"><option value="">Country</option><option value="Nigeria">🇳🇬 Nigeria</option><option value="USA">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="Ghana">🇬🇭 Ghana</option><option value="Kenya">🇰🇪 Kenya</option><option value="India">🇮🇳 India</option><option value="UAE">🇦🇪 UAE</option><option value="Other">🌍 Other</option></select>
+</div>
+<div class="mt-2 flex gap-2">
+<button onclick="addClient()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">+ Add Client with Subscribe ON</button>
+<button onclick="loadClients()" class="bg-slate-700 px-4 py-2 rounded">Refresh</button>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-3">
+<select id="filterCountry" onchange="loadClients()" class="p-2 rounded bg-slate-900 border border-slate-700 text-sm"><option value="">All Countries</option><option value="Nigeria">🇳🇬 Nigeria</option><option value="USA">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="Ghana">🇬🇭 Ghana</option><option value="Kenya">🇰🇪 Kenya</option></select>
+<select id="filterPlan" onchange="loadClients()" class="p-2 rounded bg-slate-900 border border-slate-700 text-sm"><option value="">All Plans</option><option>Starter</option><option>Premium</option><option>Pro</option></select>
+<input id="searchClient" placeholder="Search" oninput="loadClients()" class="p-2 rounded bg-slate-900 border border-slate-700 text-sm flex-1">
+</div>
+<div id="clientsList" class="mt-4 space-y-2"></div>
+<div class="mt-8"><h3 class="font-bold">Global AltraAI Subscriptions</h3><div id="subsList" class="mt-2 space-y-2"></div></div>
+</div>
+
+<div id="tab-subscribe" class="tab hidden">
+<h2 class="text-2xl font-black">💳 Subscribe Buttons — GBP, Google Ads, AI Image & Video Services</h2>
+<p class="text-xs text-slate-400 mt-1">Admin can turn ON/OFF subscribe buttons for each service with client contact number</p>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+<div class="card-box p-5 rounded-xl border-2 border-blue-500">
+<div class="flex justify-between items-center"><h3 class="font-black text-blue-400">📍 GBP — Google Business Profile</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subGBPOn" checked onchange="toggleServiceSub('GBP')"> ON</label></div>
+<div class="mt-3 space-y-2">
+<label class="text-xs text-slate-400">Button Text</label><input id="subGBPText" value="Subscribe GBP Service — From ₦35K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs text-slate-400">Client Contact No for GBP Subscribe</label><input id="subGBPPhone" placeholder="Client WhatsApp e.g. 234906..." class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs text-slate-400">Price NGN / USD</label><div class="flex gap-2"><input id="subGBPPriceNGN" value="35000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subGBPPriceUSD" value="35" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
+<label class="text-xs text-slate-400">Payment Link / WhatsApp</label><input id="subGBPLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20GBP%20Service" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<button onclick="saveServiceSub('GBP')" class="w-full bg-blue-600 py-2 rounded font-bold mt-2">Save GBP Subscribe Button</button>
+</div>
+</div>
+<div class="card-box p-5 rounded-xl border-2 border-green-500">
+<div class="flex justify-between items-center"><h3 class="font-black text-green-400">📢 Google Ads Service</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subGoogleAdsOn" checked onchange="toggleServiceSub('GoogleAds')"> ON</label></div>
+<div class="mt-3 space-y-2">
+<label class="text-xs text-slate-400">Button Text</label><input id="subGoogleAdsText" value="Subscribe Google Ads — From ₦70K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs text-slate-400">Client Contact No</label><input id="subGoogleAdsPhone" placeholder="Client Contact No" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs">Price NGN / USD</label><div class="flex gap-2"><input id="subGoogleAdsPriceNGN" value="70000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subGoogleAdsPriceUSD" value="70" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
+<label class="text-xs">Payment Link</label><input id="subGoogleAdsLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20Google%20Ads" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<button onclick="saveServiceSub('GoogleAds')" class="w-full bg-green-600 py-2 rounded font-bold mt-2">Save Google Ads Subscribe</button>
+</div>
+</div>
+<div class="card-box p-5 rounded-xl border-2 border-purple-500">
+<div class="flex justify-between items-center"><h3 class="font-black text-purple-400">🎨 AI Image Generation</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subAIImageOn" checked onchange="toggleServiceSub('AIImage')"> ON</label></div>
+<div class="mt-3 space-y-2">
+<label class="text-xs">Button Text</label><input id="subAIImageText" value="Subscribe AI Image — From ₦15K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs">Client Contact No</label><input id="subAIImagePhone" placeholder="Client Contact No" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs">Price NGN / USD</label><div class="flex gap-2"><input id="subAIImagePriceNGN" value="15000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subAIImagePriceUSD" value="15" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
+<label class="text-xs">Payment Link</label><input id="subAIImageLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20AI%20Image%20Service" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<button onclick="saveServiceSub('AIImage')" class="w-full bg-purple-600 py-2 rounded font-bold mt-2">Save AI Image Subscribe</button>
+</div>
+</div>
+<div class="card-box p-5 rounded-xl border-2 border-pink-500">
+<div class="flex justify-between items-center"><h3 class="font-black text-pink-400">🎬 AI Video Generation</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subAIVideoOn" checked onchange="toggleServiceSub('AIVideo')"> ON</label></div>
+<div class="mt-3 space-y-2">
+<label class="text-xs">Button Text</label><input id="subAIVideoText" value="Subscribe AI Video — From ₦20K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs">Client Contact No</label><input id="subAIVideoPhone" placeholder="Client Contact No" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<label class="text-xs">Price NGN / USD</label><div class="flex gap-2"><input id="subAIVideoPriceNGN" value="20000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subAIVideoPriceUSD" value="20" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
+<label class="text-xs">Payment Link</label><input id="subAIVideoLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20AI%20Video%20Service" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
+<button onclick="saveServiceSub('AIVideo')" class="w-full bg-pink-600 py-2 rounded font-bold mt-2">Save AI Video Subscribe</button>
+</div>
+</div>
+</div>
+<div class="card-box p-5 rounded-xl mt-6">
+<h3 class="font-bold">📋 All Subscribe Buttons Preview</h3>
+<div id="subscribePreview" class="mt-3 grid md:grid-cols-2 gap-2"></div>
+</div>
+</div>
+
+<div id="tab-global" class="tab hidden">
+<h2 class="text-2xl font-black">🏦 Bank + Flutterwave + Country Pricing</h2>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+<div class="card-box p-5 rounded-xl">
+<h3 class="font-bold">🏦 Bank Details — Blank</h3>
+<div class="space-y-2 mt-3">
+<label class="text-xs">BANK Name</label><input id="bankNameSet" placeholder="Leave blank" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<label class="text-xs">Account Name</label><input id="bankAccNameSet" value="Krishnyansh Zenova Peaks Ltd" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<label class="text-xs">Account Number</label><input id="bankAccNoSet" placeholder="Blank" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<button onclick="saveBank()" class="mt-2 w-full bg-yellow-400 text-black py-2 rounded font-bold">Save Bank</button>
+</div>
+</div>
+<div class="card-box p-5 rounded-xl">
+<h3 class="font-bold">💳 Flutterwave Global</h3>
+<div class="space-y-2 mt-3">
+<label class="text-xs">FLW Public Key</label><input id="flwKeySet" placeholder="FLWPUBK-XXXX — Add later" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<label class="text-xs">Secret</label><input id="flwSecretSet" placeholder="FLWSECK-..." type="password" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<button onclick="saveFlutter()" class="mt-2 w-full bg-[#f5a623] text-black py-2 rounded font-bold">Save Flutterwave</button>
+</div>
+</div>
+</div>
+</div>
+
+<div id="tab-invoice" class="tab hidden">
+<h2 class="text-2xl font-black">🧾 Invoice with Official Stamp BN:9701468</h2>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+<div class="card-box p-4 rounded-xl space-y-2">
+<input id="invClient" placeholder="Client Name *" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<input id="invCompany" placeholder="Company Name" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<input id="invCountry" placeholder="Country" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<input id="invService" placeholder="Service — GBP/Google Ads/AI Image/AI Video" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<input id="invAmount" type="number" placeholder="Amount *" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<select id="invCurrency" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><option value="NGN">NGN</option><option value="USD">USD</option><option value="GBP">GBP</option></select>
+<input id="invPhone" placeholder="Client WhatsApp" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
+<select id="invStatus" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><option>Paid</option><option>Pending</option><option>Verified</option></select>
+<button onclick="generateInvoice()" class="w-full bg-yellow-400 text-black font-black py-3 rounded-lg">Generate Invoice with Stamp</button>
+<button id="sendInvBtn" onclick="sendInvoice()" class="w-full bg-green-600 font-bold py-3 rounded-lg hidden mt-2">Send WhatsApp</button>
+</div>
+<div class="card-box p-4 rounded-xl">
+<h3 class="font-bold text-sm">Preview — With Stamp</h3>
+<div class="bg-white text-black p-4 rounded mt-2 text-xs">
+<p><b>Invoice:</b> <span id="prevInvNo">ZP-000000</span></p>
+<p><b>Bill To:</b> <span id="prevClient">Client</span></p>
+<p><b>Service:</b> <span id="prevService">GBP/Google/AI</span></p>
+<p><b>Amount:</b> <span id="prevAmount">0</span> <span id="prevCurrency">NGN</span></p>
+<div class="flex justify-between items-end mt-4">
+<div><p class="text-[10px]">Ruby Garg</p><p class="text-[10px]">RC 9810296 BN:9701468</p></div>
+<img id="prevStamp" src="./stamp_400.png" class="w-24 h-24 object-contain">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="tab-forms" class="tab hidden"><h2 class="text-xl font-black">Forms & Subs</h2><div id="formsList" class="mt-3"></div><div id="allSubsAdmin" class="mt-6"></div></div>
+
+<div id="tab-settings" class="tab hidden">
+<h2 class="text-xl font-black">Settings — Password + Stamp</h2>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+<div class="card-box p-4 rounded space-y-2">
+<h3 class="font-bold text-sm">Password 2026</h3>
+<input id="newPass" type="password" placeholder="New Password" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="confirmPass" type="password" placeholder="Confirm" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><button onclick="changePassword()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Update</button>
+<div class="pt-3 border-t border-slate-700 mt-3"><p class="text-xs">Bank: <span id="curBank"></span></p><p class="text-xs">Flutterwave: <span id="curFlw"></span></p></div>
+</div>
+<div class="card-box p-4 rounded space-y-2">
+<h3 class="font-bold text-sm">Official Stamp Control</h3>
+<img id="settingsStamp" src="./stamp_400.png" class="w-32 h-32 mx-auto bg-white rounded-full p-2">
+<p class="text-[10px] text-center">BN: 9701468 • Verified Lagos</p>
+<label class="text-xs">Upload New Stamp</label><input type="file" id="stampUpload" accept="image/*" onchange="uploadStamp(this)" class="w-full text-xs">
+<button onclick="resetStamp()" class="w-full bg-slate-700 py-2 rounded text-xs mt-2">Reset to Default</button>
+</div>
+</div>
+</div>
+
+</main>
+</div>
+</div>
+
 <script>
-function lockAdmin(){localStorage.removeItem("zenova_admin_logged");location.href="./admin-login.html";}
-function showTab(id){document.querySelectorAll(".tab").forEach(t=>t.classList.add("hidden"));document.getElementById("tab-"+id).classList.remove("hidden");}
-function initAdmin(){loadServices();loadGallery();loadAbout();loadSubBtn();loadClients();loadForms();}
-function updateStats(){}
-const defaultServices=[{title:"Business Consultancy",price:"₦30,000"},{title:"AI Automation",price:"From ₦55K"},{title:"GBP Maps",price:"₦35,000"},{title:"Google Ads",price:"From ₦70K"},{title:"Branding",price:"From ₦50K"},{title:"Website Dev",price:"From ₦120K"},{title:"AI Video",price:"₦15,000"},{title:"CAC",price:"From ₦60K"},{title:"SCUML",price:"₦15K"},{title:"SMEDAN",price:"₦10K"}];
-function loadServices(){let s=JSON.parse(localStorage.getItem("zenova_services")||JSON.stringify(defaultServices));let list=document.getElementById("servicesList");list.innerHTML="";s.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded flex gap-2"><input value="${it.title}" onchange="editService(${i},'title',this.value)" class="flex-1 p-1 rounded bg-slate-900 border border-slate-700 text-sm"><input value="${it.price}" onchange="editService(${i},'price',this.value)" class="w-24 p-1 rounded bg-slate-900 border border-slate-700 text-sm"><button onclick="deleteService(${i})" class="bg-red-700 px-2 rounded">x</button></div>`;});}
-function editService(i,k,v){let s=JSON.parse(localStorage.getItem("zenova_services")||JSON.stringify(defaultServices));s[i][k]=v;localStorage.setItem("zenova_services",JSON.stringify(s));}
-function deleteService(i){let s=JSON.parse(localStorage.getItem("zenova_services"));s.splice(i,1);localStorage.setItem("zenova_services",JSON.stringify(s));loadServices();}
-function addService(){let s=JSON.parse(localStorage.getItem("zenova_services")||JSON.stringify(defaultServices));s.push({title:"New",price:"₦0"});localStorage.setItem("zenova_services",JSON.stringify(s));loadServices();}
-function saveServices(){alert("Saved!");}
-function loadGallery(){let g=JSON.parse(localStorage.getItem("zenova_gallery")||"[]");if(g.length===0)g=[{title:"Tech Setup",img:"founder.jpg"}];let list=document.getElementById("galleryList");list.innerHTML="";g.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded"><img src="./${it.img}" class="w-full h-20 object-cover rounded mb-1" onerror="this.src='https://via.placeholder.com/150'"><input value="${it.title}" onchange="editGallery(${i},'title',this.value)" class="w-full p-1 text-xs rounded bg-slate-900 border border-slate-700"><input value="${it.img}" onchange="editGallery(${i},'img',this.value)" class="w-full p-1 text-[10px] rounded bg-slate-900 border border-slate-700 mt-1"><button onclick="deleteGallery(${i})" class="mt-1 bg-red-700 px-2 py-1 rounded text-xs">Del</button></div>`;});localStorage.setItem("zenova_gallery",JSON.stringify(g));}
-function editGallery(i,k,v){let g=JSON.parse(localStorage.getItem("zenova_gallery"));g[i][k]=v;localStorage.setItem("zenova_gallery",JSON.stringify(g));}
-function deleteGallery(i){let g=JSON.parse(localStorage.getItem("zenova_gallery"));g.splice(i,1);localStorage.setItem("zenova_gallery",JSON.stringify(g));loadGallery();}
-function addGallery(){let t=document.getElementById("newGalleryTitle").value;let img=document.getElementById("newGalleryImg").value;if(!t||!img){alert("Enter");return;}let g=JSON.parse(localStorage.getItem("zenova_gallery"));g.push({title:t,img:img});localStorage.setItem("zenova_gallery",JSON.stringify(g));loadGallery();}
-function loadAbout(){document.getElementById("aboutImg").value=localStorage.getItem("zenova_about_img")||"founder.jpg";document.getElementById("aboutName").value=localStorage.getItem("zenova_about_name")||"Ruby Garg";document.getElementById("aboutText").value=localStorage.getItem("zenova_about_text")||"Founder & CEO";}
-function saveAbout(){localStorage.setItem("zenova_about_img",document.getElementById("aboutImg").value);localStorage.setItem("zenova_about_name",document.getElementById("aboutName").value);localStorage.setItem("zenova_about_text",document.getElementById("aboutText").value);alert("Saved! Photo = "+document.getElementById("aboutImg").value);}
-function loadSubBtn(){let s=localStorage.getItem("zenova_sub_show");if(s!==null)document.getElementById("subBtnToggle").checked=s==="1";document.getElementById("subBtnText").value=localStorage.getItem("zenova_sub_text")||"Subscribe Now";document.getElementById("subBtnLink").value=localStorage.getItem("zenova_sub_link")||"https://wa.me/2349067862223";}
-function toggleSubBtn(){localStorage.setItem("zenova_sub_show",document.getElementById("subBtnToggle").checked?"1":"0");}
-function saveSubBtn(){localStorage.setItem("zenova_sub_text",document.getElementById("subBtnText").value);localStorage.setItem("zenova_sub_link",document.getElementById("subBtnLink").value);localStorage.setItem("zenova_sub_show",document.getElementById("subBtnToggle").checked?"1":"0");alert("Saved");}
-function loadClients(){let c=JSON.parse(localStorage.getItem("zenova_clients")||"[]");let list=document.getElementById("clientsList");list.innerHTML="";c.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded flex justify-between"><span>${it.name} ${it.active?'●':'○'} ${it.phone}</span><span><input type="checkbox" ${it.active?'checked':''} onchange="toggleClient(${i})"> <button onclick="deleteClient(${i})" class="bg-red-700 px-2 rounded ml-2">x</button></span></div>`;});}
-function addClient(){let n=document.getElementById("clientName").value;let p=document.getElementById("clientPhone").value;if(!n)return;let c=JSON.parse(localStorage.getItem("zenova_clients")||"[]");c.push({name:n,phone:p,active:true});localStorage.setItem("zenova_clients",JSON.stringify(c));loadClients();}
-function toggleClient(i){let c=JSON.parse(localStorage.getItem("zenova_clients"));c[i].active=!c[i].active;localStorage.setItem("zenova_clients",JSON.stringify(c));loadClients();}
-function deleteClient(i){let c=JSON.parse(localStorage.getItem("zenova_clients"));c.splice(i,1);localStorage.setItem("zenova_clients",JSON.stringify(c));loadClients();}
-function loadForms(){let l=JSON.parse(localStorage.getItem("zenova_leads")||"[]");let list=document.getElementById("formsList");list.innerHTML=l.length? "": "<p class='text-sm text-slate-500'>No leads</p>";l.forEach((it,i)=>{list.innerHTML+=`<div class="card-box p-2 rounded"><b>${it.name||'Unknown'} - ${it.service||''}</b><p class="text-xs">${it.phone||''}</p><button onclick="autoReply(${i})" class="bg-green-600 px-2 py-1 rounded text-xs mt-1">WhatsApp Reply</button></div>`;});}
-function clearForms(){if(confirm("Clear?")){localStorage.removeItem("zenova_leads");loadForms();}}
-function saveAutoReply(){localStorage.setItem("zenova_auto_reply",document.getElementById("autoReplyMsg").value);alert("Saved");}
-function autoReply(i){let l=JSON.parse(localStorage.getItem("zenova_leads"));let lead=l[i];let tpl=localStorage.getItem("zenova_auto_reply")||"Hello {name}!";let msg=tpl.replace("{name}",lead.name||"there").replace("{service}",lead.service||"service");let ph=(lead.phone||"").replace(/\D/g,"");if(ph.startsWith("0"))ph="234"+ph.substring(1);window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`,"_blank");}
-let lastData=null;function generateInvoice(){let cl=document.getElementById("invClient").value;let sv=document.getElementById("invService").value;let am=document.getElementById("invAmount").value;let ph=document.getElementById("invPhone").value;let st=document.getElementById("invStatus").value;if(!cl||!am){alert("Enter client & amount");return;}let inv="ZP-"+Date.now().toString().slice(-6);lastData={client:cl,service:sv,amount:am,phone:ph,status:st,invNo:inv};let {jsPDF}=window.jspdf;let doc=new jsPDF();doc.text("INVOICE - Krishnyansh Zenova Peaks Ltd RC 9810296",20,20);doc.text(`Invoice: ${inv} Date: ${new Date().toLocaleDateString()}`,20,30);doc.text(`Bill To: ${cl}`,20,40);doc.text(`Service: ${sv}`,20,46);doc.text(`Amount: NGN ${am} Status: ${st}`,20,52);doc.save(inv+".pdf");document.getElementById("sendInvBtn").classList.remove("hidden");}
-function sendInvoice(){if(!lastData)return;let ph=lastData.phone.replace(/\D/g,"");if(ph.startsWith("0"))ph="234"+ph.substring(1);let msg=`Hello ${lastData.client}! Invoice ${lastData.invNo} for ${lastData.service} NGN ${lastData.amount} ${lastData.status} - Zenova RC 9810296`;window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msg)}`,"_blank");}
-function changePassword(){let np=document.getElementById("newPass").value;let cp=document.getElementById("confirmPass").value;if(!np||np!==cp){alert("No match");return;}localStorage.setItem("zenova_admin_pass",np);alert("Changed to "+np);}
-document.addEventListener("DOMContentLoaded",initAdmin);
+const DEFAULT_PASS="Zenova@2026";
+const DEFAULT_STAMP="./stamp_400.png";
+let STAMP_B64=localStorage.getItem('zenova_stamp_b64')||DEFAULT_STAMP;
+function unlockAdmin(){
+  const p=document.getElementById('adminPass').value.trim();
+  const saved=localStorage.getItem('zenova_admin_pass')||DEFAULT_PASS;
+  if(p===saved||p===DEFAULT_PASS){localStorage.setItem('zenova_admin_logged','1');document.getElementById('lockScreen').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');initAdmin();}
+  else{document.getElementById('lockMsg').classList.remove('hidden');}
+}
+function lockAdmin(){localStorage.removeItem('zenova_admin_logged');location.reload();}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');}
+function initAdmin(){loadClients();loadGlobalSubs();updateStats();loadSettings();loadBankFlw();loadForms();loadStamp();loadServiceSubs();}
+function updateStats(){
+  const clients=JSON.parse(localStorage.getItem('zenova_clients')||'[]');
+  const subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]');
+  const all=[...clients,...subs];
+  document.getElementById('statClients').innerText=all.length;
+  document.getElementById('statSubs').innerText=subs.length;
+  const countries=new Set(all.map(c=>c.country||c.location||'Unknown').filter(Boolean));
+  document.getElementById('statCountries').innerText=countries.size;
+  const rev=all.reduce((s,c)=>s+(parseInt(c.amount)||0),0);
+  document.getElementById('statRevenue').innerText='₦'+rev.toLocaleString();
+  let map={}; all.forEach(c=>{const co=c.country||c.location||'Unknown'; map[co]=(map[co]||0)+1;});
+  let html='<h3 class="font-bold text-sm mb-2">🌍 Clients by Country</h3><div class="flex flex-wrap gap-2">'; for(let k in map){html+='<span class="bg-slate-800 px-3 py-1 rounded-full text-xs">'+k+': '+map[k]+'</span>';} html+='</div>'; document.getElementById('countryBreakdown').innerHTML=html;
+  document.getElementById('statForms').innerText=JSON.parse(localStorage.getItem('zenova_leads')||'[]').length;
+  loadSubscribeStatus();
+}
+function loadSubscribeStatus(){
+  const services=['GBP','GoogleAds','AIImage','AIVideo'];
+  let html=''; services.forEach(s=>{
+    const on=localStorage.getItem('sub_'+s+'_on')||'1';
+    const phone=localStorage.getItem('sub_'+s+'_phone')||'Not set';
+    html+='<p>• '+s+': '+(on==='1'?'✅ ON':'❌ OFF')+' | Contact: '+phone+'</p>';
+  });
+  document.getElementById('subscribeStatus').innerHTML=html;
+}
+function addClient(){
+  const name=document.getElementById('clientName').value;
+  const phone=document.getElementById('clientPhone').value;
+  const company=document.getElementById('clientCompany').value||name;
+  const country=document.getElementById('clientCountry').value||'Nigeria';
+  if(!name||!phone){alert('Enter Name and Contact No');return;}
+  let clients=JSON.parse(localStorage.getItem('zenova_clients')||'[]');
+  clients.push({name:name,phone:phone,company:company,country:country,plan:'Starter',active:true,date:new Date().toLocaleDateString(),subscribeOn:true});
+  localStorage.setItem('zenova_clients',JSON.stringify(clients));
+  alert('Client Added with Subscribe ON — Contact: '+phone);
+  loadClients(); updateStats();
+  document.getElementById('clientName').value=''; document.getElementById('clientPhone').value='';
+}
+function loadClients(){
+  let clients=JSON.parse(localStorage.getItem('zenova_clients')||'[]');
+  const fc=document.getElementById('filterCountry')?document.getElementById('filterCountry').value:'';
+  const fp=document.getElementById('filterPlan')?document.getElementById('filterPlan').value:'';
+  const sq=document.getElementById('searchClient')?document.getElementById('searchClient').value.toLowerCase():'';
+  let filtered=clients.filter(c=>{
+    if(fc && (c.country||'')!==fc) return false;
+    if(fp && c.plan!==fp) return false;
+    if(sq &&!((c.name||'')+(c.company||'')+(c.country||'')).toLowerCase().includes(sq)) return false;
+    return true;
+  });
+  const list=document.getElementById('clientsList'); if(!list) return; list.innerHTML='';
+  filtered.forEach((c,i)=>{
+    list.innerHTML+='<div class="card-box p-3 rounded flex justify-between items-center"><div><p class="font-bold">'+(c.name||c.company)+' <span class="text-[10px] bg-slate-700 px-2 py-1 rounded">'+(c.country||'No Country')+'</span> <span class="text-[10px] bg-yellow-400 text-black px-2 py-1 rounded ml-1">'+(c.plan||'Pending')+'</span> '+(c.subscribeOn?'✅ Subscribe ON':'')+'</p><p class="text-xs text-slate-400">📞 '+(c.phone||'')+' | '+(c.company||'')+'</p></div><div class="flex gap-1"><button onclick="toggleSubscribe('+i+')" class="bg-yellow-400 text-black px-2 py-1 rounded text-xs">'+(c.subscribeOn?'ON':'OFF')+'</button><button onclick="deleteClient('+i+')" class="bg-red-700 px-2 py-1 rounded text-xs">x</button></div></div>';
+  });
+}
+function toggleSubscribe(i){let c=JSON.parse(localStorage.getItem('zenova_clients')); c[i].subscribeOn=!c[i].subscribeOn; localStorage.setItem('zenova_clients',JSON.stringify(c)); loadClients();}
+function deleteClient(i){let c=JSON.parse(localStorage.getItem('zenova_clients')); c.splice(i,1); localStorage.setItem('zenova_clients',JSON.stringify(c)); loadClients(); updateStats();}
+function loadGlobalSubs(){
+  const subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]');
+  const list=document.getElementById('subsList'); if(!list) return; list.innerHTML='';
+  if(subs.length===0){list.innerHTML='<p class="text-xs text-slate-500">No global subscriptions yet</p>'; return;}
+  subs.forEach((s,i)=>{
+    list.innerHTML+='<div class="card-box p-3 rounded text-xs"><p class="font-bold">'+(s.company||s.name)+' — '+(s.country||'No Country')+' — '+s.plan+' — '+(s.currency||'NGN')+' '+(s.amount||s.usd)+'</p><p>'+(s.phone||'')+' | '+(s.nature||'')+'</p><div class="mt-2 flex gap-1"><button onclick="approveSub('+i+')" class="bg-green-600 px-2 py-1 rounded">Approve</button><button onclick="deleteSub('+i+')" class="bg-red-700 px-2 py-1 rounded">Del</button></div></div>';
+  });
+}
+function approveSub(i){let subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')); subs[i].status='Approved'; localStorage.setItem('altra_all_subscriptions',JSON.stringify(subs)); alert('Approved'); loadGlobalSubs();}
+function deleteSub(i){let subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')); subs.splice(i,1); localStorage.setItem('altra_all_subscriptions',JSON.stringify(subs)); loadGlobalSubs(); updateStats();}
+function toggleServiceSub(service){const on=document.getElementById('sub'+service+'On').checked?'1':'0'; localStorage.setItem('sub_'+service+'_on',on); loadSubscribeStatus(); loadServicePreview();}
+function saveServiceSub(service){
+  const text=document.getElementById('sub'+service+'Text').value;
+  const phone=document.getElementById('sub'+service+'Phone').value;
+  const priceNGN=document.getElementById('sub'+service+'PriceNGN').value;
+  const priceUSD=document.getElementById('sub'+service+'PriceUSD').value;
+  const link=document.getElementById('sub'+service+'Link').value;
+  localStorage.setItem('sub_'+service+'_text',text);
+  localStorage.setItem('sub_'+service+'_phone',phone);
+  localStorage.setItem('sub_'+service+'_priceNGN',priceNGN);
+  localStorage.setItem('sub_'+service+'_priceUSD',priceUSD);
+  localStorage.setItem('sub_'+service+'_link',link);
+  alert(service+' Subscribe Button Saved! Contact: '+phone);
+  loadServicePreview(); loadSubscribeStatus();
+}
+function loadServiceSubs(){
+  const services=['GBP','GoogleAds','AIImage','AIVideo'];
+  services.forEach(s=>{
+    const on=localStorage.getItem('sub_'+s+'_on'); if(on!==null) document.getElementById('sub'+s+'On').checked=on==='1';
+    const text=localStorage.getItem('sub_'+s+'_text'); if(text) document.getElementById('sub'+s+'Text').value=text;
+    const phone=localStorage.getItem('sub_'+s+'_phone'); if(phone) document.getElementById('sub'+s+'Phone').value=phone;
+    const pNGN=localStorage.getItem('sub_'+s+'_priceNGN'); if(pNGN) document.getElementById('sub'+s+'PriceNGN').value=pNGN;
+    const pUSD=localStorage.getItem('sub_'+s+'_priceUSD'); if(pUSD) document.getElementById('sub'+s+'PriceUSD').value=pUSD;
+    const link=localStorage.getItem('sub_'+s+'_link'); if(link) document.getElementById('sub'+s+'Link').value=link;
+  });
+  loadServicePreview();
+}
+function loadServicePreview(){
+  const services=['GBP','GoogleAds','AIImage','AIVideo'];
+  const preview=document.getElementById('subscribePreview'); if(!preview) return;
+  preview.innerHTML='';
+  services.forEach(s=>{
+    const on=localStorage.getItem('sub_'+s+'_on')||'1';
+    if(on!=='1') return;
+    const text=localStorage.getItem('sub_'+s+'_text')||'Subscribe '+s;
+    const phone=localStorage.getItem('sub_'+s+'_phone')||'2349067862223';
+    const price=localStorage.getItem('sub_'+s+'_priceNGN')||'';
+    preview.innerHTML+='<div class="bg-slate-800 p-3 rounded"><p class="text-xs font-bold">'+s+' — 📞 '+phone+'</p><a href="https://wa.me/'+phone.replace(/\D/g,'')+'?text=Hi%20I%20want%20'+s+'" target="_blank" class="mt-2 inline-block bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs">'+text+' — ₦'+price+'</a></div>';
+  });
+}
+function saveBank(){localStorage.setItem('zenova_bank_name',document.getElementById('bankNameSet').value); localStorage.setItem('zenova_bank_acc_name',document.getElementById('bankAccNameSet').value); localStorage.setItem('zenova_bank_acc_no',document.getElementById('bankAccNoSet').value); alert('Bank Saved'); loadBankFlw();}
+function saveFlutter(){localStorage.setItem('zenova_flw_key',document.getElementById('flwKeySet').value); localStorage.setItem('zenova_flw_secret',document.getElementById('flwSecretSet').value); alert('Flutterwave Saved'); loadBankFlw();}
+function loadBankFlw(){const bn=document.getElementById('bankNameSet'); if(!bn) return; bn.value=localStorage.getItem('zenova_bank_name')||''; document.getElementById('bankAccNameSet').value=localStorage.getItem('zenova_bank_acc_name')||'Krishnyansh Zenova Peaks Ltd'; document.getElementById('bankAccNoSet').value=localStorage.getItem('zenova_bank_acc_no')||''; document.getElementById('flwKeySet').value=localStorage.getItem('zenova_flw_key')||''; const cb=document.getElementById('curBank'); if(cb) cb.innerText=(localStorage.getItem('zenova_bank_name')||'Blank')+' | '+(localStorage.getItem('zenova_bank_acc_no')||'Blank'); const cf=document.getElementById('curFlw'); if(cf) cf.innerText=localStorage.getItem('zenova_flw_key')?'Set':'Blank';}
+function loadStamp(){const stamp=localStorage.getItem('zenova_stamp_b64')||DEFAULT_STAMP; STAMP_B64=stamp; ['adminStampPreview','prevStamp','settingsStamp'].forEach(id=>{const el=document.getElementById(id); if(el) el.src=stamp;});}
+function uploadStamp(input){const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(e){const b64=e.target.result; localStorage.setItem('zenova_stamp_b64',b64); STAMP_B64=b64; loadStamp(); alert('Stamp Uploaded!');}; reader.readAsDataURL(file);}
+function resetStamp(){localStorage.removeItem('zenova_stamp_b64'); STAMP_B64=DEFAULT_STAMP; loadStamp(); alert('Reset to default BN:9701468');}
+function loadForms(){let leads=JSON.parse(localStorage.getItem('zenova_leads')||'[]'); const el=document.getElementById('formsList'); if(!el) return; el.innerHTML=leads.length? leads.map(l=>'<div class="card-box p-2 rounded text-xs">'+l.name+' — '+l.service+'</div>').join('') : '<p class="text-xs">No leads</p>';}
+function exportSiteData(){const data={clients:JSON.parse(localStorage.getItem('zenova_clients')||'[]'),subs:JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]'),bank:{name:localStorage.getItem('zenova_bank_name'),acc_no:localStorage.getItem('zenova_bank_acc_no')},subscribe:{GBP:{on:localStorage.getItem('sub_GBP_on'),phone:localStorage.getItem('sub_GBP_phone')},GoogleAds:{on:localStorage.getItem('sub_GoogleAds_on'),phone:localStorage.getItem('sub_GoogleAds_phone')},AIImage:{on:localStorage.getItem('sub_AIImage_on'),phone:localStorage.getItem('sub_AIImage_phone')},AIVideo:{on:localStorage.getItem('sub_AIVideo_on'),phone:localStorage.getItem('sub_AIVideo_phone')}}}; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='zenova-global-with-subscribe.json'; a.click();}
+function changePassword(){const np=document.getElementById('newPass').value; const cp=document.getElementById('confirmPass').value; if(!np||np!==cp){alert('No match');return;} localStorage.setItem('zenova_admin_pass',np); alert('Changed to '+np);}
+let lastInvoiceData=null;
+function generateInvoice(){
+  const client=document.getElementById('invClient').value;
+  const company=document.getElementById('invCompany').value||client;
+  const country=document.getElementById('invCountry').value||'Nigeria';
+  const service=document.getElementById('invService').value;
+  const amount=document.getElementById('invAmount').value;
+  const currency=document.getElementById('invCurrency').value;
+  const phone=document.getElementById('invPhone').value;
+  const status=document.getElementById('invStatus').value;
+  if(!client||!amount){alert('Enter client and amount');return;}
+  const invNo="ZP-"+Date.now().toString().slice(-6);
+  const date=new Date().toLocaleDateString();
+  document.getElementById('prevInvNo').innerText=invNo;
+  document.getElementById('prevDate').innerText=date;
+  lastInvoiceData={client,company,country,service,amount,currency,phone,status,invNo,date};
+  const {jsPDF}=window.jspdf; const doc=new jsPDF();
+  doc.setFontSize(18); doc.text("INVOICE",105,20,{align:"center"});
+  doc.setFontSize(11);
+  doc.text("Krishnyansh Zenova Peaks Ltd",20,30);
+  doc.text("RC 9810296 | Tech Hub BN: 9701468",20,36);
+  doc.text("Verified Lagos Nigeria | +2349067862223",20,42);
+  doc.text("Invoice #: "+invNo,20,52); doc.text("Date: "+date,20,58); doc.text("Status: "+status,20,64);
+  doc.text("Bill To: "+client,20,76); doc.text("Company: "+company+" | Country: "+country,20,82);
+  doc.text("Service: "+service,20,88); doc.text("Amount: "+currency+" "+amount,20,94);
+  doc.text("Thank you!",20,110); doc.text("Founder: Ruby Garg",20,116);
+  try{doc.addImage(STAMP_B64,'PNG',125,90,65,65);}catch(e){console.log(e);}
+  doc.save(invNo+"_"+client.replace(/\s/g,"_")+"_"+country+".pdf");
+  document.getElementById('sendInvBtn').classList.remove('hidden');
+}
+function sendInvoice(){if(!lastInvoiceData){alert('Generate first');return;} let phone=(lastInvoiceData.phone||'').replace(/\D/g,''); if(phone.startsWith('0')) phone='234'+phone.substring(1); const msg="Hello "+lastInvoiceData.client+"! Invoice "+lastInvoiceData.invNo+" for "+lastInvoiceData.service+" — Amount: "+lastInvoiceData.currency+" "+lastInvoiceData.amount+" — Company: "+lastInvoiceData.company+" ("+lastInvoiceData.country+") — Status: "+lastInvoiceData.status+" — Stamp BN:9701468 — Zenova RC 9810296 — Ruby Garg"; window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg),'_blank');}
+if(localStorage.getItem('zenova_admin_logged')==='1'){document.getElementById('lockScreen').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');initAdmin();}
 </script>
 </body>
 </html>
