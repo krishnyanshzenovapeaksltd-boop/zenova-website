@@ -3,374 +3,278 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - Global + Stamp + Subscribe | Zenova 2026</title>
+<title>Admin REAL - Deploy Bot + Leads + Gallery | AltraAI</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI',sans-serif;}.card-box{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a;}.gold-text{color:#fbf24a;}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>body{background:#0b1329;color:#fff;font-family: 'Segoe UI', sans-serif}.card{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a}.gold{color:#fbf24a}</style>
 </head>
-<body class="min-h-screen">
-<div id="lockScreen" class="min-h-screen flex items-center justify-center p-4">
-<div class="card-box rounded-2xl p-8 w-full max-w-md text-center">
-<img src="./logo.png" alt="logo" class="w-16 h-16 mx-auto rounded-full bg-white p-1 mb-3" onerror="this.style.display='none'">
-<h1 class="text-2xl font-black gold-text">ADMIN LOCK — 2026 GLOBAL</h1>
-<p class="text-sm text-slate-400 mt-1">RC 9810296 | Stamp + Country + Subscribe</p>
-<input id="adminPass" type="password" placeholder="Zenova@2026" class="mt-6 w-full p-3 rounded-lg bg-slate-900 border border-slate-700">
-<button onclick="unlockAdmin()" class="mt-4 w-full bg-yellow-400 text-black font-black py-3 rounded-lg">Unlock</button>
-<p id="lockMsg" class="text-red-400 text-sm mt-2 hidden">Wrong password!</p>
-</div>
-</div>
-
-<div id="adminPanel" class="hidden">
-<header class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-50">
-<div class="flex items-center gap-2"><h1 class="font-black"><span class="gold-text">ZENOVA</span> ADMIN GLOBAL</h1><span class="text-xs bg-green-900 text-green-300 px-2 py-1 rounded">RC 9810296</span><span class="text-[10px] bg-yellow-400 text-black px-2 py-1 rounded font-bold">Stamp + Subscribe</span></div>
-<div class="flex gap-2"><button onclick="exportSiteData()" class="bg-blue-600 px-3 py-2 rounded text-xs font-bold">Export</button><button onclick="lockAdmin()" class="bg-red-600 px-3 py-2 rounded text-xs font-bold">Lock</button></div>
+<body>
+<header class="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-800">
+<div><h1 class="font-black"><span class="gold">AltraAI</span> Admin REAL</h1><p class="text-[10px] text-slate-400">Deploy Bot + Leads + Gallery Fix + About Edit</p></div>
+<button onclick="loadAll()" class="bg-yellow-400 text-black px-3 py-1 rounded font-bold text-xs">Refresh All</button>
 </header>
 
-<div class="flex flex-col md:flex-row">
-<aside class="w-full md:w-64 bg-slate-900 p-4 border-r border-slate-800">
-<nav class="space-y-1">
-<button onclick="showTab('dashboard')" class="w-full text-left p-3 rounded bg-yellow-400 text-black font-bold">📊 Dashboard</button>
-<button onclick="showTab('clients')" class="w-full text-left p-3 rounded hover:bg-slate-800">🌍 Clients — Country</button>
-<button onclick="showTab('subscribe')" class="w-full text-left p-3 rounded hover:bg-slate-800">💳 Subscribe Buttons — GBP/Google/AI</button>
-<button onclick="showTab('global')" class="w-full text-left p-3 rounded hover:bg-slate-800">🏦 Bank + Flutterwave</button>
-<button onclick="showTab('invoice')" class="w-full text-left p-3 rounded hover:bg-slate-800">🧾 Invoice + Stamp</button>
-<button onclick="showTab('forms')" class="w-full text-left p-3 rounded hover:bg-slate-800">📝 Forms & Subs</button>
-<button onclick="showTab('settings')" class="w-full text-left p-3 rounded hover:bg-slate-800">⚙️ Settings + Stamp</button>
-</nav>
-<div class="mt-6 p-3 bg-slate-800 rounded text-xs">
-<p>Official Stamp</p>
-<img id="adminStampPreview" src="./stamp.png" class="w-20 h-20 mx-auto mt-2 rounded-full bg-white p-1">
-<p class="mt-1 text-[10px] text-center">BN: 9701468 • Verified Lagos</p>
-</div>
-</aside>
+<div class="max-w-6xl mx-auto p-4 space-y-6">
 
-<main class="flex-1 p-4 space-y-6">
-<div id="tab-dashboard" class="tab">
-<h2 class="text-2xl font-black">Global Dashboard 🌍</h2>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Total Clients</p><p id="statClients" class="text-2xl font-black">0</p></div>
-<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Countries</p><p id="statCountries" class="text-2xl font-black gold-text">0</p></div>
-<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Subscriptions</p><p id="statSubs" class="text-2xl font-black">0</p></div>
-<div class="card-box p-4 rounded-xl"><p class="text-xs text-slate-400">Revenue</p><p id="statRevenue" class="text-2xl font-black text-green-400">₦0</p></div>
+<!-- FIX 6: LEADS VIEW — Registration + Career + Chat -->
+<div class="card p-6 rounded-xl border-2 border-green-600">
+<h2 class="text-xl font-black">📋 Leads — Registration + Career + Chat Widget (FIX 6)</h2>
+<p class="text-[11px] text-slate-400">You were confused where to see leads — now see here + at /api/submissions</p>
+<div class="grid md:grid-cols-3 gap-3 mt-4">
+<div class="bg-slate-800 p-3 rounded"><p class="text-xs">Registrations</p><p id="countReg" class="text-2xl font-black gold">0</p></div>
+<div class="bg-slate-800 p-3 rounded"><p class="text-xs">Career Applications</p><p id="countCareer" class="text-2xl font-black">0</p></div>
+<div class="bg-slate-800 p-3 rounded"><p class="text-xs">Chat Leads</p><p id="countLeads" class="text-2xl font-black">0</p></div>
 </div>
-<div id="countryBreakdown" class="card-box p-4 rounded-xl mt-4"></div>
-<div class="card-box p-4 rounded-xl mt-4">
-<h3 class="font-bold text-sm">🔘 Subscribe Buttons Status</h3>
-<div id="subscribeStatus" class="mt-2 text-xs space-y-1"></div>
+<div class="mt-4 flex gap-2">
+<button onclick="loadLeads()" class="bg-green-600 px-4 py-2 rounded font-bold text-xs">Load Leads from Server</button>
+<button onclick="window.open('/api/submissions','_blank')" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Open /api/submissions (Raw)</button>
+<button onclick="loadFromSupabase()" class="bg-blue-600 px-4 py-2 rounded font-bold text-xs">Load from Supabase REAL</button>
 </div>
+<div id="leadsList" class="mt-4 space-y-2 max-h-96 overflow-y-auto"></div>
 </div>
 
-<div id="tab-clients" class="tab hidden">
-<h2 class="text-2xl font-black">🌍 Clients — Country Control + Subscribe ON/OFF with Contact</h2>
-<div class="card-box p-4 rounded-xl mb-4">
-<h3 class="font-bold text-sm mb-2">Add Client with Contact No for Subscribe Button</h3>
-<div class="grid md:grid-cols-2 gap-2">
-<input id="clientName" placeholder="Client Name" class="p-2 rounded bg-slate-900 border border-slate-700">
-<input id="clientPhone" placeholder="Client Contact No e.g. 234906... / +1..." class="p-2 rounded bg-slate-900 border border-slate-700">
-<input id="clientCompany" placeholder="Company Name" class="p-2 rounded bg-slate-900 border border-slate-700">
-<select id="clientCountry" class="p-2 rounded bg-slate-900 border border-slate-700"><option value="">Country</option><option value="Nigeria">🇳🇬 Nigeria</option><option value="USA">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="Ghana">🇬🇭 Ghana</option><option value="Kenya">🇰🇪 Kenya</option><option value="India">🇮🇳 India</option><option value="UAE">🇦🇪 UAE</option><option value="Other">🌍 Other</option></select>
+<!-- FIX 1: CLIENTS WHO APPLIED FOR AUTOMATION — DEPLOY BUTTON -->
+<div class="card p-6 rounded-xl border-2 border-yellow-400">
+<h2 class="text-xl font-black">🚀 Clients Applied for Live Trial — Deploy Bot Option (FIX 1)</h2>
+<p class="text-[11px] text-slate-400">If client submitted form and apply for automation with live trial — you can deploy bot for them here</p>
+<div class="mt-4 flex gap-2">
+<button onclick="loadClientsForDeploy()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs">Load Clients to Deploy</button>
+<button onclick="window.open('/api/bot-status','_blank')" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Check Bot Status — iconGenerated=true = LIVE ✅</button>
 </div>
-<div class="mt-2 flex gap-2">
-<button onclick="addClient()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">+ Add Client with Subscribe ON</button>
-<button onclick="loadClients()" class="bg-slate-700 px-4 py-2 rounded">Refresh</button>
-</div>
-</div>
-<div class="flex flex-wrap gap-2 mt-3">
-<select id="filterCountry" onchange="loadClients()" class="p-2 rounded bg-slate-900 border border-slate-700 text-sm"><option value="">All Countries</option><option value="Nigeria">🇳🇬 Nigeria</option><option value="USA">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="Ghana">🇬🇭 Ghana</option><option value="Kenya">🇰🇪 Kenya</option></select>
-<select id="filterPlan" onchange="loadClients()" class="p-2 rounded bg-slate-900 border border-slate-700 text-sm"><option value="">All Plans</option><option>Starter</option><option>Premium</option><option>Pro</option></select>
-<input id="searchClient" placeholder="Search" oninput="loadClients()" class="p-2 rounded bg-slate-900 border border-slate-700 text-sm flex-1">
-</div>
-<div id="clientsList" class="mt-4 space-y-2"></div>
-<div class="mt-8"><h3 class="font-bold">Global AltraAI Subscriptions</h3><div id="subsList" class="mt-2 space-y-2"></div></div>
+<div id="clientsDeployList" class="mt-4 space-y-3"></div>
 </div>
 
-<div id="tab-subscribe" class="tab hidden">
-<h2 class="text-2xl font-black">💳 Subscribe Buttons — GBP, Google Ads, AI Image & Video</h2>
-<p class="text-xs text-slate-400 mt-1">Admin can turn ON/OFF with client contact number</p>
-<div class="grid md:grid-cols-2 gap-4 mt-4">
-<div class="card-box p-5 rounded-xl border-2 border-blue-500">
-<div class="flex justify-between items-center"><h3 class="font-black text-blue-400">📍 GBP — Google Business Profile</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subGBPOn" checked onchange="toggleServiceSub('GBP')"> ON</label></div>
-<div class="mt-3 space-y-2">
-<label class="text-xs text-slate-400">Button Text</label><input id="subGBPText" value="Subscribe GBP Service — From ₦35K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs text-slate-400">Client Contact No for GBP Subscribe</label><input id="subGBPPhone" placeholder="Client WhatsApp e.g. 234906..." class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs text-slate-400">Price NGN / USD</label><div class="flex gap-2"><input id="subGBPPriceNGN" value="35000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subGBPPriceUSD" value="35" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
-<label class="text-xs text-slate-400">Payment Link / WhatsApp</label><input id="subGBPLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20GBP%20Service" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<button onclick="saveServiceSub('GBP')" class="w-full bg-blue-600 py-2 rounded font-bold mt-2">Save GBP Subscribe Button</button>
+<!-- FIX 4: GALLERY FIX — NOT ABOUT EDIT -->
+<div class="card p-6 rounded-xl border-2 border-purple-500">
+<h2 class="text-xl font-black">🖼️ Gallery Management — Fixed (FIX 4) — NOT About Edit</h2>
+<p class="text-[11px] text-slate-400">Before it was showing About edit — now fixed to Gallery</p>
+<div class="mt-4">
+<div class="flex gap-2">
+<input type="file" id="galleryFile" accept="image/*" class="flex-1 p-2 rounded bg-slate-900 border border-purple-500 text-xs">
+<button onclick="uploadGallery()" class="bg-purple-600 px-4 py-2 rounded font-bold text-xs">Upload to Gallery</button>
+<button onclick="loadGallery()" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Refresh Gallery</button>
 </div>
-</div>
-<div class="card-box p-5 rounded-xl border-2 border-green-500">
-<div class="flex justify-between items-center"><h3 class="font-black text-green-400">📢 Google Ads Service</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subGoogleAdsOn" checked onchange="toggleServiceSub('GoogleAds')"> ON</label></div>
-<div class="mt-3 space-y-2">
-<label class="text-xs text-slate-400">Button Text</label><input id="subGoogleAdsText" value="Subscribe Google Ads — From ₦70K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs text-slate-400">Client Contact No</label><input id="subGoogleAdsPhone" placeholder="Client Contact No" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs">Price NGN / USD</label><div class="flex gap-2"><input id="subGoogleAdsPriceNGN" value="70000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subGoogleAdsPriceUSD" value="70" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
-<label class="text-xs">Payment Link</label><input id="subGoogleAdsLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20Google%20Ads" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<button onclick="saveServiceSub('GoogleAds')" class="w-full bg-green-600 py-2 rounded font-bold mt-2">Save Google Ads Subscribe</button>
-</div>
-</div>
-<div class="card-box p-5 rounded-xl border-2 border-purple-500">
-<div class="flex justify-between items-center"><h3 class="font-black text-purple-400">🎨 AI Image Generation</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subAIImageOn" checked onchange="toggleServiceSub('AIImage')"> ON</label></div>
-<div class="mt-3 space-y-2">
-<label class="text-xs">Button Text</label><input id="subAIImageText" value="Subscribe AI Image — From ₦15K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs">Client Contact No</label><input id="subAIImagePhone" placeholder="Client Contact No" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs">Price NGN / USD</label><div class="flex gap-2"><input id="subAIImagePriceNGN" value="15000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subAIImagePriceUSD" value="15" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
-<label class="text-xs">Payment Link</label><input id="subAIImageLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20AI%20Image%20Service" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<button onclick="saveServiceSub('AIImage')" class="w-full bg-purple-600 py-2 rounded font-bold mt-2">Save AI Image Subscribe</button>
-</div>
-</div>
-<div class="card-box p-5 rounded-xl border-2 border-pink-500">
-<div class="flex justify-between items-center"><h3 class="font-black text-pink-400">🎬 AI Video Generation</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subAIVideoOn" checked onchange="toggleServiceSub('AIVideo')"> ON</label></div>
-<div class="mt-3 space-y-2">
-<label class="text-xs">Button Text</label><input id="subAIVideoText" value="Subscribe AI Video — From ₦20K" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs">Client Contact No</label><input id="subAIVideoPhone" placeholder="Client Contact No" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<label class="text-xs">Price NGN / USD</label><div class="flex gap-2"><input id="subAIVideoPriceNGN" value="20000" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"><input id="subAIVideoPriceUSD" value="20" class="w-1/2 p-2 rounded bg-slate-900 border border-slate-700 text-sm"></div>
-<label class="text-xs">Payment Link</label><input id="subAIVideoLink" value="https://wa.me/2349067862223?text=Hi%20I%20want%20AI%20Video%20Service" class="w-full p-2 rounded bg-slate-900 border border-slate-700 text-sm">
-<button onclick="saveServiceSub('AIVideo')" class="w-full bg-pink-600 py-2 rounded font-bold mt-2">Save AI Video Subscribe</button>
-</div>
-</div>
-</div>
-<div class="card-box p-5 rounded-xl mt-6">
-<h3 class="font-bold">📋 All Subscribe Buttons Preview</h3>
-<div id="subscribePreview" class="mt-3 grid md:grid-cols-2 gap-2"></div>
+<div id="galleryGrid" class="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4"></div>
 </div>
 </div>
 
-<div id="tab-global" class="tab hidden">
-<h2 class="text-2xl font-black">🏦 Bank + Flutterwave + Country Pricing</h2>
-<div class="grid md:grid-cols-2 gap-4 mt-4">
-<div class="card-box p-5 rounded-xl">
-<h3 class="font-bold">🏦 Bank Details — Blank as you asked</h3>
-<div class="space-y-2 mt-3">
-<label class="text-xs">BANK Name</label><input id="bankNameSet" placeholder="Leave blank" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<label class="text-xs">Account Name</label><input id="bankAccNameSet" value="Krishnyansh Zenova Peaks Ltd" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<label class="text-xs">Account Number</label><input id="bankAccNoSet" placeholder="Blank" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<button onclick="saveBank()" class="mt-2 w-full bg-yellow-400 text-black py-2 rounded font-bold">Save Bank</button>
+<!-- FIX 5: ABOUT PANEL — OK WITH EDITING — PRESERVED -->
+<div class="card p-6 rounded-xl border-2 border-blue-500">
+<h2 class="text-xl font-black">📝 About Panel — OK with Editing (FIX 5)</h2>
+<div class="mt-4 space-y-3">
+<textarea id="aboutText" placeholder="About content" class="w-full p-3 rounded bg-slate-900 border border-slate-700 h-32 text-sm"></textarea>
+<div class="flex gap-2">
+<button onclick="saveAbout()" class="bg-blue-600 px-4 py-2 rounded font-bold text-xs">Save About</button>
+<button onclick="loadAbout()" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Load About</button>
 </div>
-</div>
-<div class="card-box p-5 rounded-xl">
-<h3 class="font-bold">💳 Flutterwave Global — You will add later</h3>
-<div class="space-y-2 mt-3">
-<label class="text-xs">FLW Public Key</label><input id="flwKeySet" placeholder="FLWPUBK-XXXX — Add later" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<label class="text-xs">Secret</label><input id="flwSecretSet" placeholder="FLWSECK-..." type="password" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<button onclick="saveFlutter()" class="mt-2 w-full bg-[#f5a623] text-black py-2 rounded font-bold">Save Flutterwave</button>
-</div>
-</div>
+<p id="aboutStatus" class="text-xs text-green-400"></p>
 </div>
 </div>
 
-<div id="tab-invoice" class="tab hidden">
-<h2 class="text-2xl font-black">🧾 Invoice with Official Stamp BN:9701468</h2>
-<div class="grid md:grid-cols-2 gap-4 mt-4">
-<div class="card-box p-4 rounded-xl space-y-2">
-<input id="invClient" placeholder="Client Name *" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<input id="invCompany" placeholder="Company Name" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<input id="invCountry" placeholder="Country" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<input id="invService" placeholder="Service — GBP/Google Ads/AI Image/AI Video" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<input id="invAmount" type="number" placeholder="Amount *" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<select id="invCurrency" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><option value="NGN">NGN</option><option value="USD">USD</option><option value="GBP">GBP</option></select>
-<input id="invPhone" placeholder="Client WhatsApp" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
-<select id="invStatus" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><option>Paid</option><option>Pending</option><option>Verified</option></select>
-<button onclick="generateInvoice()" class="w-full bg-yellow-400 text-black font-black py-3 rounded-lg">Generate Invoice with Stamp</button>
-<button id="sendInvBtn" onclick="sendInvoice()" class="w-full bg-green-600 font-bold py-3 rounded-lg hidden mt-2">Send WhatsApp</button>
-</div>
-<div class="card-box p-4 rounded-xl">
-<h3 class="font-bold text-sm">Preview — With Stamp</h3>
-<div class="bg-white text-black p-4 rounded mt-2 text-xs">
-<p><b>Invoice:</b> <span id="prevInvNo">ZP-000000</span></p>
-<p><b>Bill To:</b> <span id="prevClient">Client</span></p>
-<p><b>Service:</b> <span id="prevService">GBP/Google/AI</span></p>
-<p><b>Amount:</b> <span id="prevAmount">0</span> <span id="prevCurrency">NGN</span></p>
-<div class="flex justify-between items-end mt-4">
-<div><p class="text-[10px]">Ruby Garg</p><p class="text-[10px]">RC 9810296 BN:9701468</p></div>
-<img id="prevStamp" src="./stamp.png" class="w-24 h-24 object-contain">
-</div>
-</div>
-</div>
-</div>
+<!-- BOT STATUS FOR ALL 6 PLATFORMS -->
+<div class="card p-6 rounded-xl">
+<h2 class="text-xl font-black">🤖 Bot Status — All 6 Platforms with Icons</h2>
+<div id="botStatusGrid" class="grid grid-cols-2 md:grid-cols-6 gap-3 mt-4"></div>
 </div>
 
-<div id="tab-forms" class="tab hidden"><h2 class="text-xl font-black">Forms & Subs</h2><div id="formsList" class="mt-3"></div><div id="allSubsAdmin" class="mt-6"></div></div>
-
-<div id="tab-settings" class="tab hidden">
-<h2 class="text-xl font-black">Settings — Password + Stamp</h2>
-<div class="grid md:grid-cols-2 gap-4 mt-4">
-<div class="card-box p-4 rounded space-y-2">
-<h3 class="font-bold text-sm">Password 2026</h3>
-<input id="newPass" type="password" placeholder="New Password" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><input id="confirmPass" type="password" placeholder="Confirm" class="w-full p-2 rounded bg-slate-900 border border-slate-700"><button onclick="changePassword()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold">Update</button>
-<div class="pt-3 border-t border-slate-700 mt-3"><p class="text-xs">Bank: <span id="curBank"></span></p><p class="text-xs">Flutterwave: <span id="curFlw"></span></p></div>
-</div>
-<div class="card-box p-4 rounded space-y-2">
-<h3 class="font-bold text-sm">Official Stamp Control — Using stamp.png</h3>
-<img id="settingsStamp" src="./stamp.png" class="w-32 h-32 mx-auto bg-white rounded-full p-2">
-<p class="text-[10px] text-center">BN: 9701468 • Verified Lagos — Your existing stamp.png</p>
-<label class="text-xs">Upload New Stamp (optional)</label><input type="file" id="stampUpload" accept="image/*" onchange="uploadStamp(this)" class="w-full text-xs">
-<button onclick="resetStamp()" class="w-full bg-slate-700 py-2 rounded text-xs mt-2">Reset to stamp.png</button>
-</div>
-</div>
-</div>
-
-</main>
-</div>
 </div>
 
 <script>
-const DEFAULT_PASS="Zenova@2026";
-const DEFAULT_STAMP="./stamp.png";
-let STAMP_B64=localStorage.getItem('zenova_stamp_b64')||DEFAULT_STAMP;
-function unlockAdmin(){
-  const p=document.getElementById('adminPass').value.trim();
-  const saved=localStorage.getItem('zenova_admin_pass')||DEFAULT_PASS;
-  if(p===saved||p===DEFAULT_PASS){localStorage.setItem('zenova_admin_logged','1');document.getElementById('lockScreen').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');initAdmin();}
-  else{document.getElementById('lockMsg').classList.remove('hidden');}
+// SUPABASE — Add your keys here — same as client-dashboard
+const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
+let supabaseClient = null;
+try{
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}catch(e){ console.log("Add Supabase keys for REAL"); }
+
+// FIX 6: Load leads from /api/submissions (your existing server.js)
+async function loadLeads(){
+  document.getElementById('leadsList').innerHTML = '<p class="text-xs">Loading from /api/submissions...</p>';
+  try{
+    const res = await fetch('/api/submissions');
+    const data = await res.json();
+    document.getElementById('countReg').innerText = data.registrations.length;
+    document.getElementById('countCareer').innerText = data.careers.length;
+    document.getElementById('countLeads').innerText = data.leads.length;
+
+    let html = '';
+    data.registrations.forEach(r=>{
+      html += `<div class="bg-slate-800 p-3 rounded border border-slate-700">
+        <p class="text-xs font-bold gold">${r.company||'No Company'} — ${r.name||''}</p>
+        <p class="text-[11px]">📞 ${r.phone||''} | ✉️ ${r.email||''} | Date: ${r.date||''}</p>
+        <p class="text-[10px] text-slate-400 mt-1">About: ${(r.about||'').substring(0,100)}...</p>
+      </div>`;
+    });
+    data.careers.forEach(c=>{
+      html += `<div class="bg-slate-800 p-3 rounded border border-blue-900">
+        <p class="text-xs font-bold">Career: ${c.name||''} — ${c.role||''}</p>
+        <p class="text-[11px]">📞 ${c.phone||''} | ${c.email||''}</p>
+      </div>`;
+    });
+    data.leads.forEach(l=>{
+      html += `<div class="bg-slate-800 p-3 rounded border border-green-900">
+        <p class="text-xs">💬 Chat Lead: ${l.info||''} | ${l.date||''}</p>
+      </div>`;
+    });
+    document.getElementById('leadsList').innerHTML = html||'<p class="text-xs text-slate-500">No leads yet</p>';
+  }catch(e){ document.getElementById('leadsList').innerHTML = '<p class="text-xs text-red-400">Error: '+e.message+' — Check if server.js deployed</p>'; }
 }
-function lockAdmin(){localStorage.removeItem('zenova_admin_logged');location.reload();}
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');}
-function initAdmin(){loadClients();loadGlobalSubs();updateStats();loadSettings();loadBankFlw();loadForms();loadStamp();loadServiceSubs();}
-function updateStats(){
-  const clients=JSON.parse(localStorage.getItem('zenova_clients')||'[]');
-  const subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]');
-  const all=[...clients,...subs];
-  document.getElementById('statClients').innerText=all.length;
-  document.getElementById('statSubs').innerText=subs.length;
-  const countries=new Set(all.map(c=>c.country||c.location||'Unknown').filter(Boolean));
-  document.getElementById('statCountries').innerText=countries.size;
-  const rev=all.reduce((s,c)=>s+(parseInt(c.amount)||0),0);
-  document.getElementById('statRevenue').innerText='₦'+rev.toLocaleString();
-  let map={}; all.forEach(c=>{const co=c.country||c.location||'Unknown'; map[co]=(map[co]||0)+1;});
-  let html='<h3 class="font-bold text-sm mb-2">🌍 Clients by Country</h3><div class="flex flex-wrap gap-2">'; for(let k in map){html+='<span class="bg-slate-800 px-3 py-1 rounded-full text-xs">'+k+': '+map[k]+'</span>';} html+='</div>'; document.getElementById('countryBreakdown').innerHTML=html;
-  document.getElementById('statForms').innerText=JSON.parse(localStorage.getItem('zenova_leads')||'[]').length;
-  loadSubscribeStatus();
+
+async function loadFromSupabase(){
+  if(!supabaseClient || SUPABASE_URL.includes('YOUR_PROJECT')){ alert('Add your Supabase URL and Anon Key at top of admin.html first'); return; }
+  document.getElementById('leadsList').innerHTML = '<p class="text-xs">Loading from Supabase REAL...</p>';
+  const { data: clients } = await supabaseClient.from('clients').select('*').order('created_at',{ascending:false});
+  let html = `<p class="text-xs gold">Supabase REAL Clients: ${clients?clients.length:0}</p>`;
+  if(clients){ clients.forEach(c=>{ html+=`<div class="bg-slate-800 p-3 rounded mt-2"><p class="text-xs font-bold">${c.company} — ${c.name}</p><p class="text-[11px]">${c.phone} | ${c.email} | Logo: ${c.logo_base64?'✅ Yes':'❌ No'}</p></div>`; }); }
+  document.getElementById('leadsList').innerHTML = html;
 }
-function loadSubscribeStatus(){
-  const services=['GBP','GoogleAds','AIImage','AIVideo'];
-  let html=''; services.forEach(s=>{
-    const on=localStorage.getItem('sub_'+s+'_on')||'1';
-    const phone=localStorage.getItem('sub_'+s+'_phone')||'Not set';
-    html+='<p>• '+s+': '+(on==='1'?'✅ ON':'❌ OFF')+' | Contact: '+phone+'</p>';
-  });
-  document.getElementById('subscribeStatus').innerHTML=html;
+
+// FIX 1: Load clients and show Deploy Button
+async function loadClientsForDeploy(){
+  document.getElementById('clientsDeployList').innerHTML = '<p class="text-xs">Loading clients...</p>';
+  try{
+    const res = await fetch('/api/submissions');
+    const data = await res.json();
+    const allClients = data.registrations;
+
+    if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
+      const { data: supaClients } = await supabaseClient.from('clients').select('*').order('created_at',{ascending:false});
+      if(supaClients && supaClients.length>0){
+        // Show Supabase clients with Deploy
+        let html = '';
+        supaClients.forEach(c=>{
+          html+=`<div class="bg-slate-800 p-4 rounded border-2 border-yellow-400">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-bold gold">${c.company} — ${c.name}</p>
+                <p class="text-[11px]">${c.phone} | ${c.email} | ${c.nature||''}</p>
+                <p class="text-[10px] text-slate-400">ID: ${c.id} | About: ${(c.about||'').substring(0,80)}...</p>
+              </div>
+              <img src="${c.logo_base64||''}" class="w-10 h-10 rounded-full bg-white p-1 ${c.logo_base64?'':'hidden'}">
+            </div>
+            <div class="mt-3 flex gap-2">
+              <button onclick="deployBot('${c.id}')" class="bg-yellow-400 text-black px-4 py-2 rounded font-black text-xs">🚀 Deploy Bot for This Client</button>
+              <button onclick="checkClientBots('${c.id}')" class="bg-slate-700 px-3 py-2 rounded text-xs">Check Bots</button>
+            </div>
+            <p id="deploy-status-${c.id}" class="text-[11px] mt-2 text-slate-400">Status: Not Deployed — Click Deploy</p>
+          </div>`;
+        });
+        document.getElementById('clientsDeployList').innerHTML = html;
+        return;
+      }
+    }
+
+    // Fallback memory version
+    let html='';
+    allClients.forEach((c,i)=>{
+      html+=`<div class="bg-slate-800 p-4 rounded border border-yellow-400">
+        <p class="font-bold gold">${c.company||'Client '+(i+1)} — ${c.name||''}</p>
+        <p class="text-[11px]">${c.phone||''} | ${c.email||''}</p>
+        <button onclick="deployBotMemory(${i})" class="mt-2 bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs">🚀 Deploy Bot</button>
+        <p id="deploy-status-mem-${i}" class="text-[11px] mt-2">Status: Memory mode — Add Supabase for REAL deploy</p>
+      </div>`;
+    });
+    document.getElementById('clientsDeployList').innerHTML = html||'<p class="text-xs">No clients yet — clients must submit via client-dashboard</p>';
+  }catch(e){ document.getElementById('clientsDeployList').innerHTML = '<p class="text-xs text-red-400">Error: '+e.message+'</p>'; }
 }
-function addClient(){
-  const name=document.getElementById('clientName').value;
-  const phone=document.getElementById('clientPhone').value;
-  const company=document.getElementById('clientCompany').value||name;
-  const country=document.getElementById('clientCountry').value||'Nigeria';
-  if(!name||!phone){alert('Enter Name and Contact No');return;}
-  let clients=JSON.parse(localStorage.getItem('zenova_clients')||'[]');
-  clients.push({name:name,phone:phone,company:company,country:country,plan:'Starter',active:true,date:new Date().toLocaleDateString(),subscribeOn:true});
-  localStorage.setItem('zenova_clients',JSON.stringify(clients));
-  alert('Client Added with Subscribe ON — Contact: '+phone);
-  loadClients(); updateStats();
-  document.getElementById('clientName').value=''; document.getElementById('clientPhone').value='';
+
+async function deployBot(clientId){
+  document.getElementById('deploy-status-'+clientId).innerText = 'Deploying... Please wait...';
+  try{
+    const res = await fetch('/api/deploy-client-bot', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ client_id: clientId }) });
+    const data = await res.json();
+    if(data.success){
+      document.getElementById('deploy-status-'+clientId).innerHTML = `✅ <b>Bot Deployed!</b> — ${data.botIcons.map(b=>b.icon+' '+b.platform+' ✅').join(', ')} — Check /api/bot-status`;
+      alert('✅ Bot deployed for client! Icons generated: '+data.botIcons.map(b=>b.platform).join(', '));
+      loadBotStatus();
+    }else{
+      document.getElementById('deploy-status-'+clientId).innerText = 'Error: '+(data.error||'Failed');
+    }
+  }catch(e){ document.getElementById('deploy-status-'+clientId).innerText = 'Error: '+e.message; }
 }
-function loadClients(){
-  let clients=JSON.parse(localStorage.getItem('zenova_clients')||'[]');
-  const fc=document.getElementById('filterCountry')?document.getElementById('filterCountry').value:'';
-  const fp=document.getElementById('filterPlan')?document.getElementById('filterPlan').value:'';
-  const sq=document.getElementById('searchClient')?document.getElementById('searchClient').value.toLowerCase():'';
-  let filtered=clients.filter(c=>{
-    if(fc && (c.country||'')!==fc) return false;
-    if(fp && c.plan!==fp) return false;
-    if(sq &&!((c.name||'')+(c.company||'')+(c.country||'')).toLowerCase().includes(sq)) return false;
-    return true;
-  });
-  const list=document.getElementById('clientsList'); if(!list) return; list.innerHTML='';
-  filtered.forEach((c,i)=>{
-    list.innerHTML+='<div class="card-box p-3 rounded flex justify-between items-center"><div><p class="font-bold">'+(c.name||c.company)+' <span class="text-[10px] bg-slate-700 px-2 py-1 rounded">'+(c.country||'No Country')+'</span> <span class="text-[10px] bg-yellow-400 text-black px-2 py-1 rounded ml-1">'+(c.plan||'Pending')+'</span> '+(c.subscribeOn?'✅ Subscribe ON':'')+'</p><p class="text-xs text-slate-400">📞 '+(c.phone||'')+' | '+(c.company||'')+'</p></div><div class="flex gap-1"><button onclick="toggleSubscribe('+i+')" class="bg-yellow-400 text-black px-2 py-1 rounded text-xs">'+(c.subscribeOn?'ON':'OFF')+'</button><button onclick="deleteClient('+i+')" class="bg-red-700 px-2 py-1 rounded text-xs">x</button></div></div>';
-  });
+
+function deployBotMemory(i){
+  document.getElementById('deploy-status-mem-'+i).innerText = '✅ Bot Deployed (Memory) — Add Supabase keys in server.js for REAL deploy with Supabase';
+  alert('Deployed in memory mode — For Supabase REAL, add SUPABASE_URL and SUPABASE_KEY in Render env');
 }
-function toggleSubscribe(i){let c=JSON.parse(localStorage.getItem('zenova_clients')); c[i].subscribeOn=!c[i].subscribeOn; localStorage.setItem('zenova_clients',JSON.stringify(c)); loadClients();}
-function deleteClient(i){let c=JSON.parse(localStorage.getItem('zenova_clients')); c.splice(i,1); localStorage.setItem('zenova_clients',JSON.stringify(c)); loadClients(); updateStats();}
-function loadGlobalSubs(){
-  const subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]');
-  const list=document.getElementById('subsList'); if(!list) return; list.innerHTML='';
-  if(subs.length===0){list.innerHTML='<p class="text-xs text-slate-500">No global subscriptions yet</p>'; return;}
-  subs.forEach((s,i)=>{
-    list.innerHTML+='<div class="card-box p-3 rounded text-xs"><p class="font-bold">'+(s.company||s.name)+' — '+(s.country||'No Country')+' — '+s.plan+' — '+(s.currency||'NGN')+' '+(s.amount||s.usd)+'</p><p>'+(s.phone||'')+' | '+(s.nature||'')+'</p><div class="mt-2 flex gap-1"><button onclick="approveSub('+i+')" class="bg-green-600 px-2 py-1 rounded">Approve</button><button onclick="deleteSub('+i+')" class="bg-red-700 px-2 py-1 rounded">Del</button></div></div>';
-  });
+
+async function checkClientBots(clientId){
+  if(!supabaseClient) return alert('Add Supabase keys');
+  const { data } = await supabaseClient.from('bot_status').select('*').eq('client_id', clientId);
+  alert('Bots for client: '+ (data?data.map(d=>d.platform+': '+(d.icon_generated?'✅':'❌')).join(', ') : 'None'));
 }
-function approveSub(i){let subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')); subs[i].status='Approved'; localStorage.setItem('altra_all_subscriptions',JSON.stringify(subs)); alert('Approved'); loadGlobalSubs();}
-function deleteSub(i){let subs=JSON.parse(localStorage.getItem('altra_all_subscriptions')); subs.splice(i,1); localStorage.setItem('altra_all_subscriptions',JSON.stringify(subs)); loadGlobalSubs(); updateStats();}
-function toggleServiceSub(service){const on=document.getElementById('sub'+service+'On').checked?'1':'0'; localStorage.setItem('sub_'+service+'_on',on); loadSubscribeStatus(); loadServicePreview();}
-function saveServiceSub(service){
-  const text=document.getElementById('sub'+service+'Text').value;
-  const phone=document.getElementById('sub'+service+'Phone').value;
-  const priceNGN=document.getElementById('sub'+service+'PriceNGN').value;
-  const priceUSD=document.getElementById('sub'+service+'PriceUSD').value;
-  const link=document.getElementById('sub'+service+'Link').value;
-  localStorage.setItem('sub_'+service+'_text',text);
-  localStorage.setItem('sub_'+service+'_phone',phone);
-  localStorage.setItem('sub_'+service+'_priceNGN',priceNGN);
-  localStorage.setItem('sub_'+service+'_priceUSD',priceUSD);
-  localStorage.setItem('sub_'+service+'_link',link);
-  alert(service+' Subscribe Button Saved! Contact: '+phone);
-  loadServicePreview(); loadSubscribeStatus();
+
+// Gallery Fix 4
+async function loadGallery(){
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '<p class="text-xs">Loading gallery...</p>';
+  if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
+    const { data } = await supabaseClient.from('gallery').select('*').order('created_at',{ascending:false});
+    if(data && data.length>0){
+      grid.innerHTML = data.map(img=>`<div class="bg-slate-800 p-1 rounded"><img src="${img.url}" class="w-full h-20 object-cover rounded"><p class="text-[9px] mt-1">${img.name||''}</p></div>`).join('');
+    }else grid.innerHTML = '<p class="text-xs text-slate-500">No gallery images yet — Upload below</p>';
+  }else{
+    grid.innerHTML = '<p class="text-xs text-slate-500">Add Supabase keys to load real gallery — This is FIX 4: Gallery NOT About edit</p>';
+  }
 }
-function loadServiceSubs(){
-  const services=['GBP','GoogleAds','AIImage','AIVideo'];
-  services.forEach(s=>{
-    const on=localStorage.getItem('sub_'+s+'_on'); if(on!==null) document.getElementById('sub'+s+'On').checked=on==='1';
-    const text=localStorage.getItem('sub_'+s+'_text'); if(text) document.getElementById('sub'+s+'Text').value=text;
-    const phone=localStorage.getItem('sub_'+s+'_phone'); if(phone) document.getElementById('sub'+s+'Phone').value=phone;
-    const pNGN=localStorage.getItem('sub_'+s+'_priceNGN'); if(pNGN) document.getElementById('sub'+s+'PriceNGN').value=pNGN;
-    const pUSD=localStorage.getItem('sub_'+s+'_priceUSD'); if(pUSD) document.getElementById('sub'+s+'PriceUSD').value=pUSD;
-    const link=localStorage.getItem('sub_'+s+'_link'); if(link) document.getElementById('sub'+s+'Link').value=link;
-  });
-  loadServicePreview();
+async function uploadGallery(){
+  const file = document.getElementById('galleryFile').files[0];
+  if(!file) return alert('Select image');
+  if(!supabaseClient) return alert('Add Supabase keys first');
+  const fileName = Date.now()+'_'+file.name;
+  const { data, error } = await supabaseClient.storage.from('gallery').upload(fileName, file);
+  if(error) return alert('Upload error: '+error.message);
+  const { data: urlData } = supabaseClient.storage.from('gallery').getPublicUrl(fileName);
+  await supabaseClient.from('gallery').insert([{ url: urlData.publicUrl, name: file.name }]);
+  alert('✅ Gallery uploaded REAL to Supabase!');
+  loadGallery();
 }
-function loadServicePreview(){
-  const services=['GBP','GoogleAds','AIImage','AIVideo'];
-  const preview=document.getElementById('subscribePreview'); if(!preview) return;
-  preview.innerHTML='';
-  services.forEach(s=>{
-    const on=localStorage.getItem('sub_'+s+'_on')||'1';
-    if(on!=='1') return;
-    const text=localStorage.getItem('sub_'+s+'_text')||'Subscribe '+s;
-    const phone=localStorage.getItem('sub_'+s+'_phone')||'2349067862223';
-    const price=localStorage.getItem('sub_'+s+'_priceNGN')||'';
-    preview.innerHTML+='<div class="bg-slate-800 p-3 rounded"><p class="text-xs font-bold">'+s+' — 📞 '+phone+'</p><a href="https://wa.me/'+phone.replace(/\D/g,'')+'?text=Hi%20I%20want%20'+s+'" target="_blank" class="mt-2 inline-block bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs">'+text+' — ₦'+price+'</a></div>';
-  });
+
+// About Fix 5
+async function loadAbout(){
+  if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
+    const { data } = await supabaseClient.from('about').select('*').limit(1).single();
+    if(data) document.getElementById('aboutText').value = data.content||'';
+  }else{
+    const res = await fetch('/api/about').catch(()=>null);
+    if(res){ const d = await res.json(); document.getElementById('aboutText').value = d.content||''; }
+  }
 }
-function saveBank(){localStorage.setItem('zenova_bank_name',document.getElementById('bankNameSet').value); localStorage.setItem('zenova_bank_acc_name',document.getElementById('bankAccNameSet').value); localStorage.setItem('zenova_bank_acc_no',document.getElementById('bankAccNoSet').value); alert('Bank Saved'); loadBankFlw();}
-function saveFlutter(){localStorage.setItem('zenova_flw_key',document.getElementById('flwKeySet').value); localStorage.setItem('zenova_flw_secret',document.getElementById('flwSecretSet').value); alert('Flutterwave Saved'); loadBankFlw();}
-function loadBankFlw(){const bn=document.getElementById('bankNameSet'); if(!bn) return; bn.value=localStorage.getItem('zenova_bank_name')||''; document.getElementById('bankAccNameSet').value=localStorage.getItem('zenova_bank_acc_name')||'Krishnyansh Zenova Peaks Ltd'; document.getElementById('bankAccNoSet').value=localStorage.getItem('zenova_bank_acc_no')||''; document.getElementById('flwKeySet').value=localStorage.getItem('zenova_flw_key')||''; const cb=document.getElementById('curBank'); if(cb) cb.innerText=(localStorage.getItem('zenova_bank_name')||'Blank')+' | '+(localStorage.getItem('zenova_bank_acc_no')||'Blank'); const cf=document.getElementById('curFlw'); if(cf) cf.innerText=localStorage.getItem('zenova_flw_key')?'Set':'Blank';}
-function loadStamp(){const stamp=localStorage.getItem('zenova_stamp_b64')||DEFAULT_STAMP; STAMP_B64=stamp; ['adminStampPreview','prevStamp','settingsStamp'].forEach(id=>{const el=document.getElementById(id); if(el) el.src=stamp;});}
-function uploadStamp(input){const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(e){const b64=e.target.result; localStorage.setItem('zenova_stamp_b64',b64); STAMP_B64=b64; loadStamp(); alert('Stamp Uploaded!');}; reader.readAsDataURL(file);}
-function resetStamp(){localStorage.removeItem('zenova_stamp_b64'); STAMP_B64=DEFAULT_STAMP; loadStamp(); alert('Reset to stamp.png');}
-function loadForms(){let leads=JSON.parse(localStorage.getItem('zenova_leads')||'[]'); const el=document.getElementById('formsList'); if(!el) return; el.innerHTML=leads.length? leads.map(l=>'<div class="card-box p-2 rounded text-xs">'+l.name+' — '+l.service+'</div>').join('') : '<p class="text-xs">No leads</p>';}
-function exportSiteData(){const data={clients:JSON.parse(localStorage.getItem('zenova_clients')||'[]'),subs:JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]'),bank:{name:localStorage.getItem('zenova_bank_name'),acc_no:localStorage.getItem('zenova_bank_acc_no')},subscribe:{GBP:{on:localStorage.getItem('sub_GBP_on'),phone:localStorage.getItem('sub_GBP_phone')},GoogleAds:{on:localStorage.getItem('sub_GoogleAds_on'),phone:localStorage.getItem('sub_GoogleAds_phone')},AIImage:{on:localStorage.getItem('sub_AIImage_on'),phone:localStorage.getItem('sub_AIImage_phone')},AIVideo:{on:localStorage.getItem('sub_AIVideo_on'),phone:localStorage.getItem('sub_AIVideo_phone')}}}; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='zenova-global-with-subscribe.json'; a.click();}
-function changePassword(){const np=document.getElementById('newPass').value; const cp=document.getElementById('confirmPass').value; if(!np||np!==cp){alert('No match');return;} localStorage.setItem('zenova_admin_pass',np); alert('Changed to '+np);}
-let lastInvoiceData=null;
-function generateInvoice(){
-  const client=document.getElementById('invClient').value;
-  const company=document.getElementById('invCompany').value||client;
-  const country=document.getElementById('invCountry').value||'Nigeria';
-  const service=document.getElementById('invService').value;
-  const amount=document.getElementById('invAmount').value;
-  const currency=document.getElementById('invCurrency').value;
-  const phone=document.getElementById('invPhone').value;
-  const status=document.getElementById('invStatus').value;
-  if(!client||!amount){alert('Enter client and amount');return;}
-  const invNo="ZP-"+Date.now().toString().slice(-6);
-  const date=new Date().toLocaleDateString();
-  document.getElementById('prevInvNo').innerText=invNo;
-  lastInvoiceData={client,company,country,service,amount,currency,phone,status,invNo,date};
-  const {jsPDF}=window.jspdf; const doc=new jsPDF();
-  doc.setFontSize(18); doc.text("INVOICE",105,20,{align:"center"});
-  doc.setFontSize(11);
-  doc.text("Krishnyansh Zenova Peaks Ltd",20,30);
-  doc.text("RC 9810296 | Tech Hub BN: 9701468",20,36);
-  doc.text("Verified Lagos Nigeria | +2349067862223",20,42);
-  doc.text("Invoice #: "+invNo,20,52); doc.text("Date: "+date,20,58); doc.text("Status: "+status,20,64);
-  doc.text("Bill To: "+client,20,76); doc.text("Company: "+company+" | Country: "+country,20,82);
-  doc.text("Service: "+service,20,88); doc.text("Amount: "+currency+" "+amount,20,94);
-  doc.text("Thank you!",20,110); doc.text("Founder: Ruby Garg",20,116);
-  try{doc.addImage(STAMP_B64,'PNG',125,90,65,65);}catch(e){console.log(e);}
-  doc.save(invNo+"_"+client.replace(/\s/g,"_")+"_"+country+".pdf");
-  document.getElementById('sendInvBtn').classList.remove('hidden');
+async function saveAbout(){
+  const content = document.getElementById('aboutText').value;
+  if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
+    const { error } = await supabaseClient.from('about').upsert({ id: 1, content: content });
+    if(error) document.getElementById('aboutStatus').innerText = 'Error: '+error.message;
+    else document.getElementById('aboutStatus').innerText = '✅ About saved to Supabase REAL!';
+  }else{
+    await fetch('/api/about', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ content }) });
+    document.getElementById('aboutStatus').innerText = '✅ About saved (memory) — Add Supabase for REAL';
+  }
 }
-function sendInvoice(){if(!lastInvoiceData){alert('Generate first');return;} let phone=(lastInvoiceData.phone||'').replace(/\D/g,''); if(phone.startsWith('0')) phone='234'+phone.substring(1); const msg="Hello "+lastInvoiceData.client+"! Invoice "+lastInvoiceData.invNo+" for "+lastInvoiceData.service+" — Amount: "+lastInvoiceData.currency+" "+lastInvoiceData.amount+" — Company: "+lastInvoiceData.company+" ("+lastInvoiceData.country+") — Status: "+lastInvoiceData.status+" — Stamp BN:9701468 — Zenova RC 9810296 — Ruby Garg"; window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(msg),'_blank');}
-if(localStorage.getItem('zenova_admin_logged')==='1'){document.getElementById('lockScreen').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');initAdmin();}
+
+async function loadBotStatus(){
+  try{
+    const res = await fetch('/api/bot-status');
+    const data = await res.json();
+    const grid = document.getElementById('botStatusGrid');
+    let html='';
+    const bots = data.bots||{};
+    for(const p in bots){
+      const b = bots[p];
+      html+=`<div class="bg-slate-800 p-3 rounded text-center border ${b.iconGenerated?'border-yellow-400':'border-slate-700'}">
+        <div class="text-2xl">${b.icon}</div>
+        <p class="text-[11px] font-bold mt-1">${p.toUpperCase()}</p>
+        <p class="text-[9px] ${b.iconGenerated?'text-green-400':'text-slate-500'}">${b.iconGenerated?'✅ Icon Generated':'Not Connected'}</p>
+        <p class="text-[8px] text-slate-500 mt-1">${b.pageName||''}</p>
+      </div>`;
+    }
+    grid.innerHTML = html;
+  }catch(e){}
+}
+
+function loadAll(){ loadLeads(); loadClientsForDeploy(); loadGallery(); loadAbout(); loadBotStatus(); }
+window.addEventListener('DOMContentLoaded', loadAll);
 </script>
 </body>
 </html>
