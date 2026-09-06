@@ -39,7 +39,7 @@
 </nav>
 <div class="mt-6 p-3 bg-slate-800 rounded text-xs">
 <p>Official Stamp</p>
-<img id="adminStampPreview" src="./stamp_400.png" class="w-20 h-20 mx-auto mt-2 rounded-full bg-white p-1">
+<img id="adminStampPreview" src="./stamp.png" class="w-20 h-20 mx-auto mt-2 rounded-full bg-white p-1">
 <p class="mt-1 text-[10px] text-center">BN: 9701468 • Verified Lagos</p>
 </div>
 </aside>
@@ -85,8 +85,8 @@
 </div>
 
 <div id="tab-subscribe" class="tab hidden">
-<h2 class="text-2xl font-black">💳 Subscribe Buttons — GBP, Google Ads, AI Image & Video Services</h2>
-<p class="text-xs text-slate-400 mt-1">Admin can turn ON/OFF subscribe buttons for each service with client contact number</p>
+<h2 class="text-2xl font-black">💳 Subscribe Buttons — GBP, Google Ads, AI Image & Video</h2>
+<p class="text-xs text-slate-400 mt-1">Admin can turn ON/OFF with client contact number</p>
 <div class="grid md:grid-cols-2 gap-4 mt-4">
 <div class="card-box p-5 rounded-xl border-2 border-blue-500">
 <div class="flex justify-between items-center"><h3 class="font-black text-blue-400">📍 GBP — Google Business Profile</h3><label class="flex items-center gap-2 text-xs"><input type="checkbox" id="subGBPOn" checked onchange="toggleServiceSub('GBP')"> ON</label></div>
@@ -139,7 +139,7 @@
 <h2 class="text-2xl font-black">🏦 Bank + Flutterwave + Country Pricing</h2>
 <div class="grid md:grid-cols-2 gap-4 mt-4">
 <div class="card-box p-5 rounded-xl">
-<h3 class="font-bold">🏦 Bank Details — Blank</h3>
+<h3 class="font-bold">🏦 Bank Details — Blank as you asked</h3>
 <div class="space-y-2 mt-3">
 <label class="text-xs">BANK Name</label><input id="bankNameSet" placeholder="Leave blank" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
 <label class="text-xs">Account Name</label><input id="bankAccNameSet" value="Krishnyansh Zenova Peaks Ltd" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
@@ -148,7 +148,7 @@
 </div>
 </div>
 <div class="card-box p-5 rounded-xl">
-<h3 class="font-bold">💳 Flutterwave Global</h3>
+<h3 class="font-bold">💳 Flutterwave Global — You will add later</h3>
 <div class="space-y-2 mt-3">
 <label class="text-xs">FLW Public Key</label><input id="flwKeySet" placeholder="FLWPUBK-XXXX — Add later" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
 <label class="text-xs">Secret</label><input id="flwSecretSet" placeholder="FLWSECK-..." type="password" class="w-full p-2 rounded bg-slate-900 border border-slate-700">
@@ -182,7 +182,7 @@
 <p><b>Amount:</b> <span id="prevAmount">0</span> <span id="prevCurrency">NGN</span></p>
 <div class="flex justify-between items-end mt-4">
 <div><p class="text-[10px]">Ruby Garg</p><p class="text-[10px]">RC 9810296 BN:9701468</p></div>
-<img id="prevStamp" src="./stamp_400.png" class="w-24 h-24 object-contain">
+<img id="prevStamp" src="./stamp.png" class="w-24 h-24 object-contain">
 </div>
 </div>
 </div>
@@ -200,11 +200,11 @@
 <div class="pt-3 border-t border-slate-700 mt-3"><p class="text-xs">Bank: <span id="curBank"></span></p><p class="text-xs">Flutterwave: <span id="curFlw"></span></p></div>
 </div>
 <div class="card-box p-4 rounded space-y-2">
-<h3 class="font-bold text-sm">Official Stamp Control</h3>
-<img id="settingsStamp" src="./stamp_400.png" class="w-32 h-32 mx-auto bg-white rounded-full p-2">
-<p class="text-[10px] text-center">BN: 9701468 • Verified Lagos</p>
-<label class="text-xs">Upload New Stamp</label><input type="file" id="stampUpload" accept="image/*" onchange="uploadStamp(this)" class="w-full text-xs">
-<button onclick="resetStamp()" class="w-full bg-slate-700 py-2 rounded text-xs mt-2">Reset to Default</button>
+<h3 class="font-bold text-sm">Official Stamp Control — Using stamp.png</h3>
+<img id="settingsStamp" src="./stamp.png" class="w-32 h-32 mx-auto bg-white rounded-full p-2">
+<p class="text-[10px] text-center">BN: 9701468 • Verified Lagos — Your existing stamp.png</p>
+<label class="text-xs">Upload New Stamp (optional)</label><input type="file" id="stampUpload" accept="image/*" onchange="uploadStamp(this)" class="w-full text-xs">
+<button onclick="resetStamp()" class="w-full bg-slate-700 py-2 rounded text-xs mt-2">Reset to stamp.png</button>
 </div>
 </div>
 </div>
@@ -215,7 +215,7 @@
 
 <script>
 const DEFAULT_PASS="Zenova@2026";
-const DEFAULT_STAMP="./stamp_400.png";
+const DEFAULT_STAMP="./stamp.png";
 let STAMP_B64=localStorage.getItem('zenova_stamp_b64')||DEFAULT_STAMP;
 function unlockAdmin(){
   const p=document.getElementById('adminPass').value.trim();
@@ -336,7 +336,7 @@ function saveFlutter(){localStorage.setItem('zenova_flw_key',document.getElement
 function loadBankFlw(){const bn=document.getElementById('bankNameSet'); if(!bn) return; bn.value=localStorage.getItem('zenova_bank_name')||''; document.getElementById('bankAccNameSet').value=localStorage.getItem('zenova_bank_acc_name')||'Krishnyansh Zenova Peaks Ltd'; document.getElementById('bankAccNoSet').value=localStorage.getItem('zenova_bank_acc_no')||''; document.getElementById('flwKeySet').value=localStorage.getItem('zenova_flw_key')||''; const cb=document.getElementById('curBank'); if(cb) cb.innerText=(localStorage.getItem('zenova_bank_name')||'Blank')+' | '+(localStorage.getItem('zenova_bank_acc_no')||'Blank'); const cf=document.getElementById('curFlw'); if(cf) cf.innerText=localStorage.getItem('zenova_flw_key')?'Set':'Blank';}
 function loadStamp(){const stamp=localStorage.getItem('zenova_stamp_b64')||DEFAULT_STAMP; STAMP_B64=stamp; ['adminStampPreview','prevStamp','settingsStamp'].forEach(id=>{const el=document.getElementById(id); if(el) el.src=stamp;});}
 function uploadStamp(input){const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(e){const b64=e.target.result; localStorage.setItem('zenova_stamp_b64',b64); STAMP_B64=b64; loadStamp(); alert('Stamp Uploaded!');}; reader.readAsDataURL(file);}
-function resetStamp(){localStorage.removeItem('zenova_stamp_b64'); STAMP_B64=DEFAULT_STAMP; loadStamp(); alert('Reset to default BN:9701468');}
+function resetStamp(){localStorage.removeItem('zenova_stamp_b64'); STAMP_B64=DEFAULT_STAMP; loadStamp(); alert('Reset to stamp.png');}
 function loadForms(){let leads=JSON.parse(localStorage.getItem('zenova_leads')||'[]'); const el=document.getElementById('formsList'); if(!el) return; el.innerHTML=leads.length? leads.map(l=>'<div class="card-box p-2 rounded text-xs">'+l.name+' — '+l.service+'</div>').join('') : '<p class="text-xs">No leads</p>';}
 function exportSiteData(){const data={clients:JSON.parse(localStorage.getItem('zenova_clients')||'[]'),subs:JSON.parse(localStorage.getItem('altra_all_subscriptions')||'[]'),bank:{name:localStorage.getItem('zenova_bank_name'),acc_no:localStorage.getItem('zenova_bank_acc_no')},subscribe:{GBP:{on:localStorage.getItem('sub_GBP_on'),phone:localStorage.getItem('sub_GBP_phone')},GoogleAds:{on:localStorage.getItem('sub_GoogleAds_on'),phone:localStorage.getItem('sub_GoogleAds_phone')},AIImage:{on:localStorage.getItem('sub_AIImage_on'),phone:localStorage.getItem('sub_AIImage_phone')},AIVideo:{on:localStorage.getItem('sub_AIVideo_on'),phone:localStorage.getItem('sub_AIVideo_phone')}}}; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='zenova-global-with-subscribe.json'; a.click();}
 function changePassword(){const np=document.getElementById('newPass').value; const cp=document.getElementById('confirmPass').value; if(!np||np!==cp){alert('No match');return;} localStorage.setItem('zenova_admin_pass',np); alert('Changed to '+np);}
@@ -354,7 +354,6 @@ function generateInvoice(){
   const invNo="ZP-"+Date.now().toString().slice(-6);
   const date=new Date().toLocaleDateString();
   document.getElementById('prevInvNo').innerText=invNo;
-  document.getElementById('prevDate').innerText=date;
   lastInvoiceData={client,company,country,service,amount,currency,phone,status,invNo,date};
   const {jsPDF}=window.jspdf; const doc=new jsPDF();
   doc.setFontSize(18); doc.text("INVOICE",105,20,{align:"center"});
