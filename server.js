@@ -147,10 +147,29 @@ Now answer as AltraAI:`;
 
   console.log('❌ ALL GEMINI MODELS FAILED - Check billing & API enabled');
   return res.json({
-    reply: `I am AltraAI for everything - ask anything! 😊 I'm having a temporary connection issue. Please make sure: 1) Billing is enabled at console.cloud.google.com/billing 2) Generative Language API is enabled at console.cloud.google.com/apis/library/generativelanguage.googleapis.com After that I will answer perfectly like before - including "who is modi"! What business help do you need today?`
+    reply: `I am AltraAI for everything - ask anything! 😊 I'm having a temporary connection issue. Please make sure:you are connected with internet "! What business help do you need today?`
   });
 });
 
+// ========== ADMIN LOCK - NEW ==========
+function checkAdmin(req, res, next) {
+  const adminPass = process.env.ADMIN_PASSWORD || 'Zenova@2026';
+  const sentPass = req.headers['x-admin-password'] || req.query.admin_key || req.body.admin_key;
+  
+  // Allow if password matches OR if you are checking from your own admin page with key
+  if (sentPass === adminPass) {
+    return next();
+  }
+  // For public contact form, allow POST but not GET
+  if (req.method === 'POST') return next();
+  
+  return res.status(401).json({ error: '🔒 Admin Locked - Add ?admin_key=YOUR_PASSWORD or x-admin-password header' });
+}
+
+// Protect all admin GET routes
+app.use('/api/contacts', (req, res, next) => { if(req.method==='GET') return checkAdmin(req,res,next); next(); });
+app.use('/api/orders', (req, res, next) => { if(req.method==='GET') return checkAdmin(req,res,next); next(); });
+app.use('/api/subscribers', checkAdmin);
 // ================= CONTACTS - ORIGINAL =================
 app.post('/api/contact', async (req, res) => {
   try {
