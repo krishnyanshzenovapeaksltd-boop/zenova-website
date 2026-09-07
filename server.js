@@ -45,7 +45,7 @@ User: ${userMsg}`;
   }
 
   // Try models - supports AQ keys with x-goog-api-key header
-  const models = ['gemini-3.5-flash', 'gemini-2.0-flash', 'gemini-3.5-flash-8b', 'gemini-3.5-pro'];
+  const models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
 
   for (const model of models) {
     try {
