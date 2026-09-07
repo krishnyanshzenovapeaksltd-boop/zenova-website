@@ -1,104 +1,101 @@
 const express = require('express');
 const cors = require('cors');
-const { GoogleGenAI } = require('@google/genai');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ENV
+// SUPABASE
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
-// NEW GEMINI SDK - SUPPORTS AQ. KEYS - GOOGLE 2026
-const genAI = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
-
 // HEALTH
-app.get('/', (req,res)=>{ res.send('Zenova Peaks - AltraAI Live - I am AltraAI for everything - ask anything!'); });
-app.get('/api/health', (req,res)=>{ res.json({status:'ok', altraai:'I am AltraAI for everything - ask anything!'}); });
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'I am AltraAI for everything - ask anything!', supabase: !!supabase, gemini: !!process.env.GEMINI_API_KEY });
+});
 
-// ALTRA AI CHAT - FINAL - NO MISTAKE - 1.5-FLASH + AQ KEY SUPPORT + MENTION LINE
-app.post('/api/altra-ai-chat', async(req,res)=>{
-  try{
-    const msg = (req.body.message || 'hello').toString().slice(0,1000);
-    
-    if(!genAI){
-      return res.json({reply:"I am AltraAI for everything - ask anything! 😊👋 Hello! I'm AltraAI from Krishnyansh Zenova Peaks Ltd. Add GEMINI_API_KEY in Render Environment to enable real AI."});
+// ============ ALTRA AI CHAT - FINAL - SUPPORTS AQ. KEYS - NO NPM PACKAGE NEEDED ============
+app.post('/api/altra-ai-chat', async (req, res) => {
+  try {
+    const userMsg = (req.body.message || 'hello').toString().slice(0, 2000);
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+      return res.json({ reply: "I am AltraAI for everything - ask anything! 😊👋 Hello! I'm AltraAI from Krishnyansh Zenova Peaks Ltd. How can I help your business today?" });
     }
 
-    // Try real Gemini AI
-    try{
-      const result = await genAI.models.generateContent({
-        model: "gemini-1.5-flash",
-        contents: `You are AltraAI - Identity: I am AltraAI for everything - ask anything! Founder: Ruby Garg, Krishnyansh Zenova Peaks Ltd RC 9810296. Business: CAC registration, business automation, AI chatbots, websites, branding in Lagos Nigeria. Personality: Friendly, helpful, concise, professional. Always remind user you are AltraAI for everything they can ask anything. User message: ${msg}`
+    const systemPrompt = `You are AltraAI. Your core identity: "I am AltraAI for everything - ask anything!" Founder: Ruby Garg, Krishnyansh Zenova Peaks Ltd RC 9810296, Lagos Nigeria. You help with CAC registration, business automation, AI chatbots, websites, branding, fashion business. Be friendly, helpful, concise (under 150 words), professional, use emojis sparingly. Always make sure user knows you are AltraAI for everything. User says: ${userMsg}`;
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }] })
       });
+
+      const data = await response.json();
       
-      let text = result.text || result.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (data.error) throw new Error(data.error.message);
       
-      // Ensure mention line
-      if(!text.toLowerCase().includes('altraai for everything')){
+      let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (!text) throw new Error('Empty response');
+
+      if (!text.toLowerCase().includes('altraai for everything')) {
         text = `I am AltraAI for everything - ask anything! 😊\n\n${text}`;
       }
-      
-      return res.json({reply: text});
 
-    }catch(e){
-      console.log('Gemini error:', e.message);
-      // Friendly fallback - NO ugly 503 error
-      return res.json({reply:`I am AltraAI for everything - ask anything! 😊👋 You said "${msg}". I'm here for CAC, automation, business, website, AI bots, branding - just ask anything! (AI high demand 20 sec - please try again)`});
+      return res.json({ reply: text });
+
+    } catch (e) {
+      console.log('Gemini API error:', e.message);
+      return res.json({ reply: `I am AltraAI for everything - ask anything! 😊👋 You said "${userMsg}". I'm here for CAC, business automation, websites, AI bots, branding - ask anything! (AI high demand 20 sec - please try again)` });
     }
 
-  }catch(err){
-    console.log(err);
-    res.json({reply:"I am AltraAI for everything - ask anything! 😊 How can I help your business today?"});
+  } catch (err) {
+    res.json({ reply: "I am AltraAI for everything - ask anything! 😊 How can I help your business today?" });
   }
 });
 
-// CONTACT - REAL SUPABASE
-app.post('/api/contact', async(req,res)=>{
-  try{
-    const {name,email,message} = req.body;
-    if(supabase){
-      await supabase.from('contacts').insert([{name,email,message,created_at:new Date().toISOString()}]);
+// ============ CONTACT ============
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, message, phone } = req.body;
+    if (supabase) {
+      await supabase.from('contacts').insert([{ name, email, message, phone, created_at: new Date().toISOString() }]);
     }
-    res.json({success:true, message:"Message saved!"});
-  }catch(e){ res.json({success:true, message:"Message received!"}); }
+    res.json({ success: true, message: 'Message received! We will contact you soon.' });
+  } catch (e) { res.json({ success: true }); }
+});
+app.get('/api/contacts', async (req, res) => {
+  try {
+    if (!supabase) return res.json([]);
+    const { data } = await supabase.from('contacts').select('*').order('created_at', { ascending: false }).limit(100);
+    res.json(data || []);
+  } catch (e) { res.json([]); }
 });
 
-// ORDERS - REAL SUPABASE
-app.post('/api/orders', async(req,res)=>{
-  try{
-    const data = req.body;
-    if(supabase){
-      await supabase.from('orders').insert([{...data, created_at:new Date().toISOString()}]);
-    }
-    res.json({success:true});
-  }catch(e){ res.json({success:true}); }
+// ============ ORDERS ============
+app.post('/api/orders', async (req, res) => {
+  try {
+    if (supabase) await supabase.from('orders').insert([{ ...req.body, created_at: new Date().toISOString() }]);
+    res.json({ success: true });
+  } catch (e) { res.json({ success: true }); }
+});
+app.get('/api/orders', async (req, res) => {
+  try {
+    if (!supabase) return res.json([]);
+    const { data } = await supabase.from('orders').select('*').order('created_at', { ascending: false }).limit(200);
+    res.json(data || []);
+  } catch (e) { res.json([]); }
 });
 
-app.get('/api/orders', async(req,res)=>{
-  try{
-    if(supabase){
-      const {data} = await supabase.from('orders').select('*').order('created_at',{ascending:false}).limit(100);
-      return res.json(data||[]);
-    }
-    res.json([]);
-  }catch(e){ res.json([]); }
-});
-
-// CART
-app.post('/api/cart', async(req,res)=>{
-  try{
-    if(supabase){
-      await supabase.from('cart').insert([{...req.body, created_at:new Date().toISOString()}]);
-    }
-    res.json({success:true});
-  }catch(e){ res.json({success:true}); }
-});
-
-// START
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, ()=>{ console.log(`Server live on ${PORT} - AltraAI - I am AltraAI for everything`); });
+// ============ CART & WISHLIST ============
+app.post('/api/cart', async (req, res) => {
+  try { if (supabase) await supabase.from('cart').insert([{ ...req.body, created_at: new Date().toISOString() }]); res.json({ success: true }); }
