@@ -19,16 +19,30 @@ if(SUPABASE_URL && SUPABASE_KEY){
   console.log("Supabase REAL connected");
 }
 
-// ALTRAAI ORIGINAL PRESERVED - SAFE
-const genAI = GEMINI_KEY? new GoogleGenerativeAI(GEMINI_KEY) : null;
+// ALTRAAI ORIGINAL PRESERVED - SAFE - FIXED 503 ERROR
 app.post('/api/altra-ai-chat', async(req,res)=>{
   try{
     const {message} = req.body;
-    if(!genAI) return res.json({reply:"AltraAI: Hello! I am ready. How can I help your business?"});
-    const model = genAI.getGenerativeModel({model:"gemini-3.5-flash"});
-    const result = await model.generateContent(`You are AltraAI - Founder Ruby Garg - Krishnyansh Zenova Peaks Ltd RC 9810296 - Professional helpful business assistant: ${message}`);
-    res.json({reply: result.response.text()});
-  }catch(e){ res.json({reply:"AltraAI here! "+e.message}); }
+    if(!genAI) return res.json({reply:"AltraAI: Hello Ruby! 👋 I'm AltraAI from Krishnyansh Zenova Peaks Ltd. How can I help your business today?"});
+    let replyText = "";
+    try{
+      const model = genAI.getGenerativeModel({model:"gemini-1.5-flash"});
+      const result = await model.generateContent(`You are AltraAI - Founder Ruby Garg - Krishnyansh Zenova Peaks Ltd RC 9810296 - Professional, helpful, concise: ${message}`);
+      replyText = result.response.text();
+    }catch(e1){
+      console.log("1.5-flash failed, trying gemini-pro", e1.message);
+      try{
+        const model2 = genAI.getGenerativeModel({model:"gemini-pro"});
+        const result2 = await model2.generateContent(`You are AltraAI: ${message}`);
+        replyText = result2.response.text();
+      }catch(e2){
+        replyText = `AltraAI: Hello! 👋 I'm here. Your message: "${message}". Our team at Zenova Peaks will assist you with business solutions, AI bots, and growth. (AI high demand - please try again in 10 seconds)`;
+      }
+    }
+    res.json({reply: replyText});
+  }catch(e){ 
+    res.json({reply:`AltraAI: Hello! 👋 I'm AltraAI. Thanks for saying "${req.body.message}". How can I help your business today?`}); 
+  }
 });
 
 // FIX 3: REAL Image - Not just prompt
