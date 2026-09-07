@@ -58,6 +58,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.get('/api/config', (req,res)=>{
+  res.json({
+    bank: { name: process.env.BANK_NAME||"GTB", account: process.env.BANK_ACCOUNT_NUMBER||"0123456789", accountName: process.env.BANK_ACCOUNT_NAME||"Krishnyansh Zenova Peaks Ltd" },
+    flutterwave: { publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY||"", paymentLink: "Pay with Flutterwave Enabled" },
+    rc: "9810296", bn: "9701468"
+  });
+});
+
 app.get('/api/debug-gemini', async (req, res) => {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.json({ error: 'No GEMINI_API_KEY in env' });
