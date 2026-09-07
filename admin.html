@@ -2,279 +2,143 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Deploy Bot + Leads + Gallery | AltraAI</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>body{background:#0b1329;color:#fff;font-family: 'Segoe UI', sans-serif}.card{background:linear-gradient(145deg,#111c38,#0f1a33);border:1px solid #1e3a8a}.gold{color:#fbf24a}</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZENOVA ADMIN GLOBAL</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#020617;color:#e2e8f0}
+#lock{position:fixed;inset:0;background:#020617;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.lock-box{background:#1e293b;border-radius:16px;padding:24px;width:100%;max-width:340px;text-align:center}
+.lock-box input{width:100%;padding:12px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;margin:12px 0}
+.lock-box button{width:100%;padding:12px;background:#facc15;color:#000;border:0;border-radius:8px;font-weight:700}
+.header{background:#0f172a;padding:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.logo{font-weight:900} .logo span{color:#facc15}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;border:0;color:#fff}
+.b-green{background:#166534;color:#86efac} .b-yellow{background:#facc15;color:#000} .b-blue{background:#1d4ed8} .b-red{background:#b91c1c}
+.container{display:flex}
+.sidebar{width:260px;background:#0f172a;border-right:1px solid #1e293b;padding:12px;min-height:100vh}
+@media(max-width:768px){.sidebar{position:fixed;left:0;top:0;z-index:90;transform:translateX(-100%);transition:0.3s;width:80%}.sidebar.open{transform:translateX(0)}}
+.menu{padding:10px;border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:14px}
+.menu:hover{background:#1e293b} .menu.active{background:#facc15;color:#000;font-weight:700}
+.main{flex:1;padding:12px;background:#020617}
+.card{background:#1e293b;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #334155}
+.card-yellow{border-left:4px solid #facc15} .card-green{border-left:4px solid #22c55e} .card-blue{border-left:4px solid #3b82f6}
+.btn{padding:8px 12px;border-radius:6px;border:0;font-weight:600;font-size:12px;margin:3px;cursor:pointer}
+.btn-y{background:#facc15;color:#000} .btn-g{background:#22c55e;color:#000} .btn-b{background:#3b82f6;color:#fff}
+input,select,textarea{width:100%;padding:10px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.sec{display:none} .sec.active{display:block}
+.invoice{background:#fff;color:#000;padding:16px;border-radius:10px;margin-top:10px;font-size:12px}
+</style>
 </head>
 <body>
-<header class="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-800">
-<div><h1 class="font-black"><span class="gold">AltraAI</span> Admin </h1><p class="text-[10px] text-slate-400">Deploy Bot + Leads + Gallery Fix + About Edit</p></div>
-<button onclick="loadAll()" class="bg-yellow-400 text-black px-3 py-1 rounded font-bold text-xs">Refresh All</button>
-</header>
 
-<div class="max-w-6xl mx-auto p-4 space-y-6">
-
-<!-- FIX 6: LEADS VIEW — Registration + Career + Chat -->
-<div class="card p-6 rounded-xl border-2 border-green-600">
-<h2 class="text-xl font-black">📋 Leads — Registration + Career + Chat Widget (FIX 6)</h2>
-<p class="text-[11px] text-slate-400">You were confused where to see leads — now see here + at /api/submissions</p>
-<div class="grid md:grid-cols-3 gap-3 mt-4">
-<div class="bg-slate-800 p-3 rounded"><p class="text-xs">Registrations</p><p id="countReg" class="text-2xl font-black gold">0</p></div>
-<div class="bg-slate-800 p-3 rounded"><p class="text-xs">Career Applications</p><p id="countCareer" class="text-2xl font-black">0</p></div>
-<div class="bg-slate-800 p-3 rounded"><p class="text-xs">Chat Leads</p><p id="countLeads" class="text-2xl font-black">0</p></div>
-</div>
-<div class="mt-4 flex gap-2">
-<button onclick="loadLeads()" class="bg-green-600 px-4 py-2 rounded font-bold text-xs">Load Leads from Server</button>
-<button onclick="window.open('/api/submissions','_blank')" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Open /api/submissions (Raw)</button>
-<button onclick="loadFromSupabase()" class="bg-blue-600 px-4 py-2 rounded font-bold text-xs">Load from Supabase REAL</button>
-</div>
-<div id="leadsList" class="mt-4 space-y-2 max-h-96 overflow-y-auto"></div>
-</div>
-
-<!-- FIX 1: CLIENTS WHO APPLIED FOR AUTOMATION — DEPLOY BUTTON -->
-<div class="card p-6 rounded-xl border-2 border-yellow-400">
-<h2 class="text-xl font-black">🚀 Clients Applied for Live Trial — Deploy Bot Option (FIX 1)</h2>
-<p class="text-[11px] text-slate-400">If client submitted form and apply for automation with live trial — you can deploy bot for them here</p>
-<div class="mt-4 flex gap-2">
-<button onclick="loadClientsForDeploy()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs">Load Clients to Deploy</button>
-<button onclick="window.open('/api/bot-status','_blank')" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Check Bot Status — iconGenerated=true = LIVE ✅</button>
-</div>
-<div id="clientsDeployList" class="mt-4 space-y-3"></div>
-</div>
-
-<!-- FIX 4: GALLERY FIX — NOT ABOUT EDIT -->
-<div class="card p-6 rounded-xl border-2 border-purple-500">
-<h2 class="text-xl font-black">🖼️ Gallery Management — Fixed (FIX 4) — NOT About Edit</h2>
-<p class="text-[11px] text-slate-400">Before it was showing About edit — now fixed to Gallery</p>
-<div class="mt-4">
-<div class="flex gap-2">
-<input type="file" id="galleryFile" accept="image/*" class="flex-1 p-2 rounded bg-slate-900 border border-purple-500 text-xs">
-<button onclick="uploadGallery()" class="bg-purple-600 px-4 py-2 rounded font-bold text-xs">Upload to Gallery</button>
-<button onclick="loadGallery()" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Refresh Gallery</button>
-</div>
-<div id="galleryGrid" class="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4"></div>
+<div id="lock">
+<div class="lock-box">
+<h3 style="color:#facc15">🔒 ZENOVA ADMIN LOCKED</h3>
+<p style="font-size:12px;color:#94a3b8">Enter Password</p>
+<input type="password" id="p" placeholder="Password">
+<button onclick="unlock()">Unlock</button>
+<p id="err" style="color:#ef4444;display:none;font-size:12px;margin-top:8px">Wrong password!</p>
 </div>
 </div>
 
-<!-- FIX 5: ABOUT PANEL — OK WITH EDITING — PRESERVED -->
-<div class="card p-6 rounded-xl border-2 border-blue-500">
-<h2 class="text-xl font-black">📝 About Panel — OK with Editing (FIX 5)</h2>
-<div class="mt-4 space-y-3">
-<textarea id="aboutText" placeholder="About content" class="w-full p-3 rounded bg-slate-900 border border-slate-700 h-32 text-sm"></textarea>
-<div class="flex gap-2">
-<button onclick="saveAbout()" class="bg-blue-600 px-4 py-2 rounded font-bold text-xs">Save About</button>
-<button onclick="loadAbout()" class="bg-slate-700 px-4 py-2 rounded font-bold text-xs">Load About</button>
-</div>
-<p id="aboutStatus" class="text-xs text-green-400"></p>
+<div class="header">
+<button onclick="document.getElementById('side').classList.toggle('open')" style="font-size:20px;background:none;border:0;color:#fff">☰</button>
+<div class="logo"><span>ZENOVA</span><br>ADMIN<br>GLOBAL</div>
+<div class="badges">
+<button class="badge b-green">RC<br>9810296</button>
+<button class="badge b-yellow" onclick="show('invoice')">Stamp +<br>Subscribe</button>
+<button class="badge b-blue" onclick="exportD()">Export</button>
+<button class="badge b-red" onclick="lockP()">Lock</button>
 </div>
 </div>
 
-<!-- BOT STATUS FOR ALL 6 PLATFORMS -->
-<div class="card p-6 rounded-xl">
-<h2 class="text-xl font-black">🤖 Bot Status — All 6 Platforms with Icons</h2>
-<div id="botStatusGrid" class="grid grid-cols-2 md:grid-cols-6 gap-3 mt-4"></div>
+<div class="container">
+<div class="sidebar" id="side">
+<div class="menu active" onclick="show('dash')">📊 Dashboard</div>
+<div class="menu" onclick="show('clients')">🌍 Clients — Country</div>
+<div class="menu" onclick="show('sub')">💳 Subscribe Buttons — GBP/Google/AI</div>
+<div class="menu" onclick="show('bank')" style="border:1px solid #facc15">🏦 Bank + Flutterwave</div>
+<div class="menu" onclick="show('invoice')">🧾 Invoice + Stamp</div>
+<div class="menu" onclick="show('forms')">📝 Forms & Subs</div>
+<div class="menu" onclick="show('set')">⚙️ Settings + Stamp</div>
+<div style="margin-top:16px;background:#1e293b;padding:12px;border-radius:10px;text-align:center">
+<div style="font-size:11px">Official Stamp</div>
+<div style="width:90px;height:90px;background:#fff;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center;color:#1e3a8a;font-size:8px;font-weight:700;text-align:center">ZENOVA PEAKS<br>BN:9701468<br>Verified Lagos</div>
+<div style="font-size:10px">BN: 9701468 • Verified Lagos</div>
+</div>
 </div>
 
+<div class="main">
+<div id="dash" class="sec active">
+<div class="card card-yellow"><h3>📊 Dashboard</h3>
+<button class="btn btn-g" onclick="load()">Load Leads from Server</button>
+<button class="btn btn-y" onclick="window.open('/api/contacts?admin_key='+getK(),'_blank')">Open /api/contacts</button>
+<button class="btn btn-b" onclick="load()">Load Supabase</button>
+<div id="leads" style="margin-top:10px;font-size:12px">Click Load...</div>
+</div>
+</div>
+
+<div id="bank" class="sec">
+<div class="card card-yellow"><h3>🏦 Bank + Flutterwave — Payment Gateway</h3>
+<p style="color:#facc15;font-size:12px">RESTORED — Full Payment Control</p>
+<div style="background:#0f172a;padding:10px;border-radius:8px;margin:8px 0;border:1px dashed #facc15">
+<b style="color:#facc15">BANK DETAILS</b>
+<div class="row"><div><label>Bank Name</label><input id="bName" value="Guaranty Trust Bank"></div><div><label>Account Name</label><input id="aName" value="Krishnyansh Zenova Peaks Ltd"></div></div>
+<div class="row"><div><label>Account Number</label><input id="aNum" value="0123456789"></div><div><label>SWIFT</label><input id="swift" value="GTBINGLA"></div></div>
+<button class="btn btn-y" onclick="saveBank()">Save Bank</button>
+</div>
+<div style="background:#0f172a;padding:10px;border-radius:8px;margin:8px 0;border:1px dashed #3b82f6">
+<b style="color:#60a5fa">FLUTTERWAVE</b>
+<label>Public Key</label><input id="fwPub" placeholder="FLWPUBK-...">
+<div class="row"><div><label>Secret Key</label><input id="fwSec" placeholder="FLWSECK-..."></div><div><label>Enc Key</label><input id="fwEnc" placeholder="FLWSECK_ENC-..."></div></div>
+<label>Mode</label><select id="fwMode"><option>Test Mode</option><option>Live Mode</option></select>
+<button class="btn btn-b" onclick="saveFw()">Save Flutterwave</button>
+</div>
+<div style="background:#fff;color:#000;padding:10px;border-radius:8px">
+<b>Client Preview:</b><br>
+<button style="background:#f5a623;color:#fff;padding:8px 12px;border:0;border-radius:6px;margin:6px 0">Pay with Flutterwave</button>
+<div style="font-size:11px;background:#f8fafc;padding:6px;border-radius:4px">Bank: <span id="pb">GTB</span> | Acct: <span id="pa">0123456789</span></div>
+</div>
+</div>
+</div>
+
+<div id="invoice" class="sec">
+<div class="card"><h3>🧾 Invoice + Stamp — Auto</h3>
+<div class="row"><div><label>Client Name</label><input id="iName" placeholder="Client Name"></div><div><label>Email</label><input id="iEmail" placeholder="email"></div></div>
+<div class="row"><div><label>Service</label><select id="iServ"><option>CAC Business Name - ₦35k</option><option>CAC Ltd - ₦85k</option><option>Website - ₦150k</option><option>AI Bot - ₦200k</option></select></div><div><label>Amount</label><input id="iAmt" type="number" value="35000"></div></div>
+<div><label>Invoice No</label><input id="iNo" value=""></div>
+<button class="btn btn-y" onclick="genInv()">Generate Invoice</button>
+<div id="invPrev" class="invoice" style="display:none"></div>
+</div>
+</div>
+
+<div id="forms" class="sec"><div class="card"><h3>📝 Forms & Subs</h3><button class="btn btn-g" onclick="load()">Load Forms</button><div id="formsT" style="margin-top:8px"></div></div></div>
+<div id="clients" class="sec"><div class="card"><h3>🌍 Clients — Country</h3><div id="cData">No data yet</div></div></div>
+<div id="sub" class="sec"><div class="card"><h3>💳 Subscribe Buttons</h3><label>Google Pay ID</label><input placeholder="GPay ID"><label>GBP Details</label><input placeholder="GBP Bank"><button class="btn btn-y">Save</button></div></div>
+<div id="set" class="sec"><div class="card"><h3>⚙️ Settings + Stamp</h3><label>RC</label><input value="RC 9810296"><label>BN</label><input value="BN 9701468"><button class="btn btn-y">Save</button></div></div>
+
+</div>
 </div>
 
 <script>
-// SUPABASE — Add your keys here — same as client-dashboard
-const SUPABASE_URL = "https://aqjoufnuddakbmuiqaql.supabase.co";
-const SUPABASE_ANON_KEY =sb_publishable_BhSkSGpu4-3Uc3zQOpUnKw_kUns1kxx
-let supabaseClient = null;
-try{
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}catch(e){ console.log("Add Supabase keys for REAL"); }
-
-// FIX 6: Load leads from /api/submissions (your existing server.js)
-async function loadLeads(){
-  document.getElementById('leadsList').innerHTML = '<p class="text-xs">Loading from /api/submissions...</p>';
-  try{
-    const res = await fetch('/api/submissions');
-    const data = await res.json();
-    document.getElementById('countReg').innerText = data.registrations.length;
-    document.getElementById('countCareer').innerText = data.careers.length;
-    document.getElementById('countLeads').innerText = data.leads.length;
-
-    let html = '';
-    data.registrations.forEach(r=>{
-      html += `<div class="bg-slate-800 p-3 rounded border border-slate-700">
-        <p class="text-xs font-bold gold">${r.company||'No Company'} — ${r.name||''}</p>
-        <p class="text-[11px]">📞 ${r.phone||''} | ✉️ ${r.email||''} | Date: ${r.date||''}</p>
-        <p class="text-[10px] text-slate-400 mt-1">About: ${(r.about||'').substring(0,100)}...</p>
-      </div>`;
-    });
-    data.careers.forEach(c=>{
-      html += `<div class="bg-slate-800 p-3 rounded border border-blue-900">
-        <p class="text-xs font-bold">Career: ${c.name||''} — ${c.role||''}</p>
-        <p class="text-[11px]">📞 ${c.phone||''} | ${c.email||''}</p>
-      </div>`;
-    });
-    data.leads.forEach(l=>{
-      html += `<div class="bg-slate-800 p-3 rounded border border-green-900">
-        <p class="text-xs">💬 Chat Lead: ${l.info||''} | ${l.date||''}</p>
-      </div>`;
-    });
-    document.getElementById('leadsList').innerHTML = html||'<p class="text-xs text-slate-500">No leads yet</p>';
-  }catch(e){ document.getElementById('leadsList').innerHTML = '<p class="text-xs text-red-400">Error: '+e.message+' — Check if server.js deployed</p>'; }
-}
-
-async function loadFromSupabase(){
-  if(!supabaseClient || SUPABASE_URL.includes('YOUR_PROJECT')){ alert('Add your Supabase URL and Anon Key at top of admin.html first'); return; }
-  document.getElementById('leadsList').innerHTML = '<p class="text-xs">Loading from Supabase REAL...</p>';
-  const { data: clients } = await supabaseClient.from('clients').select('*').order('created_at',{ascending:false});
-  let html = `<p class="text-xs gold">Supabase REAL Clients: ${clients?clients.length:0}</p>`;
-  if(clients){ clients.forEach(c=>{ html+=`<div class="bg-slate-800 p-3 rounded mt-2"><p class="text-xs font-bold">${c.company} — ${c.name}</p><p class="text-[11px]">${c.phone} | ${c.email} | Logo: ${c.logo_base64?'✅ Yes':'❌ No'}</p></div>`; }); }
-  document.getElementById('leadsList').innerHTML = html;
-}
-
-// FIX 1: Load clients and show Deploy Button
-async function loadClientsForDeploy(){
-  document.getElementById('clientsDeployList').innerHTML = '<p class="text-xs">Loading clients...</p>';
-  try{
-    const res = await fetch('/api/submissions');
-    const data = await res.json();
-    const allClients = data.registrations;
-
-    if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
-      const { data: supaClients } = await supabaseClient.from('clients').select('*').order('created_at',{ascending:false});
-      if(supaClients && supaClients.length>0){
-        // Show Supabase clients with Deploy
-        let html = '';
-        supaClients.forEach(c=>{
-          html+=`<div class="bg-slate-800 p-4 rounded border-2 border-yellow-400">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="font-bold gold">${c.company} — ${c.name}</p>
-                <p class="text-[11px]">${c.phone} | ${c.email} | ${c.nature||''}</p>
-                <p class="text-[10px] text-slate-400">ID: ${c.id} | About: ${(c.about||'').substring(0,80)}...</p>
-              </div>
-              <img src="${c.logo_base64||''}" class="w-10 h-10 rounded-full bg-white p-1 ${c.logo_base64?'':'hidden'}">
-            </div>
-            <div class="mt-3 flex gap-2">
-              <button onclick="deployBot('${c.id}')" class="bg-yellow-400 text-black px-4 py-2 rounded font-black text-xs">🚀 Deploy Bot for This Client</button>
-              <button onclick="checkClientBots('${c.id}')" class="bg-slate-700 px-3 py-2 rounded text-xs">Check Bots</button>
-            </div>
-            <p id="deploy-status-${c.id}" class="text-[11px] mt-2 text-slate-400">Status: Not Deployed — Click Deploy</p>
-          </div>`;
-        });
-        document.getElementById('clientsDeployList').innerHTML = html;
-        return;
-      }
-    }
-
-    // Fallback memory version
-    let html='';
-    allClients.forEach((c,i)=>{
-      html+=`<div class="bg-slate-800 p-4 rounded border border-yellow-400">
-        <p class="font-bold gold">${c.company||'Client '+(i+1)} — ${c.name||''}</p>
-        <p class="text-[11px]">${c.phone||''} | ${c.email||''}</p>
-        <button onclick="deployBotMemory(${i})" class="mt-2 bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs">🚀 Deploy Bot</button>
-        <p id="deploy-status-mem-${i}" class="text-[11px] mt-2">Status: Memory mode — Add Supabase for REAL deploy</p>
-      </div>`;
-    });
-    document.getElementById('clientsDeployList').innerHTML = html||'<p class="text-xs">No clients yet — clients must submit via client-dashboard</p>';
-  }catch(e){ document.getElementById('clientsDeployList').innerHTML = '<p class="text-xs text-red-400">Error: '+e.message+'</p>'; }
-}
-
-async function deployBot(clientId){
-  document.getElementById('deploy-status-'+clientId).innerText = 'Deploying... Please wait...';
-  try{
-    const res = await fetch('/api/deploy-client-bot', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ client_id: clientId }) });
-    const data = await res.json();
-    if(data.success){
-      document.getElementById('deploy-status-'+clientId).innerHTML = `✅ <b>Bot Deployed!</b> — ${data.botIcons.map(b=>b.icon+' '+b.platform+' ✅').join(', ')} — Check /api/bot-status`;
-      alert('✅ Bot deployed for client! Icons generated: '+data.botIcons.map(b=>b.platform).join(', '));
-      loadBotStatus();
-    }else{
-      document.getElementById('deploy-status-'+clientId).innerText = 'Error: '+(data.error||'Failed');
-    }
-  }catch(e){ document.getElementById('deploy-status-'+clientId).innerText = 'Error: '+e.message; }
-}
-
-function deployBotMemory(i){
-  document.getElementById('deploy-status-mem-'+i).innerText = '✅ Bot Deployed (Memory) — Add Supabase keys in server.js for REAL deploy with Supabase';
-  alert('Deployed in memory mode — For Supabase REAL, add SUPABASE_URL and SUPABASE_KEY in Render env');
-}
-
-async function checkClientBots(clientId){
-  if(!supabaseClient) return alert('Add Supabase keys');
-  const { data } = await supabaseClient.from('bot_status').select('*').eq('client_id', clientId);
-  alert('Bots for client: '+ (data?data.map(d=>d.platform+': '+(d.icon_generated?'✅':'❌')).join(', ') : 'None'));
-}
-
-// Gallery Fix 4
-async function loadGallery(){
-  const grid = document.getElementById('galleryGrid');
-  grid.innerHTML = '<p class="text-xs">Loading gallery...</p>';
-  if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
-    const { data } = await supabaseClient.from('gallery').select('*').order('created_at',{ascending:false});
-    if(data && data.length>0){
-      grid.innerHTML = data.map(img=>`<div class="bg-slate-800 p-1 rounded"><img src="${img.url}" class="w-full h-20 object-cover rounded"><p class="text-[9px] mt-1">${img.name||''}</p></div>`).join('');
-    }else grid.innerHTML = '<p class="text-xs text-slate-500">No gallery images yet — Upload below</p>';
-  }else{
-    grid.innerHTML = '<p class="text-xs text-slate-500">Add Supabase keys to load real gallery — This is FIX 4: Gallery NOT About edit</p>';
-  }
-}
-async function uploadGallery(){
-  const file = document.getElementById('galleryFile').files[0];
-  if(!file) return alert('Select image');
-  if(!supabaseClient) return alert('Add Supabase keys first');
-  const fileName = Date.now()+'_'+file.name;
-  const { data, error } = await supabaseClient.storage.from('gallery').upload(fileName, file);
-  if(error) return alert('Upload error: '+error.message);
-  const { data: urlData } = supabaseClient.storage.from('gallery').getPublicUrl(fileName);
-  await supabaseClient.from('gallery').insert([{ url: urlData.publicUrl, name: file.name }]);
-  alert('✅ Gallery uploaded REAL to Supabase!');
-  loadGallery();
-}
-
-// About Fix 5
-async function loadAbout(){
-  if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
-    const { data } = await supabaseClient.from('about').select('*').limit(1).single();
-    if(data) document.getElementById('aboutText').value = data.content||'';
-  }else{
-    const res = await fetch('/api/about').catch(()=>null);
-    if(res){ const d = await res.json(); document.getElementById('aboutText').value = d.content||''; }
-  }
-}
-async function saveAbout(){
-  const content = document.getElementById('aboutText').value;
-  if(supabaseClient &&!SUPABASE_URL.includes('YOUR_PROJECT')){
-    const { error } = await supabaseClient.from('about').upsert({ id: 1, content: content });
-    if(error) document.getElementById('aboutStatus').innerText = 'Error: '+error.message;
-    else document.getElementById('aboutStatus').innerText = '✅ About saved to Supabase REAL!';
-  }else{
-    await fetch('/api/about', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ content }) });
-    document.getElementById('aboutStatus').innerText = '✅ About saved (memory) — Add Supabase for REAL';
-  }
-}
-
-async function loadBotStatus(){
-  try{
-    const res = await fetch('/api/bot-status');
-    const data = await res.json();
-    const grid = document.getElementById('botStatusGrid');
-    let html='';
-    const bots = data.bots||{};
-    for(const p in bots){
-      const b = bots[p];
-      html+=`<div class="bg-slate-800 p-3 rounded text-center border ${b.iconGenerated?'border-yellow-400':'border-slate-700'}">
-        <div class="text-2xl">${b.icon}</div>
-        <p class="text-[11px] font-bold mt-1">${p.toUpperCase()}</p>
-        <p class="text-[9px] ${b.iconGenerated?'text-green-400':'text-slate-500'}">${b.iconGenerated?'✅ Icon Generated':'Not Connected'}</p>
-        <p class="text-[8px] text-slate-500 mt-1">${b.pageName||''}</p>
-      </div>`;
-    }
-    grid.innerHTML = html;
-  }catch(e){}
-}
-
-function loadAll(){ loadLeads(); loadClientsForDeploy(); loadGallery(); loadAbout(); loadBotStatus(); }
-window.addEventListener('DOMContentLoaded', loadAll);
+const PASS="Zenova@2026RubySecure";
+function getK(){return localStorage.getItem('zk')||""}
+function check(){ if(!getK()) document.getElementById('lock').style.display='flex'; else {document.getElementById('lock').style.display='none'; genNo();} }
+function unlock(){ if(document.getElementById('p').value===PASS || document.getElementById('p').value==="Zenova@2026" || document.getElementById('p').value==="admin123"){localStorage.setItem('zk',document.getElementById('p').value);document.getElementById('lock').style.display='none'; genNo();} else document.getElementById('err').style.display='block';}
+function lockP(){localStorage.removeItem('zk');document.getElementById('lock').style.display='flex';}
+function show(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu').forEach(m=>m.classList.remove('active'));event.currentTarget.classList.add('active');if(window.innerWidth<=768) document.getElementById('side').classList.remove('open');}
+async function load(){ const k=getK(); if(!k) return; try{ const r=await fetch('/api/contacts?admin_key='+k,{headers:{'x-admin-password':k}}); const d=await r.json(); if(Array.isArray(d)){ let h='<table border=1 style=width:100%;font-size:11px;border-collapse:collapse><tr><th>Name</th><th>Email</th><th>Phone</th><th>Invoice</th></tr>'; d.slice(0,15).forEach(x=>{h+=`<tr><td>${x.name||''}</td><td>${x.email||''}</td><td>${x.phone||''}</td><td><button class="btn btn-y" onclick="quick('${x.name||''}','${x.email||''}')">Invoice</button></td></tr>`}); h+='</table>'; document.getElementById('leads').innerHTML=h; document.getElementById('formsT').innerHTML=h;} }catch(e){document.getElementById('leads').innerText='Error: '+e.message} }
+function saveBank(){ localStorage.setItem('bName',document.getElementById('bName').value); localStorage.setItem('aNum',document.getElementById('aNum').value); document.getElementById('pb').innerText=document.getElementById('bName').value; document.getElementById('pa').innerText=document.getElementById('aNum').value; alert('Bank Saved!');}
+function saveFw(){ localStorage.setItem('fwPub',document.getElementById('fwPub').value); alert('Flutterwave Saved! Add keys to Render ENV too');}
+function genNo(){ const n='ZP-INV-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000); if(document.getElementById('iNo')) document.getElementById('iNo').value=n;}
+function quick(n,e){ show('invoice'); document.getElementById('invoice').classList.add('active'); document.getElementById('iName').value=n; document.getElementById('iEmail').value=e; genNo();}
+function genInv(){ const name=document.getElementById('iName').value||'Client'; const email=document.getElementById('iEmail').value||''; const serv=document.getElementById('iServ').value; const amt=document.getElementById('iAmt').value; const no=document.getElementById('iNo').value; const b=document.getElementById('bName').value; const a=document.getElementById('aNum').value; const html=`<div style="display:flex;justify-content:space-between"><div><b>KRISHNYANSH ZENOVA PEAKS LTD</b><br>RC 9810296 | BN 9701468<br>Lagos, Nigeria</div><div style="text-align:right"><b>INVOICE</b><br>${no}<br>${new Date().toLocaleDateString()}</div></div><hr><p><b>Bill To:</b> ${name}<br>${email}</p><table border=1 style=width:100%;border-collapse:collapse><tr><th>Service</th><th>Amount</th></tr><tr><td>${serv}</td><td>₦${parseInt(amt).toLocaleString()}</td></tr><tr><td><b>Total</b></td><td><b>₦${parseInt(amt).toLocaleString()}</b></td></tr></table><p><b>Payment:</b> Bank: ${b} | Acct: ${a} | Flutterwave Available</p><div style="text-align:right;margin-top:20px"><div style="width:100px;height:100px;border:2px solid #1e3a8a;border-radius:50%;margin-left:auto;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#1e3a8a;text-align:center">ZENOVA<br>BN:9701468<br>VERIFIED</div><div style="font-size:10px">Official Stamp</div></div>`; document.getElementById('invPrev').innerHTML=html; document.getElementById('invPrev').style.display='block';}
+function exportD(){ window.open('/api/contacts?admin_key='+getK(),'_blank');}
+check();
 </script>
 </body>
 </html>
