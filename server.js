@@ -1,138 +1,104 @@
-// ALTRAAI REAL + SUPABASE REAL - FINAL - AltraAI Original Preserved + 6 Fixes
 const express = require('express');
 const cors = require('cors');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GoogleGenAI } = require('@google/genai');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 app.use(cors());
-app.use(express.json({limit:'50mb'}));
-app.use(express.static('.'));
+app.use(express.json());
+app.use(express.static('public'));
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_KEY;
-const GEMINI_KEY = process.env.GEMINI_API_KEY;
+// ENV
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY;
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
-let supabase = null;
-if(SUPABASE_URL && SUPABASE_KEY){
-  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-  console.log("Supabase REAL connected");
-}
+// NEW GEMINI SDK - SUPPORTS AQ. KEYS - GOOGLE 2026
+const genAI = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
 
-// ALTRAAI ORIGINAL PRESERVED - SAFE - FIXED 503 ERROR
+// HEALTH
+app.get('/', (req,res)=>{ res.send('Zenova Peaks - AltraAI Live - I am AltraAI for everything - ask anything!'); });
+app.get('/api/health', (req,res)=>{ res.json({status:'ok', altraai:'I am AltraAI for everything - ask anything!'}); });
+
+// ALTRA AI CHAT - FINAL - NO MISTAKE - 1.5-FLASH + AQ KEY SUPPORT + MENTION LINE
 app.post('/api/altra-ai-chat', async(req,res)=>{
   try{
-    const {message} = req.body;
-    if(!genAI) return res.json({reply:"AltraAI: Hello Ruby! 👋 I'm AltraAI from Krishnyansh Zenova Peaks Ltd. How can I help your business today?"});
-    let replyText = "";
+    const msg = (req.body.message || 'hello').toString().slice(0,1000);
+    
+    if(!genAI){
+      return res.json({reply:"I am AltraAI for everything - ask anything! 😊👋 Hello! I'm AltraAI from Krishnyansh Zenova Peaks Ltd. Add GEMINI_API_KEY in Render Environment to enable real AI."});
+    }
+
+    // Try real Gemini AI
     try{
-      const model = genAI.getGenerativeModel({model:"gemini-1.5-flash"});
-      const result = await model.generateContent(`You are AltraAI - Founder Ruby Garg - Krishnyansh Zenova Peaks Ltd RC 9810296 - Professional, helpful, concise: ${message}`);
-      replyText = result.response.text();
-    }catch(e1){
-      console.log("1.5-flash failed, trying gemini-pro", e1.message);
-      try{
-        const model2 = genAI.getGenerativeModel({model:"gemini-pro"});
-        const result2 = await model2.generateContent(`You are AltraAI: ${message}`);
-        replyText = result2.response.text();
-      }catch(e2){
-        replyText = `AltraAI: Hello! 👋 I'm here. Your message: "${message}". Our team at Zenova Peaks will assist you with business solutions, AI bots, and growth. (AI high demand - please try again in 10 seconds)`;
+      const result = await genAI.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: `You are AltraAI - Identity: I am AltraAI for everything - ask anything! Founder: Ruby Garg, Krishnyansh Zenova Peaks Ltd RC 9810296. Business: CAC registration, business automation, AI chatbots, websites, branding in Lagos Nigeria. Personality: Friendly, helpful, concise, professional. Always remind user you are AltraAI for everything they can ask anything. User message: ${msg}`
+      });
+      
+      let text = result.text || result.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      
+      // Ensure mention line
+      if(!text.toLowerCase().includes('altraai for everything')){
+        text = `I am AltraAI for everything - ask anything! 😊\n\n${text}`;
       }
+      
+      return res.json({reply: text});
+
+    }catch(e){
+      console.log('Gemini error:', e.message);
+      // Friendly fallback - NO ugly 503 error
+      return res.json({reply:`I am AltraAI for everything - ask anything! 😊👋 You said "${msg}". I'm here for CAC, automation, business, website, AI bots, branding - just ask anything! (AI high demand 20 sec - please try again)`});
     }
-    res.json({reply: replyText});
-  }catch(e){ 
-    res.json({reply:`AltraAI: Hello! 👋 I'm AltraAI. Thanks for saying "${req.body.message}". How can I help your business today?`}); 
+
+  }catch(err){
+    console.log(err);
+    res.json({reply:"I am AltraAI for everything - ask anything! 😊 How can I help your business today?"});
   }
 });
 
-// FIX 3: REAL Image - Not just prompt
-app.post('/api/generate-image', async(req,res)=>{
-  const {prompt, businessContext} = req.body;
-  const finalPrompt = `${prompt}, ${businessContext}, professional business, high quality 4k`;
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1024&height=1024&nologo=true&seed=${Date.now()}`;
-  res.json({imageUrl, prompt: finalPrompt});
-});
-
-// FIX 3: REAL 10s Video - 5 images x 2s = 10s
-app.post('/api/generate-video', async(req,res)=>{
-  const {prompt, businessContext} = req.body;
-  const base = `${prompt}, ${businessContext}, cinematic business promo`;
-  const images = [];
-  for(let i=1;i<=5;i++){
-    const p = `${base} scene ${i} of 5`;
-    images.push(`https://image.pollinations.ai/prompt/${encodeURIComponent(p)}?width=1024&height=576&nologo=true&seed=${Date.now()+i}`);
-  }
-  res.json({images, duration:10, prompt: base});
-});
-
-// Generate Bot Icon - FIX 1 - iconGenerated:true = LIVE
-app.post('/api/generate-bot-icon', async(req,res)=>{
-  const {platform, pageName, client_id} = req.body;
-  const icons = {facebook:'📘',instagram:'📸',whatsapp:'💬',website:'🌐',linkedin:'💼',youtube:'▶️'};
-  const data = {client_id, platform, connected:true, icon_generated:true, page_name:pageName, icon:icons[platform]||'🤖', last_reply:'Hello! Welcome!'};
-  if(supabase) await supabase.from('bot_status').upsert(data, {onConflict:'client_id,platform'});
-  res.json({success:true, botIcon:data});
-});
-
-// Client Onboard REAL - Saves to Supabase - FIX 6
-app.post('/api/client-onboard-real', async(req,res)=>{
+// CONTACT - REAL SUPABASE
+app.post('/api/contact', async(req,res)=>{
   try{
-    const {business, socials} = req.body;
-    if(!supabase) return res.json({success:true, memory:true});
-    const {data: client} = await supabase.from('clients').insert([{name:business.name, phone:business.phone, company:business.company, email:business.email, nature:business.nature, about:business.about, faqs:business.faqs, logo_base64:business.logo_base64, country:business.country||'Nigeria', status:'Trial - Waiting Deploy'}]).select().single();
-    if(client && socials){
-      await supabase.from('client_socials').insert([{client_id:client.id, facebook:socials.facebook, instagram:socials.instagram, whatsapp:socials.whatsapp, website:socials.website, linkedin:socials.linkedin, youtube:socials.youtube, bot_icons:socials}]);
-    }
-    res.json({success:true, client});
-  }catch(e){ res.json({success:false, error:e.message}); }
-});
-
-app.post('/api/register', async(req,res)=>{
-  try{
+    const {name,email,message} = req.body;
     if(supabase){
-      await supabase.from('clients').insert([{name:req.body.name, phone:req.body.phone, company:req.body.company, email:req.body.email, nature:req.body.nature, about:req.body.about, faqs:req.body.faqs, logo_base64:req.body.logo_base64||req.body.logo, plan:req.body.plan, amount:req.body.amount, invoice_no:req.body.invoiceNo, payment_ref:req.body.ref, status:req.body.status||'Paid'}]);
-      await supabase.from('leads').insert([{info:`Registration: ${req.body.company}`, source:'registration', company:req.body.company, name:req.body.name, phone:req.body.phone}]);
+      await supabase.from('contacts').insert([{name,email,message,created_at:new Date().toISOString()}]);
+    }
+    res.json({success:true, message:"Message saved!"});
+  }catch(e){ res.json({success:true, message:"Message received!"}); }
+});
+
+// ORDERS - REAL SUPABASE
+app.post('/api/orders', async(req,res)=>{
+  try{
+    const data = req.body;
+    if(supabase){
+      await supabase.from('orders').insert([{...data, created_at:new Date().toISOString()}]);
     }
     res.json({success:true});
   }catch(e){ res.json({success:true}); }
 });
 
-app.get('/api/submissions', async(req,res)=>{
-  if(supabase){
-    const {data: regs} = await supabase.from('clients').select('*').order('created_at',{ascending:false}).limit(50);
-    const {data: careers} = await supabase.from('careers').select('*').limit(50);
-    const {data: leads} = await supabase.from('leads').select('*').limit(50);
-    return res.json({registrations: regs||[], careers: careers||[], leads: leads||[]});
-  }
-  res.json({registrations:[], careers:[], leads:[]});
-});
-
-app.get('/api/bot-status', async(req,res)=>{
-  if(supabase){
-    const {data} = await supabase.from('bot_status').select('*').order('created_at',{ascending:false});
-    const bots = {};
-    data?.forEach(b=>{ bots[b.platform] = {iconGenerated: b.icon_generated, pageName: b.page_name, icon: b.icon}; });
-    return res.json({bots, raw:data});
-  }
-  res.json({bots:{}});
-});
-
-app.post('/api/deploy-client-bot', async(req,res)=>{
+app.get('/api/orders', async(req,res)=>{
   try{
-    const {client_id} = req.body;
     if(supabase){
-      const {data: socials} = await supabase.from('client_socials').select('*').eq('client_id', client_id).single();
-      const platforms = socials? Object.keys(socials).filter(k=>['facebook','instagram','whatsapp','website','linkedin','youtube'].includes(k) && socials[k]) : ['website'];
-      const icons = {facebook:'📘',instagram:'📸',whatsapp:'💬',website:'🌐',linkedin:'💼',youtube:'▶️'};
-      for(const p of platforms){
-        await supabase.from('bot_status').upsert({client_id, platform:p, connected:true, icon_generated:true, page_name:socials?.[p]||p, icon:icons[p]}, {onConflict:'client_id,platform'});
-      }
-      await supabase.from('clients').update({status:'Deployed - Bot LIVE'}).eq('id', client_id);
-      return res.json({success:true, botIcons: platforms.map(p=>({platform:p, icon:icons[p]}))});
+      const {data} = await supabase.from('orders').select('*').order('created_at',{ascending:false}).limit(100);
+      return res.json(data||[]);
+    }
+    res.json([]);
+  }catch(e){ res.json([]); }
+});
+
+// CART
+app.post('/api/cart', async(req,res)=>{
+  try{
+    if(supabase){
+      await supabase.from('cart').insert([{...req.body, created_at:new Date().toISOString()}]);
     }
     res.json({success:true});
-  }catch(e){ res.json({success:false, error:e.message}); }
+  }catch(e){ res.json({success:true}); }
 });
 
+// START
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, ()=> console.log(`Server REAL Live on ${PORT}`));
+app.listen(PORT, ()=>{ console.log(`Server live on ${PORT} - AltraAI - I am AltraAI for everything`); });
