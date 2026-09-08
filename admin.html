@@ -1,144 +1,233 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ZENOVA ADMIN GLOBAL</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#020617;color:#e2e8f0}
-#lock{position:fixed;inset:0;background:#020617;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
-.lock-box{background:#1e293b;border-radius:16px;padding:24px;width:100%;max-width:340px;text-align:center}
-.lock-box input{width:100%;padding:12px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;margin:12px 0}
-.lock-box button{width:100%;padding:12px;background:#facc15;color:#000;border:0;border-radius:8px;font-weight:700}
-.header{background:#0f172a;padding:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.logo{font-weight:900} .logo span{color:#facc15}
-.badges{display:flex;gap:6px;flex-wrap:wrap}
-.badge{padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;border:0;color:#fff}
-.b-green{background:#166534;color:#86efac} .b-yellow{background:#facc15;color:#000} .b-blue{background:#1d4ed8} .b-red{background:#b91c1c}
-.container{display:flex}
-.sidebar{width:260px;background:#0f172a;border-right:1px solid #1e293b;padding:12px;min-height:100vh}
-@media(max-width:768px){.sidebar{position:fixed;left:0;top:0;z-index:90;transform:translateX(-100%);transition:0.3s;width:80%}.sidebar.open{transform:translateX(0)}}
-.menu{padding:10px;border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:14px}
-.menu:hover{background:#1e293b} .menu.active{background:#facc15;color:#000;font-weight:700}
-.main{flex:1;padding:12px;background:#020617}
-.card{background:#1e293b;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #334155}
-.card-yellow{border-left:4px solid #facc15} .card-green{border-left:4px solid #22c55e} .card-blue{border-left:4px solid #3b82f6}
-.btn{padding:8px 12px;border-radius:6px;border:0;font-weight:600;font-size:12px;margin:3px;cursor:pointer}
-.btn-y{background:#facc15;color:#000} .btn-g{background:#22c55e;color:#000} .btn-b{background:#3b82f6;color:#fff}
-input,select,textarea{width:100%;padding:10px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#fff;margin:6px 0}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
-.sec{display:none} .sec.active{display:block}
-.invoice{background:#fff;color:#000;padding:16px;border-radius:10px;margin-top:10px;font-size:12px}
-</style>
-</head>
-<body>
-
-<div id="lock">
-<div class="lock-box">
-<h3 style="color:#facc15">🔒 ZENOVA ADMIN LOCKED</h3>
-<p style="font-size:12px;color:#94a3b8">Enter Password</p>
-<input type="password" id="p" placeholder="Password">
-<button onclick="unlock()">Unlock</button>
-<p id="err" style="color:#ef4444;display:none;font-size:12px;margin-top:8px">Wrong password!</p>
-</div>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#fff;font-family:Arial}
+.top{background:#1e3a8a;padding:12px;text-align:center;color:#facc15;font-weight:bold}
+.menu{display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#0f172a;position:sticky;top:0;z-index:9}
+.menu button{background:#1e293b;color:#fff;border:1px solid #334155;padding:8px 10px;border-radius:8px;font-size:12px}
+.menu button.active{background:#facc15;color:#000}
+.card{background:#111c34;border:1px solid #1e3a8a;border-radius:12px;padding:12px;margin:10px}
+input,textarea,select{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff}
+.btn{padding:10px 14px;border-radius:8px;border:0;font-weight:bold;margin:4px}
+.btn-y{background:#facc15;color:#000}.btn-b{background:#1e3a8a;color:#fff}.btn-r{background:#ef4444;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.small{font-size:11px;color:#94a3b8}
+.imgPrev{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #334155}
+.switch{width:40px;height:22px;background:#334155;border-radius:20px;position:relative;display:inline-block;vertical-align:middle}
+.switch.on{background:#22c55e}.switch i{position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+.switch.on i{left:20px}
+table{width:100%;font-size:11px;border-collapse:collapse}th,td{border:1px solid #1e3a8a;padding:6px;text-align:left}
+</style></head><body>
+<div class="top">ZENOVA ADMIN GLOBAL | RC 9810296 | BN 9701468 | Lagos</div>
+<div class="menu">
+<button onclick="show('dash')" id="b-dash" class="active">Dashboard</button>
+<button onclick="show('gallery')" id="b-gallery">Gallery</button>
+<button onclick="show('ceo')" id="b-ceo">About CEO</button>
+<button onclick="show('flyers')" id="b-flyers">Flyers</button>
+<button onclick="show('clients')" id="b-clients">Clients Full</button>
+<button onclick="show('packs')" id="b-packs">Packs & Services</button>
+<button onclick="show('bank')" id="b-bank">Bank+Flutterwave</button>
+<button onclick="show('invoice')" id="b-invoice">Invoice+Stamp</button>
+<button onclick="show('thoughts')" id="b-thoughts">CEO Thoughts</button>
+<button onclick="show('settings')" id="b-settings">Settings+Stamp</button>
 </div>
 
-<div class="header">
-<button onclick="document.getElementById('side').classList.toggle('open')" style="font-size:20px;background:none;border:0;color:#fff">☰</button>
-<div class="logo"><span>ZENOVA</span><br>ADMIN<br>GLOBAL</div>
-<div class="badges">
-<button class="badge b-green">RC<br>9810296</button>
-<button class="badge b-yellow" onclick="show('invoice')">Stamp +<br>Subscribe</button>
-<button class="badge b-blue" onclick="exportD()">Export</button>
-<button class="badge b-red" onclick="lockP()">Lock</button>
+<div id="dash" class="sec">
+<div class="card"><h3>Dashboard</h3>
+<p class="small">Total Clients: <b id="cTotal">0</b> | Gallery: <b id="gTotal">0</b></p>
+<p class="small">Server: <span id="srv">Checking /api/health...</span></p>
+<button class="btn btn-b" onclick="checkSrv()">Check Server</button>
 </div>
 </div>
 
-<div class="container">
-<div class="sidebar" id="side">
-<div class="menu active" onclick="show('dash')">📊 Dashboard</div>
-<div class="menu" onclick="show('clients')">🌍 Clients — Country</div>
-<div class="menu" onclick="show('sub')">💳 Subscribe Buttons — GBP/Google/AI</div>
-<div class="menu" onclick="show('bank')" style="border:1px solid #facc15">🏦 Bank + Flutterwave</div>
-<div class="menu" onclick="show('invoice')">🧾 Invoice + Stamp</div>
-<div class="menu" onclick="show('forms')">📝 Forms & Subs</div>
-<div class="menu" onclick="show('set')">⚙️ Settings + Stamp</div>
-<div style="margin-top:16px;background:#1e293b;padding:12px;border-radius:10px;text-align:center">
-<div style="font-size:11px">Official Stamp</div>
-<div style="width:90px;height:90px;background:#fff;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center;color:#1e3a8a;font-size:8px;font-weight:700;text-align:center">ZENOVA PEAKS<br>BN:9701468<br>Verified Lagos</div>
-<div style="font-size:10px">BN: 9701468 • Verified Lagos</div>
+<div id="gallery" class="sec" style="display:none">
+<div class="card"><h3>Gallery Edit</h3>
+<input id="gUrl" placeholder="Paste Image URL https://...">
+<input type="file" id="gFile" accept="image/*">
+<button class="btn btn-y" onclick="addG()">Add Image</button>
+<div id="gList" class="grid2"></div>
 </div>
 </div>
 
-<div class="main">
-<div id="dash" class="sec active">
-<div class="card card-yellow"><h3>📊 Dashboard</h3>
-<button class="btn btn-g" onclick="load()">Load Leads from Server</button>
-<button class="btn btn-y" onclick="window.open('/api/contacts?admin_key='+getK(),'_blank')">Open /api/contacts</button>
-<button class="btn btn-b" onclick="load()">Load Supabase</button>
-<div id="leads" style="margin-top:10px;font-size:12px">Click Load...</div>
+<div id="ceo" class="sec" style="display:none">
+<div class="card"><h3>About CEO Edit</h3>
+<label>CEO Name</label><input id="ceoName" placeholder="Niharika Gupta">
+<label>Role</label><input id="ceoRole" placeholder="Founder & CEO">
+<label>Bio</label><textarea id="ceoBio" rows="4"></textarea>
+<label>Photo</label><input type="file" id="ceoFile" accept="image/*">
+<img id="ceoPrev" class="imgPrev" style="display:none">
+<button class="btn btn-y" onclick="saveCEO()">Save CEO</button>
 </div>
 </div>
 
-<div id="bank" class="sec">
-<div class="card card-yellow"><h3>🏦 Bank + Flutterwave — Payment Gateway</h3>
-<p style="color:#facc15;font-size:12px">RESTORED — Full Payment Control</p>
-<div style="background:#0f172a;padding:10px;border-radius:8px;margin:8px 0;border:1px dashed #facc15">
-<b style="color:#facc15">BANK DETAILS</b>
-<div class="row"><div><label>Bank Name</label><input id="bName" value="Guaranty Trust Bank"></div><div><label>Account Name</label><input id="aName" value="Krishnyansh Zenova Peaks Ltd"></div></div>
-<div class="row"><div><label>Account Number</label><input id="aNum" value="0123456789"></div><div><label>SWIFT</label><input id="swift" value="GTBINGLA"></div></div>
+<div id="flyers" class="sec" style="display:none">
+<div class="card"><h3>Flyers Add</h3>
+<input id="fTitle" placeholder="Flyer Title">
+<input type="file" id="fFile" accept="image/*"><input id="fUrl" placeholder="Or Image URL">
+<select id="fCat"><option>Offer</option><option>Festival</option><option>Service</option></select>
+<input type="date" id="fExp">
+<label>ON/OFF <span id="fSw" class="switch on" onclick="this.classList.toggle('on')"><i></i></span></label>
+<button class="btn btn-y" onclick="addFlyer()">Add Flyer</button>
+<div id="fList"></div>
+</div>
+</div>
+
+<div id="clients" class="sec" style="display:none">
+<div class="card"><h3>Clients — Full Control (Not Only Country)</h3>
+<p class="small">Submitted requests for bot — Deploy Starter/Premium/Pro + Global ON/OFF</p>
+<div class="grid2">
+<label>Global WhatsApp <span class="switch on" id="gwWa" onclick="tog(this)"><i></i></span></label>
+<label>Global FB <span class="switch on" id="gwFb" onclick="tog(this)"><i></i></span></label>
+<label>Global IG <span class="switch on" id="gwIg" onclick="tog(this)"><i></i></span></label>
+<label>Global LinkedIn <span class="switch on" id="gwLi" onclick="tog(this)"><i></i></span></label>
+</div>
+<table><thead><tr><th>Name</th><th>Business</th><th>Service Wants</th><th>Pack</th><th>Action</th></tr></thead><tbody id="clTable"></tbody></table>
+<h4>Add Test Client</h4>
+<input id="clName" placeholder="Client Name"><input id="clBiz" placeholder="Business Name">
+<input id="clCountry" placeholder="Country"><input id="clPhone" placeholder="Phone"><input id="clEmail" placeholder="Email">
+<div class="grid2 small">
+<label><input type="checkbox" id="sWa"> WhatsApp</label><label><input type="checkbox" id="sFb"> FB</label>
+<label><input type="checkbox" id="sIg"> Instagram</label><label><input type="checkbox" id="sLi"> LinkedIn</label>
+<label><input type="checkbox" id="sWeb"> Website</label><label><input type="checkbox" id="sInv"> Auto Invoice</label>
+<label><input type="checkbox" id="sGbp"> GBP Setup</label><label><input type="checkbox" id="sGad"> Google AD</label>
+<label><input type="checkbox" id="sAiI"> AI Image Studio</label><label><input type="checkbox" id="sAiV"> AI Video Studio</label>
+</div>
+<select id="clPack"><option>Starter</option><option>Premium</option><option>Pro</option></select>
+<button class="btn btn-y" onclick="addClient()">Add Client</button>
+</div>
+</div>
+
+<div id="packs" class="sec" style="display:none">
+<div class="card"><h3>Packs & Services — Price + ON/OFF</h3>
+<div class="grid2">
+<div><label>Starter Price</label><input id="pSt" value="$99"><label>Starter ON <span class="switch on" id="swSt" onclick="tog(this)"><i></i></span></label><p class="small">WhatsApp + FB</p></div>
+<div><label>Premium Price</label><input id="pPr" value="$199"><label>Premium ON <span class="switch on" id="swPr" onclick="tog(this)"><i></i></span></label><p class="small">Starter + IG + LinkedIn</p></div>
+<div><label>Pro Price</label><input id="pPro" value="$349"><label>Pro ON <span class="switch on" id="swPro" onclick="tog(this)"><i></i></span></label><p class="small">Starter+Premium + Website + Invoice</p></div>
+</div>
+<table><thead><tr><th>Service</th><th>Price</th><th>Pack Include</th><th>ON</th></tr></thead><tbody>
+<tr><td>Subscriptions</td><td><input id="svSub" value="$29"></td><td><select><option>All</option><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
+<tr><td>GBP Setup</td><td><input id="svGbp" value="$49"></td><td><select><option>Premium</option><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
+<tr><td>Google AD</td><td><input id="svGad" value="$79"></td><td><select><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
+<tr><td>AI Image Studio</td><td><input id="svAiI" value="$39"></td><td><select><option>Premium</option><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
+<tr><td>AI Video Studio</td><td><input id="svAiV" value="$59"></td><td><select><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
+</tbody></table>
+<button class="btn btn-y" onclick="savePacks()">Save Packs</button>
+</div>
+</div>
+
+<div id="bank" class="sec" style="display:none">
+<div class="card"><h3>Bank + Flutterwave</h3>
+<input id="bkName" placeholder="Bank Name GTB"><input id="bkAcc" placeholder="Account No"><input id="bkAccName" placeholder="Account Name Krishnyansh Zenova Peaks Ltd">
+<input id="fwPub" placeholder="Flutterwave Public Key"><input id="fwSec" placeholder="Flutterwave Secret"><input id="fwLink" placeholder="Payment Link">
 <button class="btn btn-y" onclick="saveBank()">Save Bank</button>
+<p class="small" id="bkEnv"></p>
 </div>
-<div style="background:#0f172a;padding:10px;border-radius:8px;margin:8px 0;border:1px dashed #3b82f6">
-<b style="color:#60a5fa">FLUTTERWAVE</b>
-<label>Public Key</label><input id="fwPub" placeholder="FLWPUBK-...">
-<div class="row"><div><label>Secret Key</label><input id="fwSec" placeholder="FLWSECK-..."></div><div><label>Enc Key</label><input id="fwEnc" placeholder="FLWSECK_ENC-..."></div></div>
-<label>Mode</label><select id="fwMode"><option>Test Mode</option><option>Live Mode</option></select>
-<button class="btn btn-b" onclick="saveFw()">Save Flutterwave</button>
 </div>
-<div style="background:#fff;color:#000;padding:10px;border-radius:8px">
-<b>Client Preview:</b><br>
-<button style="background:#f5a623;color:#fff;padding:8px 12px;border:0;border-radius:6px;margin:6px 0">Pay with Flutterwave</button>
-<div style="font-size:11px;background:#f8fafc;padding:6px;border-radius:4px">Bank: <span id="pb">GTB</span> | Acct: <span id="pa">0123456789</span></div>
+
+<div id="invoice" class="sec" style="display:none">
+<div class="card"><h3>Invoice + Stamp Editable</h3>
+<input id="invPre" placeholder="Invoice Prefix ZEN-"><input id="invAddr" placeholder="Company Address Lagos">
+<label>Stamp Image</label><input type="file" id="stFile" accept="image/*"><img id="stPrev" class="imgPrev" style="display:none">
+<label>Stamp Text</label><input id="stText" value="ZENOVA PEAKS LTD BN:9701468 Verified Lagos">
+<label>Signature</label><input type="file" id="sigFile" accept="image/*"><img id="sigPrev" class="imgPrev" style="display:none">
+<button class="btn btn-y" onclick="saveInvoice()">Save Invoice Settings</button>
+<div style="border:1px dashed #facc15;padding:10px;margin-top:10px;background:#fff;color:#000;border-radius:8px;text-align:center">
+<div style="font-weight:bold;color:#1e3a8a">INVOICE PREVIEW</div><div id="invPreview">Stamp will show here</div><img id="invStampPrev" class="imgPrev">
 </div>
 </div>
 </div>
 
-<div id="invoice" class="sec">
-<div class="card"><h3>🧾 Invoice + Stamp — Auto</h3>
-<div class="row"><div><label>Client Name</label><input id="iName" placeholder="Client Name"></div><div><label>Email</label><input id="iEmail" placeholder="email"></div></div>
-<div class="row"><div><label>Service</label><select id="iServ"><option>CAC Business Name - ₦35k</option><option>CAC Ltd - ₦85k</option><option>Website - ₦150k</option><option>AI Bot - ₦200k</option></select></div><div><label>Amount</label><input id="iAmt" type="number" value="35000"></div></div>
-<div><label>Invoice No</label><input id="iNo" value=""></div>
-<button class="btn btn-y" onclick="genInv()">Generate Invoice</button>
-<div id="invPrev" class="invoice" style="display:none"></div>
+<div id="thoughts" class="sec" style="display:none">
+<div class="card"><h3>Daily Brief — CEO Thoughts</h3>
+<input type="date" id="thDate"><input id="thTitle" placeholder="Thought Title"><textarea id="thText" rows="3" placeholder="CEO Thought..."></textarea>
+<input type="file" id="thFile" accept="image/*"><select id="thMood"><option>Motivational</option><option>Business</option><option>Life</option></select>
+<button class="btn btn-y" onclick="addThought()">Publish Thought</button>
+<div id="thList"></div>
 </div>
 </div>
 
-<div id="forms" class="sec"><div class="card"><h3>📝 Forms & Subs</h3><button class="btn btn-g" onclick="load()">Load Forms</button><div id="formsT" style="margin-top:8px"></div></div></div>
-<div id="clients" class="sec"><div class="card"><h3>🌍 Clients — Country</h3><div id="cData">No data yet</div></div></div>
-<div id="sub" class="sec"><div class="card"><h3>💳 Subscribe Buttons</h3><label>Google Pay ID</label><input placeholder="GPay ID"><label>GBP Details</label><input placeholder="GBP Bank"><button class="btn btn-y">Save</button></div></div>
-<div id="set" class="sec"><div class="card"><h3>⚙️ Settings + Stamp</h3><label>RC</label><input value="RC 9810296"><label>BN</label><input value="BN 9701468"><button class="btn btn-y">Save</button></div></div>
-
+<div id="settings" class="sec" style="display:none">
+<div class="card"><h3>Settings + Stamp + Admin Profile</h3>
+<input id="adName" placeholder="Admin Name"><input id="adEmail" placeholder="Admin Email">
+<input type="password" id="adPassOld" placeholder="Old Password"><input type="password" id="adPassNew" placeholder="New Password">
+<input type="file" id="adAv" accept="image/*"><img id="adAvPrev" class="imgPrev" style="display:none">
+<label>Official Stamp (same as invoice)</label><input type="file" id="adStFile" accept="image/*"><img id="adStPrev" class="imgPrev" style="display:none">
+<button class="btn btn-y" onclick="saveAdmin()">Save Admin Profile</button>
 </div>
 </div>
 
 <script>
-const PASS="Zenova@2026RubySecure";
-function getK(){return localStorage.getItem('zk')||""}
-function check(){ if(!getK()) document.getElementById('lock').style.display='flex'; else {document.getElementById('lock').style.display='none'; genNo();} }
-function unlock(){ if(document.getElementById('p').value===PASS || document.getElementById('p').value==="Zenova@2026" || document.getElementById('p').value==="admin123"){localStorage.setItem('zk',document.getElementById('p').value);document.getElementById('lock').style.display='none'; genNo();} else document.getElementById('err').style.display='block';}
-function lockP(){localStorage.removeItem('zk');document.getElementById('lock').style.display='flex';}
-function show(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.menu').forEach(m=>m.classList.remove('active'));event.currentTarget.classList.add('active');if(window.innerWidth<=768) document.getElementById('side').classList.remove('open');}
-async function load(){ const k=getK(); if(!k) return; try{ const r=await fetch('/api/contacts?admin_key='+k,{headers:{'x-admin-password':k}}); const d=await r.json(); if(Array.isArray(d)){ let h='<table border=1 style=width:100%;font-size:11px;border-collapse:collapse><tr><th>Name</th><th>Email</th><th>Phone</th><th>Invoice</th></tr>'; d.slice(0,15).forEach(x=>{h+=`<tr><td>${x.name||''}</td><td>${x.email||''}</td><td>${x.phone||''}</td><td><button class="btn btn-y" onclick="quick('${x.name||''}','${x.email||''}')">Invoice</button></td></tr>`}); h+='</table>'; document.getElementById('leads').innerHTML=h; document.getElementById('formsT').innerHTML=h;} }catch(e){document.getElementById('leads').innerText='Error: '+e.message} }
-function saveBank(){ localStorage.setItem('bName',document.getElementById('bName').value); localStorage.setItem('aNum',document.getElementById('aNum').value); document.getElementById('pb').innerText=document.getElementById('bName').value; document.getElementById('pa').innerText=document.getElementById('aNum').value; alert('Bank Saved!');}
-function saveFw(){ localStorage.setItem('fwPub',document.getElementById('fwPub').value); alert('Flutterwave Saved! Add keys to Render ENV too');}
-function genNo(){ const n='ZP-INV-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000); if(document.getElementById('iNo')) document.getElementById('iNo').value=n;}
-function quick(n,e){ show('invoice'); document.getElementById('invoice').classList.add('active'); document.getElementById('iName').value=n; document.getElementById('iEmail').value=e; genNo();}
-function genInv(){ const name=document.getElementById('iName').value||'Client'; const email=document.getElementById('iEmail').value||''; const serv=document.getElementById('iServ').value; const amt=document.getElementById('iAmt').value; const no=document.getElementById('iNo').value; const b=document.getElementById('bName').value; const a=document.getElementById('aNum').value; const html=`<div style="display:flex;justify-content:space-between"><div><b>KRISHNYANSH ZENOVA PEAKS LTD</b><br>RC 9810296 | BN 9701468<br>Lagos, Nigeria</div><div style="text-align:right"><b>INVOICE</b><br>${no}<br>${new Date().toLocaleDateString()}</div></div><hr><p><b>Bill To:</b> ${name}<br>${email}</p><table border=1 style=width:100%;border-collapse:collapse><tr><th>Service</th><th>Amount</th></tr><tr><td>${serv}</td><td>₦${parseInt(amt).toLocaleString()}</td></tr><tr><td><b>Total</b></td><td><b>₦${parseInt(amt).toLocaleString()}</b></td></tr></table><p><b>Payment:</b> Bank: ${b} | Acct: ${a} | Flutterwave Available</p><div style="text-align:right;margin-top:20px"><div style="width:100px;height:100px;border:2px solid #1e3a8a;border-radius:50%;margin-left:auto;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#1e3a8a;text-align:center">ZENOVA<br>BN:9701468<br>VERIFIED</div><div style="font-size:10px">Official Stamp</div></div>`; document.getElementById('invPrev').innerHTML=html; document.getElementById('invPrev').style.display='block';}
-function exportD(){ window.open('/api/contacts?admin_key='+getK(),'_blank');}
-check();
-</script>
-</body>
-</html>
+function show(id){
+ document.querySelectorAll('.sec').forEach(s=>s.style.display='none');
+ document.getElementById(id).style.display='block';
+ document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+ document.getElementById('b-'+id).classList.add('active');
+ localStorage.setItem('zenovaTab',id);
+}
+function tog(el){el.classList.toggle('on')}
+function checkSrv(){
+ fetch('/api/health').then(r=>r.json()).then(j=>document.getElementById('srv').innerText=JSON.stringify(j)).catch(()=>document.getElementById('srv').innerText='Offline - check Render');
+}
+let gData=JSON.parse(localStorage.getItem('zenovaGallery')||'[]');
+function renderG(){let h='';gData.forEach((u,i)=>h+=`<div><img src="${u}" class="imgPrev" style="width:100%;height:90px"><br><button class="btn btn-r" style="padding:4px 8px;font-size:10px" onclick="delG(${i})">Del</button></div>`);document.getElementById('gList').innerHTML=h;document.getElementById('gTotal').innerText=gData.length}
+function addG(){
+ let url=document.getElementById('gUrl').value.trim();
+ if(url){gData.push(url);saveG();}else alert('Paste URL or select file');
+}
+function delG(i){gData.splice(i,1);saveG()}
+function saveG(){localStorage.setItem('zenovaGallery',JSON.stringify(gData));document.getElementById('gUrl').value='';renderG()}
+document.getElementById('gFile').addEventListener('change',e=>{if(e.target.files[0]){let r=new FileReader();r.onload=ev=>{gData.push(ev.target.result);saveG()};r.readAsDataURL(e.target.files[0])}});
+
+let ceo=JSON.parse(localStorage.getItem('zenovaCEO')||'{}');
+function saveCEO(){
+ let o={name:ceoName.value,role:ceoRole.value,bio:ceoBio.value,img:document.getElementById('ceoPrev').src};
+ localStorage.setItem('zenovaCEO',JSON.stringify(o));alert('CEO Saved');
+}
+document.getElementById('ceoFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{ceoPrev.src=ev.target.result;ceoPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
+if(ceo.name){ceoName.value=ceo.name;ceoRole.value=ceo.role;ceoBio.value=ceo.bio;if(ceo.img){ceoPrev.src=ceo.img;ceoPrev.style.display='block'}}
+
+let flyers=JSON.parse(localStorage.getItem('zenovaFlyers')||'[]');
+function addFlyer(){
+ let t=fTitle.value; if(!t)return alert('Title');
+ let o={title:t,url:fUrl.value,cat:fCat.value,exp:fExp.value,on:document.getElementById('fSw').classList.contains('on'),img:''};
+ if(document.getElementById('fSw').dataset.img)o.img=document.getElementById('fSw').dataset.img;
+ else o.img=fUrl.value;
+ flyers.push(o);localStorage.setItem('zenovaFlyers',JSON.stringify(flyers));renderFlyers();fTitle.value='';fUrl.value='';
+}
+function renderFlyers(){let h='';flyers.forEach((f,i)=>h+=`<div style="border:1px solid #334155;padding:6px;margin:4px;border-radius:8px"><b>${f.title}</b> ${f.cat} ${f.on?'ON':'OFF'}<br><img src="${f.img||f.url}" class="imgPrev"><br><button class="btn btn-r" onclick="flyers.splice(${i},1);localStorage.setItem('zenovaFlyers',JSON.stringify(flyers));renderFlyers()">Del</button></div>`);document.getElementById('fList').innerHTML=h}
+document.getElementById('fFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{document.getElementById('fSw').dataset.img=ev.target.result;fUrl.value=ev.target.result};r.readAsDataURL(e.target.files[0])});
+renderFlyers();
+
+let clients=JSON.parse(localStorage.getItem('zenovaClients')||'[]');
+function renderClients(){let h='';clients.forEach((c,i)=>h+=`<tr><td>${c.name}<br><small>${c.country}</small></td><td>${c.biz}</td><td>${c.services.join(',')}</td><td><select onchange="clients[${i}].pack=this.value;saveClients()" ><option ${c.pack=='Starter'?'selected':''}>Starter</option><option ${c.pack=='Premium'?'selected':''}>Premium</option><option ${c.pack=='Pro'?'selected':''}>Pro</option></select></td><td><button class="btn btn-y" style="padding:4px" onclick="alert('Deploying bot for ${c.name} - ${c.pack}')">Deploy</button> <button class="btn btn-r" style="padding:4px" onclick="clients.splice(${i},1);saveClients()">X</button></td></tr>`);document.getElementById('clTable').innerHTML=h;document.getElementById('cTotal').innerText=clients.length}
+function addClient(){
+ let sv=[]; if(sWa.checked)sv.push('WhatsApp'); if(sFb.checked)sv.push('FB'); if(sIg.checked)sv.push('IG'); if(sLi.checked)sv.push('LinkedIn'); if(sWeb.checked)sv.push('Website'); if(sInv.checked)sv.push('Invoice'); if(sGbp.checked)sv.push('GBP'); if(sGad.checked)sv.push('GAD'); if(sAiI.checked)sv.push('AI-Img'); if(sAiV.checked)sv.push('AI-Vid');
+ let o={name:clName.value,biz:clBiz.value,country:clCountry.value,phone:clPhone.value,email:clEmail.value,services:sv,pack:clPack.value};
+ if(!o.name)return alert('Name'); clients.push(o);saveClients(); clName.value=''; clBiz.value='';
+}
+function saveClients(){localStorage.setItem('zenovaClients',JSON.stringify(clients));renderClients()}
+renderClients();renderG();
+
+function savePacks(){let o={starter:pSt.value,premium:pPr.value,pro:pPro.value,sub:svSub.value,gbp:svGbp.value,gad:svGad.value,aiI:svAiI.value,aiV:svAiV.value};localStorage.setItem('zenovaPacks',JSON.stringify(o));alert('Packs Saved')}
+let packs=JSON.parse(localStorage.getItem('zenovaPacks')||'{}'); if(packs.starter){pSt.value=packs.starter;pPr.value=packs.premium;pPro.value=packs.pro}
+
+function saveBank(){let o={name:bkName.value,acc:bkAcc.value,accName:bkAccName.value,fwPub:fwPub.value,fwSec:fwSec.value,link:fwLink.value};localStorage.setItem('zenovaBank',JSON.stringify(o));document.getElementById('bkEnv').innerText=`BANK_NAME=${o.name} BANK_ACCOUNT_NUMBER=${o.acc} FLUTTERWAVE_PUBLIC_KEY=${o.fwPub}`;alert('Bank Saved')}
+let bank=JSON.parse(localStorage.getItem('zenovaBank')||'{}'); if(bank.name){bkName.value=bank.name;bkAcc.value=bank.acc;bkAccName.value=bank.accName;fwPub.value=bank.fwPub;fwSec.value=bank.fwSec;fwLink.value=bank.link}
+
+function saveInvoice(){let o={pre:invPre.value,addr:invAddr.value,stamp:document.getElementById('stPrev').src,text:stText.value,sig:document.getElementById('sigPrev').src};localStorage.setItem('zenovaInv',JSON.stringify(o));document.getElementById('invStampPrev').src=o.stamp;document.getElementById('invPreview').innerText=o.text;alert('Invoice Saved')}
+document.getElementById('stFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{stPrev.src=ev.target.result;stPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
+document.getElementById('sigFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{sigPrev.src=ev.target.result;sigPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
+
+let thoughts=JSON.parse(localStorage.getItem('zenovaThoughts')||'[]');
+function addThought(){let o={date:thDate.value,title:thTitle.value,text:thText.value,mood:thMood.value,img:document.getElementById('thDate').dataset.img||''};if(!o.title)return alert('Title');thoughts.push(o);localStorage.setItem('zenovaThoughts',JSON.stringify(thoughts));renderThoughts();thTitle.value='';thText.value=''}
+function renderThoughts(){let h='';thoughts.forEach((t,i)=>h+=`<div style="border:1px solid #334155;padding:6px;margin:4px;border-radius:8px"><b>${t.title}</b> ${t.date} ${t.mood}<br><small>${t.text}</small><br><button class="btn btn-r" style="padding:3px" onclick="thoughts.splice(${i},1);localStorage.setItem('zenovaThoughts',JSON.stringify(thoughts));renderThoughts()">Del</button></div>`);document.getElementById('thList').innerHTML=h}
+document.getElementById('thFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{document.getElementById('thDate').dataset.img=ev.target.result};r.readAsDataURL(e.target.files[0])});
+renderThoughts();
+
+function saveAdmin(){let o={name:adName.value,email:adEmail.value,av:document.getElementById('adAvPrev').src,stamp:document.getElementById('adStPrev').src};localStorage.setItem('zenovaAdmin',JSON.stringify(o));if(adPassNew.value)alert('Password changed to: '+adPassNew.value);else alert('Admin Saved')}
+document.getElementById('adAv').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{adAvPrev.src=ev.target.result;adAvPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
+document.getElementById('adStFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{adStPrev.src=ev.target.result;adStPrev.style.display='block';stPrev.src=ev.target.result;stPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
+
+show(localStorage.getItem('zenovaTab')||'dash');checkSrv();
+</script></body></html>
