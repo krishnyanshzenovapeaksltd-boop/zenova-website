@@ -483,44 +483,94 @@ async function submitRegistration(e){
 </script>
 
 <!-- ===== 2. LIVE CHAT BOT WIDGET 🤖 - 24/7 Company Knowledge + CEO WhatsApp Redirect - Yaha se Add hua ===== -->
+<!-- FIXED CHAT BOT 🤖 - Open hoga 100% - No Supabase error block -->
 <style>
-#zenova-chat-btn{position:fixed;bottom:20px;right:20px;width:64px;height:64px;background:linear-gradient(135deg,#FDB913,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(253,185,19,0.5);z-index:99999;font-size:30px;border:3px solid #fff}
-#zenova-chat-window{position:fixed;bottom:95px;right:20px;width:380px;max-width:92vw;height:560px;background:#121212;border:1px solid #333;border-radius:20px;display:none;flex-direction:column;z-index:99999;overflow:hidden}
-#zenova-header{background:linear-gradient(135deg,#FDB913,#FF8C00);color:#000;padding:14px 16px;font-weight:800;display:flex;justify-content:space-between}
+#zenova-chat-btn{position:fixed;bottom:20px;right:20px;width:64px;height:64px;background:linear-gradient(135deg,#FDB913,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(253,185,19,0.5);z-index:999999;font-size:30px;border:3px solid #fff;user-select:none}
+#zenova-chat-window{position:fixed;bottom:95px;right:20px;width:380px;max-width:92vw;height:560px;background:#121212;border:1px solid #333;border-radius:20px;display:none;flex-direction:column;z-index:999999;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+#zenova-header{background:linear-gradient(135deg,#FDB913,#FF8C00);color:#000;padding:14px 16px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
 #zenova-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#0a0a0a}
-.zenova-msg{max-width:82%;padding:11px 15px;border-radius:18px;font-size:13px;white-space:pre-wrap}
-.zenova-msg.bot{background:#1e1e1e;color:#fff;align-self:flex-start}
-.zenova-msg.user{background:#FDB913;color:#000;align-self:flex-end}
+.zenova-msg{max-width:82%;padding:11px 15px;border-radius:18px;font-size:13px;line-height:1.4;white-space:pre-wrap}
+.zenova-msg.bot{background:#1e1e1e;color:#fff;align-self:flex-start;border:1px solid #2a2a2a}
+.zenova-msg.user{background:#FDB913;color:#000;align-self:flex-end;font-weight:600}
 #zenova-input-area{display:flex;padding:10px;background:#1a1a1a;border-top:1px solid #2a2a2a;gap:8px}
-#zenova-input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:22px;padding:11px 16px;color:#fff;outline:none}
-#zenova-wa-redirect{display:none;margin:10px;background:#25D366;color:#fff;padding:12px;border-radius:14px;text-align:center;font-weight:800;cursor:pointer;text-decoration:none}
+#zenova-input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:22px;padding:11px 16px;color:#fff;outline:none;font-size:13px}
+#zenova-wa-redirect{display:none;margin:10px;background:#25D366;color:#fff;padding:12px;border-radius:14px;text-align:center;font-weight:800;cursor:pointer;text-decoration:none;font-size:13px}
 </style>
 
 <div id="zenova-chat-btn" onclick="toggleZenovaChat()">🤖</div>
 <div id="zenova-chat-window">
-<div id="zenova-header"><div><div style="font-size:15px">ZENOVA PEAK TECH HUB 🤖</div><div style="font-size:10px">Est.2026 • BN 9701468 • RC 9810296 • 24/7 Altra AI</div></div><div style="cursor:pointer;font-size:22px" onclick="toggleZenovaChat()">×</div></div>
+<div id="zenova-header"><div><div style="font-size:15px">ZENOVA PEAK TECH HUB 🤖</div><div style="font-size:10px;opacity:0.8">Est.2026 • BN 9701468 • RC 9810296 • 24/7 Altra AI</div></div><div style="cursor:pointer;font-size:26px;line-height:1" onclick="toggleZenovaChat()">×</div></div>
 <div id="zenova-messages"></div>
-<a id="zenova-wa-redirect" href="#" target="_blank" onclick="redirectToCeoWA()"><div>💬 Talk to CEO Ruby on WhatsApp</div><span style="font-size:10px">Click to redirect with chat history</span></a>
-<div id="zenova-input-area"><input id="zenova-input" placeholder="Ask about 9 services..." onkeypress="if(event.key==='Enter') sendZenovaMessage()"><button onclick="sendZenovaMessage()" style="background:#FDB913;border:none;border-radius:50%;width:42px;height:42px">➤</button></div>
+<a id="zenova-wa-redirect" href="javascript:void(0)" onclick="redirectToCeoWA()"><div>💬 Talk to CEO Ruby on WhatsApp</div><span style="font-size:10px">Click to redirect with chat history</span></a>
+<div id="zenova-input-area"><input id="zenova-input" placeholder="Ask about 9 services..." onkeydown="if(event.key==='Enter') sendZenovaMessage()"><button onclick="sendZenovaMessage()" style="background:#FDB913;border:none;border-radius:50%;width:42px;height:42px;font-size:16px;cursor:pointer">➤</button></div>
 </div>
 
 <script>
-let chatSessionId=localStorage.getItem('zenova_session_id'); let chatHistory=[];
-async function initChat(){
- if(!chatSessionId){let {data}=await sbGlobal.from('live_chat_sessions').insert({visitor_name:'Website Visitor',status:'active'}).select().single();if(data){chatSessionId=data.id;localStorage.setItem('zenova_session_id',chatSessionId);}}
- let {data:msgs}=await sbGlobal.from('live_chat_messages').select('*').eq('session_id',chatSessionId).order('created_at',{ascending:true});
- let cont=document.getElementById('zenova-messages'); cont.innerHTML=''; chatHistory=[];
- if(msgs&&msgs.length){msgs.forEach(m=>{addMsg(m.message,m.sender); chatHistory.push(m.sender+': '+m.message);});}
- else{let welcome=`Hello! 👋 I am Zenova AI Assistant 🤖 24/7!\nEst.2026 BN 9701468 RC 9810296 Founder Ruby Garg\n\n9 Services:\n1 Business Consultancy\n2 Altra AI Automation (FB, WA, Insta, LinkedIn, Website like me)\n3 GBP Map\n4 Branding Pack\n5 SMEDAN\n6 CAC\n7 SCUML/TIN\n8 AI Video Studio Full HD 15min YouTube Female Indian Voice\n9 Website Dev Full Control + Live Chat Bot\n\nWhat is your business name?`; addMsg(welcome,'bot'); saveMsg(welcome,'bot');}
+// FIXED - Chat opens even if Supabase fails
+let chatSessionId = localStorage.getItem('zenova_session_id');
+let chatHistory = [];
+let chatOpenedOnce = false;
+
+function toggleZenovaChat(){
+  let w = document.getElementById('zenova-chat-window');
+  if(!w) return;
+  if(w.style.display === 'flex'){
+    w.style.display = 'none';
+  } else {
+    w.style.display = 'flex';
+    if(!chatOpenedOnce){ chatOpenedOnce=true; initChatSafe(); }
+  }
 }
-function toggleZenovaChat(){let w=document.getElementById('zenova-chat-window'); let h=w.style.display==='none'||w.style.display===''; w.style.display=h?'flex':'none'; if(h) initChat();}
-function addMsg(t,s){let c=document.getElementById('zenova-messages'); let d=document.createElement('div'); d.className='zenova-msg '+s; d.innerText=t; c.appendChild(d); c.scrollTop=c.scrollHeight;}
-async function saveMsg(t,s){if(!chatSessionId)return; chatHistory.push(s+': '+t); await sbGlobal.from('live_chat_messages').insert({session_id:chatSessionId,sender:s,message:t,channel:'website'});}
-async function sendZenovaMessage(){let inp=document.getElementById('zenova-input'); let txt=inp.value.trim(); if(!txt)return; addMsg(txt,'user'); saveMsg(txt,'user'); inp.value=''; setTimeout(async()=>{let reply=`Thanks! You said: "${txt}"\n\nI know all company knowledge 24/7:\nKRISHNYANSH ZENOVA PEAKS LTD Est.2026 BN 9701468 RC 9810296 Lagos Founder Ruby Garg +2349067862223\n9 Services Starter/Premium/Pro pricing available.\n\nTell me business name + service + tier - I will generate auto invoice BN RC stamp + deploy bot FB WA Insta LinkedIn Website!`; addMsg(reply,'bot'); saveMsg(reply,'bot'); if(chatHistory.length>=6) document.getElementById('zenova-wa-redirect').style.display='block';},800);}
-function redirectToCeoWA(){let hist=chatHistory.slice(-8).join('\n'); let msg=`Hello CEO Ruby (Zenova Est.2026 BN 9701468 RC 9810296) - I chatted with your 24/7 AI Bot on website:\n\n${hist}\n\nPlease quote + deploy bot!`; window.open(`https://wa.me/${CEO_WA}?text=${encodeURIComponent(msg)}`,'_blank'); sbGlobal.from('live_chat_sessions').update({status:'redirected_to_whatsapp'}).eq('id',chatSessionId);}
+
+async function initChatSafe(){
+  try{
+    let cont = document.getElementById('zenova-messages');
+    if(typeof sbGlobal === 'undefined'){ throw new Error('sbGlobal not ready'); }
+    if(!chatSessionId){
+      let {data, error} = await sbGlobal.from('live_chat_sessions').insert({visitor_name:'Website Visitor',status:'active'}).select().single();
+      if(data){ chatSessionId=data.id; localStorage.setItem('zenova_session_id', chatSessionId); }
+    }
+    if(chatSessionId){
+      let {data:msgs} = await sbGlobal.from('live_chat_messages').select('*').eq('session_id',chatSessionId).order('created_at',{ascending:true}).limit(20);
+      if(msgs && msgs.length){
+        cont.innerHTML=''; msgs.forEach(m=>{ addMsg(m.message,m.sender); chatHistory.push(m.sender+': '+m.message); });
+        return;
+      }
+    }
+  }catch(e){ console.log('Chat init fallback:', e.message); }
+  // Fallback welcome - will show even if Supabase fails - so button opens
+  let welcome = `Hello! 👋 I am Zenova AI Assistant 🤖 24/7!\nEst.2026 BN 9701468 RC 9810296 Founder Ruby Garg\n\n9 Services:\n1 Business Consultancy\n2 Altra AI Automation (FB, WA, Insta, LinkedIn, Website like me)\n3 GBP Map\n4 Branding Pack\n5 SMEDAN\n6 CAC\n7 SCUML/TIN\n8 AI Video Studio Full HD 15min YouTube Female Indian Voice 🇮🇳\n9 Website Dev Full Control + Live Chat Bot\n\nWhat is your business name?`;
+  addMsg(welcome,'bot');
+  try{ await saveMsg(welcome,'bot'); }catch(e){}
+}
+
+function addMsg(t,s){
+  let c=document.getElementById('zenova-messages'); 
+  let d=document.createElement('div'); d.className='zenova-msg '+s; d.innerText=t; 
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
+}
+
+async function saveMsg(t,s){
+  if(typeof sbGlobal==='undefined' || !chatSessionId) return;
+  try{ chatHistory.push(s+': '+t); await sbGlobal.from('live_chat_messages').insert({session_id:chatSessionId,sender:s,message:t,channel:'website'}); }catch(e){console.log(e.message)}
+}
+
+async function sendZenovaMessage(){
+  let inp=document.getElementById('zenova-input'); let txt=inp.value.trim(); if(!txt) return;
+  addMsg(txt,'user'); await saveMsg(txt,'user'); inp.value='';
+  setTimeout(async()=>{
+    let reply=`Thanks! You said: "${txt}"\n\nI know all company knowledge 24/7:\nKRISHNYANSH ZENOVA PEAKS LTD Est.2026 BN 9701468 RC 9810296 Lagos Founder Ruby Garg +2349067862223\n9 Services Starter/Premium/Pro pricing available.\n\nTell me business name + service + tier - I will generate auto invoice BN RC stamp + deploy bot FB WA Insta LinkedIn Website!`;
+    addMsg(reply,'bot'); await saveMsg(reply,'bot');
+    if(chatHistory.length>=4) document.getElementById('zenova-wa-redirect').style.display='block';
+  },700);
+}
+
+function redirectToCeoWA(){
+  let hist=chatHistory.slice(-8).join('\n');
+  let msg=`Hello CEO Ruby (Zenova Est.2026 BN 9701468 RC 9810296) - I chatted with your 24/7 AI Bot on website:\n\n${hist}\n\nPlease quote + deploy bot!`;
+  window.open(`https://wa.me/${CEO_WA || '2349067862223'}?text=${encodeURIComponent(msg)}`,'_blank');
+  try{ sbGlobal.from('live_chat_sessions').update({status:'redirected_to_whatsapp'}).eq('id',chatSessionId); }catch(e){}
+}
 </script>
-<!-- END LIVE CHAT BOT -->
-</body>
-</html>   
 </body>
 </html>
