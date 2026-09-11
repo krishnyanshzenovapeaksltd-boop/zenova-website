@@ -444,53 +444,83 @@ Thank you! We have received your request and will contact you via WhatsApp short
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</script>
+ <!-- ===== 1. GLOBAL REGISTRATION + CAREER FORMS LOGIC (aapka wala) ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SB_URL='YOUR_SUPABASE_URL'; 
 const SB_KEY='YOUR_ANON_KEY';
 const CEO_WA='2349067862223';
-const sbGlobal=supabase.createClient(SB_URL,SB_KEY);
+const sbGlobal=supabase.createClient(SB_URL, SB_KEY);
 
+// Registration Form - Global Version Same Rakha
 async function submitRegistration(e){
  e.preventDefault();
- 
- let fullName = document.getElementById('custName').value.trim();
- let countryCode = document.getElementById('countryCode').value;
- let phoneOnly = document.getElementById('custPhone').value.trim();
- let service = document.getElementById('custService').value;
- let fullPhone = countryCode + phoneOnly;
+ let fullName=document.getElementById('custName').value.trim();
+ let countryCode=document.getElementById('countryCode').value;
+ let phoneOnly=document.getElementById('custPhone').value.trim();
+ let service=document.getElementById('custService').value;
+ let fullPhone=countryCode+phoneOnly;
 
- // 1. Auto Save to Supabase - Admin panel Forms & Subs me dikhega (yesterday wale jaise Adebayo Musa)
- let {error} = await sbGlobal.from('registration_submissions').insert({
-   name: fullName,
-   phone: fullPhone,
-   country_code: countryCode,
-   business_name: '',
-   service_interest: service,
-   message: `Global Registration - Country: ${countryCode} - Full Phone: ${fullPhone}`,
-   status: 'new'
+ await sbGlobal.from('registration_submissions').insert({
+   name:fullName, phone:fullPhone, country_code:countryCode,
+   service_interest:service, message:`Global Reg - ${countryCode} - ${fullPhone}`, status:'new'
  });
- 
- if(error){ alert('Error: '+error.message); return; }
 
- // 2. Show success message (aapka original wala)
  document.getElementById('successMsg').classList.remove('hidden');
  document.getElementById('regForm').classList.add('hidden');
 
- // 3. Direct WhatsApp redirect - CEO WhatsApp pe full global data ke saath
- let waMsg = `*New Global Registration - Zenova Peak Tech Hub*\nEst.2026 BN 9701468 RC 9810296 Lagos Global Ops\n\n*Full Name:* ${fullName}\n*Country Code:* ${countryCode}\n*Phone:* ${fullPhone}\n*Service:* ${service}\n*Source:* Global Registration Form\n*Time:* ${new Date().toLocaleString()}\n\nServing Globally - Note: ${service.includes('Nigeria Only') ? 'This service is Nigeria Only' : 'Global Service'}`;
-
- setTimeout(()=>{
-   window.open(`https://wa.me/${CEO_WA}?text=${encodeURIComponent(waMsg)}`,'_blank');
- }, 800);
-
- // Reset after 3 sec for next visitor
+ let waMsg=`*New Global Registration - Zenova*\nEst.2026 BN 9701468 RC 9810296\n\nName: ${fullName}\nCountry: ${countryCode}\nPhone: ${fullPhone}\nService: ${service}\nTime: ${new Date().toLocaleString()}`;
+ setTimeout(()=>{ window.open(`https://wa.me/${CEO_WA}?text=${encodeURIComponent(waMsg)}`,'_blank'); },800);
+ 
  setTimeout(()=>{
    document.getElementById('successMsg').classList.add('hidden');
    document.getElementById('regForm').classList.remove('hidden');
    document.getElementById('regForm').reset();
- }, 5000);
+ },5000);
 }
 </script>
+
+<!-- ===== 2. LIVE CHAT BOT WIDGET 🤖 - 24/7 Company Knowledge + CEO WhatsApp Redirect - Yaha se Add hua ===== -->
+<style>
+#zenova-chat-btn{position:fixed;bottom:20px;right:20px;width:64px;height:64px;background:linear-gradient(135deg,#FDB913,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(253,185,19,0.5);z-index:99999;font-size:30px;border:3px solid #fff}
+#zenova-chat-window{position:fixed;bottom:95px;right:20px;width:380px;max-width:92vw;height:560px;background:#121212;border:1px solid #333;border-radius:20px;display:none;flex-direction:column;z-index:99999;overflow:hidden}
+#zenova-header{background:linear-gradient(135deg,#FDB913,#FF8C00);color:#000;padding:14px 16px;font-weight:800;display:flex;justify-content:space-between}
+#zenova-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#0a0a0a}
+.zenova-msg{max-width:82%;padding:11px 15px;border-radius:18px;font-size:13px;white-space:pre-wrap}
+.zenova-msg.bot{background:#1e1e1e;color:#fff;align-self:flex-start}
+.zenova-msg.user{background:#FDB913;color:#000;align-self:flex-end}
+#zenova-input-area{display:flex;padding:10px;background:#1a1a1a;border-top:1px solid #2a2a2a;gap:8px}
+#zenova-input{flex:1;background:#0a0a0a;border:1px solid #333;border-radius:22px;padding:11px 16px;color:#fff;outline:none}
+#zenova-wa-redirect{display:none;margin:10px;background:#25D366;color:#fff;padding:12px;border-radius:14px;text-align:center;font-weight:800;cursor:pointer;text-decoration:none}
+</style>
+
+<div id="zenova-chat-btn" onclick="toggleZenovaChat()">🤖</div>
+<div id="zenova-chat-window">
+<div id="zenova-header"><div><div style="font-size:15px">ZENOVA PEAK TECH HUB 🤖</div><div style="font-size:10px">Est.2026 • BN 9701468 • RC 9810296 • 24/7 Altra AI</div></div><div style="cursor:pointer;font-size:22px" onclick="toggleZenovaChat()">×</div></div>
+<div id="zenova-messages"></div>
+<a id="zenova-wa-redirect" href="#" target="_blank" onclick="redirectToCeoWA()"><div>💬 Talk to CEO Ruby on WhatsApp</div><span style="font-size:10px">Click to redirect with chat history</span></a>
+<div id="zenova-input-area"><input id="zenova-input" placeholder="Ask about 9 services..." onkeypress="if(event.key==='Enter') sendZenovaMessage()"><button onclick="sendZenovaMessage()" style="background:#FDB913;border:none;border-radius:50%;width:42px;height:42px">➤</button></div>
+</div>
+
+<script>
+let chatSessionId=localStorage.getItem('zenova_session_id'); let chatHistory=[];
+async function initChat(){
+ if(!chatSessionId){let {data}=await sbGlobal.from('live_chat_sessions').insert({visitor_name:'Website Visitor',status:'active'}).select().single();if(data){chatSessionId=data.id;localStorage.setItem('zenova_session_id',chatSessionId);}}
+ let {data:msgs}=await sbGlobal.from('live_chat_messages').select('*').eq('session_id',chatSessionId).order('created_at',{ascending:true});
+ let cont=document.getElementById('zenova-messages'); cont.innerHTML=''; chatHistory=[];
+ if(msgs&&msgs.length){msgs.forEach(m=>{addMsg(m.message,m.sender); chatHistory.push(m.sender+': '+m.message);});}
+ else{let welcome=`Hello! 👋 I am Zenova AI Assistant 🤖 24/7!\nEst.2026 BN 9701468 RC 9810296 Founder Ruby Garg\n\n9 Services:\n1 Business Consultancy\n2 Altra AI Automation (FB, WA, Insta, LinkedIn, Website like me)\n3 GBP Map\n4 Branding Pack\n5 SMEDAN\n6 CAC\n7 SCUML/TIN\n8 AI Video Studio Full HD 15min YouTube Female Indian Voice\n9 Website Dev Full Control + Live Chat Bot\n\nWhat is your business name?`; addMsg(welcome,'bot'); saveMsg(welcome,'bot');}
+}
+function toggleZenovaChat(){let w=document.getElementById('zenova-chat-window'); let h=w.style.display==='none'||w.style.display===''; w.style.display=h?'flex':'none'; if(h) initChat();}
+function addMsg(t,s){let c=document.getElementById('zenova-messages'); let d=document.createElement('div'); d.className='zenova-msg '+s; d.innerText=t; c.appendChild(d); c.scrollTop=c.scrollHeight;}
+async function saveMsg(t,s){if(!chatSessionId)return; chatHistory.push(s+': '+t); await sbGlobal.from('live_chat_messages').insert({session_id:chatSessionId,sender:s,message:t,channel:'website'});}
+async function sendZenovaMessage(){let inp=document.getElementById('zenova-input'); let txt=inp.value.trim(); if(!txt)return; addMsg(txt,'user'); saveMsg(txt,'user'); inp.value=''; setTimeout(async()=>{let reply=`Thanks! You said: "${txt}"\n\nI know all company knowledge 24/7:\nKRISHNYANSH ZENOVA PEAKS LTD Est.2026 BN 9701468 RC 9810296 Lagos Founder Ruby Garg +2349067862223\n9 Services Starter/Premium/Pro pricing available.\n\nTell me business name + service + tier - I will generate auto invoice BN RC stamp + deploy bot FB WA Insta LinkedIn Website!`; addMsg(reply,'bot'); saveMsg(reply,'bot'); if(chatHistory.length>=6) document.getElementById('zenova-wa-redirect').style.display='block';},800);}
+function redirectToCeoWA(){let hist=chatHistory.slice(-8).join('\n'); let msg=`Hello CEO Ruby (Zenova Est.2026 BN 9701468 RC 9810296) - I chatted with your 24/7 AI Bot on website:\n\n${hist}\n\nPlease quote + deploy bot!`; window.open(`https://wa.me/${CEO_WA}?text=${encodeURIComponent(msg)}`,'_blank'); sbGlobal.from('live_chat_sessions').update({status:'redirected_to_whatsapp'}).eq('id',chatSessionId);}
+</script>
+<!-- END LIVE CHAT BOT -->
+</body>
+</html>   
 </body>
 </html>
