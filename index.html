@@ -297,60 +297,63 @@
         </div>
 
         <!-- REGISTRATION FORM -->
-        <section id="register" class="mt-20 card-box p-8 rounded-2xl border-amber-500/50 max-w-2xl mx-auto">
-            <h2 class="text-xl font-bold gold-text mb-2 text-center">📝 Service Registration Form</h2>
-            <p class="text-xs text-gray-300 text-center mb-6">Serving globally. Note that CAC, SCUML & SMEDAN apply to Nigeria only.</p>
-            
-            <form id="regForm" onsubmit="submitRegistration(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block text-gray-300 mb-1">Full Name</label>
-                    <input type="text" id="custName" required class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Enter your full name">
-                </div>
-                <div>
-                    <label class="block text-gray-300 mb-1">Phone Number with Country Code</label>
-                    <div class="flex gap-2">
-                        <select id="countryCode" class="bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-amber-300 outline-none focus:border-amber-400 font-bold">
-                            <option value="+234">🇳🇬 Nigeria (+234)</option>
-                            <option value="+1">🇺🇸/🇨🇦 USA/Canada (+1)</option>
-                            <option value="+44">🇬🇧 UK (+44)</option>
-                            <option value="+91">🇮🇳 India (+91)</option>
-                            <option value="+27">🇿🇦 South Africa (+27)</option>
-                            <option value="+254">🇰🇪 Kenya (+254)</option>
-                            <option value="+233">🇬🇭 Ghana (+233)</option>
-                            <option value="+971">🇦🇪 UAE (+971)</option>
-                            <option value="+49">🇩🇪 Germany (+49)</option>
-                            <option value="+33">🇫🇷 France (+33)</option>
-                            <option value="+81">🇯🇵 Japan (+81)</option>
-                            <option value="+61">🇦🇺 Australia (+61)</option>
-                        </select>
-                        <input type="text" id="custPhone" required class="flex-1 bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400" placeholder="Phone number...">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-300 mb-1">Select Service</label>
-                    <select id="custService" class="w-full bg-[#0b1329] border border-blue-900 p-3 rounded-xl text-white outline-none focus:border-amber-400">
-                        <option>1. Business Consultancy (₦30K) - Global</option>
-                        <option>2. Altra AI Automation (From ₦55K) - Global</option>
-                        <option>3. GBP with Maps (₦35K) - Global</option>
-                        <option>4. Google Ads Management (From ₦70K) - Global</option>
-                        <option>5. Branding Pack (From ₦50K) - Global</option>
-                        <option>6. Website Development (From ₦120K) - Global</option>
-                        <option>7. AI Video & Image Studio (₦15K) - Global</option>
-                        <option>8. CAC Registration (From ₦60K) - ⚠️ Nigeria Only</option>
-                        <option>9. SCUML / TIN Registration (₦15K) - ⚠️ Nigeria Only</option>
-                        <option>10. SMEDAN Certificate (₦10K) - ⚠️ Nigeria Only</option>
-                    </select>
-                </div>
-                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-black font-bold p-3 rounded-xl transition text-sm">
-                    Submit Registration
-                </button>
-            </form>
+      <!-- REGISTRATION FORM - GLOBAL VERSION - NO REMOVE - WITH WHATSAPP + SUPABASE BOTH -->
+<section id="register" class="mt-20 card p-8 rounded-2xl border border-amber-500/50 max-w-2xl mx-auto">
+<h2 class="text-xl font-bold gold-text mb-2 text-center" style="color:#FDB913">Service Registration Form</h2>
+<p class="text-xs text-gray-300 text-center mb-4">Serving globally. Note that CAC, SCUML & SMEDAN apply to Nigeria Only</p>
 
-            <div id="successMsg" class="hidden mt-6 bg-green-950/80 border border-green-600 text-green-300 p-4 rounded-xl text-center text-xs">
-                🎉 <strong class="text-sm block mb-1">Successfully Registered!</strong>
-                Thank you!  We have received your request and will contact you via WhatsApp shortly.
-            </div>
-        </section>
+<form id="regForm" onsubmit="submitRegistration(event)" class="space-y-4 text-xs">
+<div>
+<label class="block text-gray-300 mb-1">Full Name</label>
+<input type="text" id="custName" required class="w-full bg-[#1a1a1a] border border-blue-900 p-3 rounded-xl text-white" placeholder="Enter full name">
+</div>
+
+<div>
+<label class="block text-gray-300 mb-1">Phone Number with Country Code</label>
+<div class="flex gap-2">
+<select id="countryCode" class="bg-[#1a1a1a] border border-blue-900 p-3 rounded-xl text-amber-300 w-32">
+<option value="+234">Nigeria (+234)</option>
+<option value="+1">USA (+1)</option>
+<option value="+1">Canada (+1)</option>
+<option value="+44">UK (+44)</option>
+<option value="+91">India (+91)</option>
+<option value="+27">South Africa (+27)</option>
+<option value="+254">Kenya (+254)</option>
+<option value="+233">Ghana (+233)</option>
+<option value="+971">UAE (+971)</option>
+<option value="+49">Germany (+49)</option>
+<option value="+61">Australia (+61)</option>
+<option value="+33">France (+33)</option>
+<option value="+81">Japan (+81)</option>
+</select>
+<input type="text" id="custPhone" required class="flex-1 bg-[#1a1a1a] border border-blue-900 p-3 rounded-xl text-white" placeholder="8012345678">
+</div>
+</div>
+
+<div>
+<label class="block text-gray-300 mb-2">Select Service</label>
+<select id="custService" class="w-full bg-[#1a1a1a] border border-blue-900 p-3 rounded-xl text-white">
+<option>1. Business Consultancy (NGN) - Global</option>
+<option>2. Altra AI Automation (from N50k) - Global</option>
+<option>3. GBP with Maps (N15k) - Global</option>
+<option>4. Google Ads Management (from N70k) - Global</option>
+<option>5. Branding Pack (from N70k) - Global</option>
+<option>6. Website Development (from N120k) - Global</option>
+<option>7. AI Video & Image Studio (N100k) - Global</option>
+<option>8. CAC Registration (from N60k) - ⚠️ Nigeria Only</option>
+<option>9. SCUML / TIN Registration (N15k) - ⚠️ Nigeria Only</option>
+<option>10. SMEDAN Certificate (N10k) - ⚠️ Nigeria Only</option>
+</select>
+</div>
+
+<button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-black font-bold p-3 rounded-xl">Submit Registration</button>
+</form>
+
+<div id="successMsg" class="hidden mt-4 bg-green-950/50 border border-green-600 text-green-300 p-4 rounded-xl">
+<strong class="text-sm block mb-1">Successfully Registered!</strong>
+Thank you! We have received your request and will contact you via WhatsApp shortly.
+</div>
+</section> 
     </main>
 
     <!-- FOOTER -->
@@ -441,5 +444,53 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='YOUR_SUPABASE_URL'; 
+const SB_KEY='YOUR_ANON_KEY';
+const CEO_WA='2349067862223';
+const sbGlobal=supabase.createClient(SB_URL,SB_KEY);
+
+async function submitRegistration(e){
+ e.preventDefault();
+ 
+ let fullName = document.getElementById('custName').value.trim();
+ let countryCode = document.getElementById('countryCode').value;
+ let phoneOnly = document.getElementById('custPhone').value.trim();
+ let service = document.getElementById('custService').value;
+ let fullPhone = countryCode + phoneOnly;
+
+ // 1. Auto Save to Supabase - Admin panel Forms & Subs me dikhega (yesterday wale jaise Adebayo Musa)
+ let {error} = await sbGlobal.from('registration_submissions').insert({
+   name: fullName,
+   phone: fullPhone,
+   country_code: countryCode,
+   business_name: '',
+   service_interest: service,
+   message: `Global Registration - Country: ${countryCode} - Full Phone: ${fullPhone}`,
+   status: 'new'
+ });
+ 
+ if(error){ alert('Error: '+error.message); return; }
+
+ // 2. Show success message (aapka original wala)
+ document.getElementById('successMsg').classList.remove('hidden');
+ document.getElementById('regForm').classList.add('hidden');
+
+ // 3. Direct WhatsApp redirect - CEO WhatsApp pe full global data ke saath
+ let waMsg = `*New Global Registration - Zenova Peak Tech Hub*\nEst.2026 BN 9701468 RC 9810296 Lagos Global Ops\n\n*Full Name:* ${fullName}\n*Country Code:* ${countryCode}\n*Phone:* ${fullPhone}\n*Service:* ${service}\n*Source:* Global Registration Form\n*Time:* ${new Date().toLocaleString()}\n\nServing Globally - Note: ${service.includes('Nigeria Only') ? 'This service is Nigeria Only' : 'Global Service'}`;
+
+ setTimeout(()=>{
+   window.open(`https://wa.me/${CEO_WA}?text=${encodeURIComponent(waMsg)}`,'_blank');
+ }, 800);
+
+ // Reset after 3 sec for next visitor
+ setTimeout(()=>{
+   document.getElementById('successMsg').classList.add('hidden');
+   document.getElementById('regForm').classList.remove('hidden');
+   document.getElementById('regForm').reset();
+ }, 5000);
+}
+</script>
 </body>
 </html>
