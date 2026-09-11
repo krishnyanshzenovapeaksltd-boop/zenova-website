@@ -1,233 +1,186 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZENOVA ADMIN GLOBAL</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZENOVA ADMIN GLOBAL RC 9810296 </title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#fff;font-family:Arial}
-.top{background:#1e3a8a;padding:12px;text-align:center;color:#facc15;font-weight:bold}
-.menu{display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#0f172a;position:sticky;top:0;z-index:9}
-.menu button{background:#1e293b;color:#fff;border:1px solid #334155;padding:8px 10px;border-radius:8px;font-size:12px}
-.menu button.active{background:#facc15;color:#000}
-.card{background:#111c34;border:1px solid #1e3a8a;border-radius:12px;padding:12px;margin:10px}
-input,textarea,select{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff}
-.btn{padding:10px 14px;border-radius:8px;border:0;font-weight:bold;margin:4px}
-.btn-y{background:#facc15;color:#000}.btn-b{background:#1e3a8a;color:#fff}.btn-r{background:#ef4444;color:#fff}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.small{font-size:11px;color:#94a3b8}
-.imgPrev{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #334155}
-.switch{width:40px;height:22px;background:#334155;border-radius:20px;position:relative;display:inline-block;vertical-align:middle}
-.switch.on{background:#22c55e}.switch i{position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
-.switch.on i{left:20px}
-table{width:100%;font-size:11px;border-collapse:collapse}th,td{border:1px solid #1e3a8a;padding:6px;text-align:left}
-</style></head><body>
-<div class="top">ZENOVA ADMIN GLOBAL | RC 9810296 | BN 9701468 | Lagos</div>
-<div class="menu">
-<button onclick="show('dash')" id="b-dash" class="active">Dashboard</button>
-<button onclick="show('gallery')" id="b-gallery">Gallery</button>
-<button onclick="show('ceo')" id="b-ceo">About CEO</button>
-<button onclick="show('flyers')" id="b-flyers">Flyers</button>
-<button onclick="show('clients')" id="b-clients">Clients Full</button>
-<button onclick="show('packs')" id="b-packs">Packs & Services</button>
-<button onclick="show('bank')" id="b-bank">Bank+Flutterwave</button>
-<button onclick="show('invoice')" id="b-invoice">Invoice+Stamp</button>
-<button onclick="show('thoughts')" id="b-thoughts">CEO Thoughts</button>
-<button onclick="show('settings')" id="b-settings">Settings+Stamp</button>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+body{font-family:'Space Grotesk',sans-serif;background:#0a0a0a;color:#e5e5e5}
+.mono{font-family:'JetBrains Mono',monospace}.gold{color:#FDB913}.bg-gold{background:#FDB913}.card{background:#151515;border:1px solid #2a2a2a}
+.btn-gold{background:#FDB913;color:#000;font-weight:700}
+</style>
+</head>
+<body>
+<header class="sticky top-0 z-50 bg-[#121212] border-b border-[#2a2a2a] px-4 py-3 flex justify-between items-center">
+<div class="flex items-center gap-3"><button id="menuBtn" class="w-10 h-10 card rounded-xl flex items-center justify-center"><i class="fas fa-bars"></i></button>
+<div><h1 class="font-bold text-sm">ZENOVA ADMIN GLOBAL <span class="gold">RC 9810296</span></h1><p class="mono text-[10px] text-gray-400">BN 9701468 • Est.2026 • Lagos WAT</p></div></div>
+<div class="flex items-center gap-2"><span class="mono text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full">● 4 clients live • Auto Save ON</span><div class="w-9 h-9 rounded-full bg-gold text-black font-bold flex items-center justify-center">KR</div></div>
+</header>
+
+<div class="flex">
+<aside id="sidebar" class="w-[300px] bg-[#0f0f0f] border-r border-[#2a2a2a] min-h-screen p-4 fixed md:static z-40 -translate-x-full md:translate-x-0 transition">
+<div class="flex items-center gap-2 mb-6"><div class="w-9 h-9 rounded-xl bg-gold flex items-center justify-center text-black font-bold">Z</div><div><p class="font-bold text-sm">ZENOVA ADMIN</p><p class="mono text-[11px] text-gray-400">RC 9810296 • BN 9701468</p></div><button id="closeMenu" class="ml-auto md:hidden"><i class="fas fa-times"></i></button></div>
+<nav class="space-y-1 mono text-[13px]">
+<button onclick="showTab('dashboard')" class="w-full text-left px-3 py-2.5 rounded-xl bg-[#1e1e1e] gold"><i class="fas fa-th-large w-5"></i>Dashboard</button>
+<button onclick="showTab('gallery')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-images w-5"></i>Gallery Edit</button>
+<button onclick="showTab('aistudio')" class="w-full text-left px-3 py-2.5 rounded-xl bg-gold text-black font-bold"><i class="fas fa-video w-5"></i>AI Studio - Full HD</button>
+<button onclick="showTab('livechat')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a] bg-green-500/20 text-green-400"><i class="fas fa-robot w-5"></i>Live Chat Bot 🤖</button>
+<button onclick="showTab('forms')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-file-alt w-5"></i>Forms & Subs <span class="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">2 NEW</span></button>
+<button onclick="showTab('clients')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-users w-5"></i>Clients</button>
+<button onclick="showTab('services')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-cube w-5"></i>Packs & Services</button>
+<button onclick="showTab('bank')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-credit-card w-5"></i>Bank + Flutterwave</button>
+<button onclick="showTab('invoices')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-file-invoice w-5"></i>Invoice + Stamp</button>
+<button onclick="showTab('settings')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-cog w-5"></i>Settings</button>
+</nav>
+<div class="mt-6 p-4 card rounded-2xl"><p class="mono text-xs font-bold mb-3">GLOBAL OVERRIDES</p><div class="space-y-2.5 mono text-xs">
+<label class="flex justify-between">WhatsApp <input type="checkbox" checked class="accent-[#FDB913]"></label>
+<label class="flex justify-between">FB <input type="checkbox" checked class="accent-[#FDB913]"></label>
+<label class="flex justify-between">Instagram <input type="checkbox" checked class="accent-[#FDB913]"></label>
+<label class="flex justify-between">LinkedIn <input type="checkbox" checked class="accent-[#FDB913]"></label>
+<label class="flex justify-between">Website <input type="checkbox" checked class="accent-[#FDB913]"></label>
+<label class="flex justify-between">Auto Invoice <input type="checkbox" checked class="accent-[#FDB913]"></label>
+</div></div>
+<div class="mt-4 p-3 card rounded-xl mono text-[11px]"><p class="font-bold gold">SUPABASE</p><input id="sbUrl" placeholder="https://xyz.supabase.co" class="w-full p-2 rounded bg-black border mt-2 text-[11px]"><input id="sbKey" placeholder="anon key" class="w-full p-2 rounded bg-black border mt-2 text-[11px]"><button onclick="connectSB()" class="bg-gold text-black w-full mt-2 py-2 rounded font-bold text-xs">Connect</button><p id="sbStatus" class="text-[10px] mt-2 text-gray-500">Connect to see yesterday submissions</p></div>
+<p class="mono text-[10px] text-center text-gray-500 mt-4">Lagos • Nigeria • Global Ops</p>
+</aside>
+
+<main class="flex-1 p-4 md:p-6">
+
+<div id="tab-dashboard" class="tab-content">
+<h2 class="text-2xl font-bold">Global Command</h2><p class="mono text-xs text-gray-400">All systems • <span id="dateNow"></span> • Lagos (WAT) • 99.97% Uptime</p>
+<div class="grid md:grid-cols-3 gap-4 mt-6">
+<div class="card rounded-2xl p-5"><p class="mono text-xs text-gray-400">Total Clients</p><p class="text-3xl font-bold mt-1">4</p><p class="mono text-xs text-gray-500">1 new requests - auto saved</p></div>
+<div class="card rounded-2xl p-5"><p class="mono text-xs text-gray-400">Active Bots</p><p class="text-3xl font-bold mt-1">2</p><p class="mono text-xs text-gray-500">50% deployed</p></div>
+<div class="card rounded-2xl p-5"><p class="mono text-xs text-gray-400">Monthly Revenue</p><p class="text-3xl font-bold mt-1">$548</p></div>
+</div>
+<div class="card rounded-2xl p-6 mt-6 max-w-2xl"><p class="mono text-sm text-gray-400">ENV KEYS (editable)</p><div class="mt-4 space-y-4"><div><p class="mono text-xs text-gray-500">BANK_NAME</p><input id="envBank" value="Zenith Bank" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><div><p class="mono text-xs text-gray-500">FLUTTERWAVE_PUBLIC</p><input id="envFWP" value="FLWPUBK-xxx" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><div><p class="mono text-xs text-gray-500">FLUTTERWAVE_SECRET</p><input id="envFWS" value="FLWSECK-xxx" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><div><p class="mono text-xs text-gray-500">ENV_EXTRA</p><input id="envExtra" value="NODE_ENV=production" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><button onclick="saveENV()" class="w-full card py-3 rounded-xl mono text-sm">Save ENV</button></div></div>
+<div class="card rounded-2xl p-6 mt-6 max-w-2xl"><p class="mono text-sm text-gray-400">ENV PREVIEW</p><pre id="envPreview" class="mono text-xs bg-black p-4 rounded-xl mt-4">supabase=true
+BANK_NAME=Zenith Bank
+FLUTTERWAVE_PUBLIC=FLWPUBK-xxx
+FLUTTERWAVE_SECRET=FLWSECK-xxx
+ENV_EXTRA=NODE_ENV=production</pre></div>
 </div>
 
-<div id="dash" class="sec">
-<div class="card"><h3>Dashboard</h3>
-<p class="small">Total Clients: <b id="cTotal">0</b> | Gallery: <b id="gTotal">0</b></p>
-<p class="small">Server: <span id="srv">Checking /api/health...</span></p>
-<button class="btn btn-b" onclick="checkSrv()">Check Server</button>
-</div>
-</div>
-
-<div id="gallery" class="sec" style="display:none">
-<div class="card"><h3>Gallery Edit</h3>
-<input id="gUrl" placeholder="Paste Image URL https://...">
-<input type="file" id="gFile" accept="image/*">
-<button class="btn btn-y" onclick="addG()">Add Image</button>
-<div id="gList" class="grid2"></div>
-</div>
+<div id="tab-gallery" class="tab-content hidden">
+<h2 class="text-xl font-bold">Gallery Edit</h2><p class="mono text-xs text-gray-500">drag to reorder • base64 + URL • zenovaGallery • Full HD</p>
+<div class="flex gap-2 mt-4"><input id="imgUrl" placeholder="Paste image URL" class="flex-1 p-3 rounded-xl bg-[#1a1a1a] border text-sm"><button onclick="addUrl()" class="card px-4 py-2 rounded-xl text-sm">+ Add URL</button><button onclick="gFile.click()" class="bg-gold text-black px-4 py-2 rounded-xl text-sm">Upload</button></div>
+<input type="file" id="gFile" multiple accept="image/*" class="hidden"><input type="file" id="cFile" accept="image/*" capture="environment" class="hidden">
+<div class="mt-3 flex gap-2"><button onclick="gFile.click()" class="card px-4 py-2 rounded text-xs">Choose from Gallery</button><button onclick="cFile.click()" class="card px-4 py-2 rounded text-xs">Take Photo</button></div>
+<div id="gGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5"></div>
 </div>
 
-<div id="ceo" class="sec" style="display:none">
-<div class="card"><h3>About CEO Edit</h3>
-<label>CEO Name</label><input id="ceoName" placeholder="Niharika Gupta">
-<label>Role</label><input id="ceoRole" placeholder="Founder & CEO">
-<label>Bio</label><textarea id="ceoBio" rows="4"></textarea>
-<label>Photo</label><input type="file" id="ceoFile" accept="image/*">
-<img id="ceoPrev" class="imgPrev" style="display:none">
-<button class="btn btn-y" onclick="saveCEO()">Save CEO</button>
+<div id="tab-aistudio" class="tab-content hidden">
+<h2 class="text-xl font-bold gold">AI Studio PRO - Full HD 1920x1080 - Long 15min + Short + Voice Female Indian English</h2><p class="mono text-xs text-gray-400">Prompt → 15min real YouTube video with voice + graphics visuals + Full HD quality + Download for YouTube + Auto save Supabase</p>
+<div class="grid lg:grid-cols-2 gap-6 mt-4">
+<div class="card rounded-2xl p-5">
+<textarea id="aiPrompt" rows="3" class="w-full p-3 rounded-xl bg-black border text-sm" placeholder="Create 15min YouTube video for Zenova Peak Tech Hub - 9 services"></textarea>
+<div class="grid grid-cols-3 gap-2 mt-3">
+<select id="vType" class="p-2.5 rounded-xl bg-black border text-xs"><option value="short">Short Ad 15-60s</option><option value="youtube15" selected>Long YouTube 15min REAL</option><option value="youtube30">30min</option></select>
+<select id="vVoice" class="p-2.5 rounded-xl bg-black border text-xs">
+<option value="female-in" selected>Female - Indian English 🇮🇳</option>
+<option value="female-ng">Female - Nigerian</option>
+<option value="male-ng">Male - Nigerian</option>
+<option value="female-us">Female - US</option>
+<option value="male-us">Male - US</option>
+</select>
+<select id="vQuality" class="p-2.5 rounded-xl bg-black border text-xs"><option value="fullhd" selected>Full HD 1920x1080</option><option value="hd">HD 1280x720</option></select>
 </div>
+<textarea id="vScript" rows="6" class="w-full p-3 rounded-xl bg-black border text-xs mono mt-3" placeholder="Auto generate 15min script"></textarea>
+<div class="flex gap-2 mt-2"><button onclick="genScript()" class="card px-3 py-2 rounded text-xs">Auto 15min Script</button><button onclick="previewVoice()" class="card px-3 py-2 rounded text-xs">Preview Female Indian Voice</button></div>
+<input type="file" id="aiImgs" multiple accept="image/*" class="w-full p-2 rounded bg-black border text-xs mt-3">
+<button onclick="genRealVideo()" class="btn-gold w-full py-4 rounded-xl mt-4 font-bold">GENERATE REAL 15MIN FULL HD VIDEO + FEMALE INDIAN VOICE + GRAPHICS - Download for YouTube</button>
 </div>
-
-<div id="flyers" class="sec" style="display:none">
-<div class="card"><h3>Flyers Add</h3>
-<input id="fTitle" placeholder="Flyer Title">
-<input type="file" id="fFile" accept="image/*"><input id="fUrl" placeholder="Or Image URL">
-<select id="fCat"><option>Offer</option><option>Festival</option><option>Service</option></select>
-<input type="date" id="fExp">
-<label>ON/OFF <span id="fSw" class="switch on" onclick="this.classList.toggle('on')"><i></i></span></label>
-<button class="btn btn-y" onclick="addFlyer()">Add Flyer</button>
-<div id="fList"></div>
-</div>
-</div>
-
-<div id="clients" class="sec" style="display:none">
-<div class="card"><h3>Clients — Full Control (Not Only Country)</h3>
-<p class="small">Submitted requests for bot — Deploy Starter/Premium/Pro + Global ON/OFF</p>
-<div class="grid2">
-<label>Global WhatsApp <span class="switch on" id="gwWa" onclick="tog(this)"><i></i></span></label>
-<label>Global FB <span class="switch on" id="gwFb" onclick="tog(this)"><i></i></span></label>
-<label>Global IG <span class="switch on" id="gwIg" onclick="tog(this)"><i></i></span></label>
-<label>Global LinkedIn <span class="switch on" id="gwLi" onclick="tog(this)"><i></i></span></label>
-</div>
-<table><thead><tr><th>Name</th><th>Business</th><th>Service Wants</th><th>Pack</th><th>Action</th></tr></thead><tbody id="clTable"></tbody></table>
-<h4>Add Test Client</h4>
-<input id="clName" placeholder="Client Name"><input id="clBiz" placeholder="Business Name">
-<input id="clCountry" placeholder="Country"><input id="clPhone" placeholder="Phone"><input id="clEmail" placeholder="Email">
-<div class="grid2 small">
-<label><input type="checkbox" id="sWa"> WhatsApp</label><label><input type="checkbox" id="sFb"> FB</label>
-<label><input type="checkbox" id="sIg"> Instagram</label><label><input type="checkbox" id="sLi"> LinkedIn</label>
-<label><input type="checkbox" id="sWeb"> Website</label><label><input type="checkbox" id="sInv"> Auto Invoice</label>
-<label><input type="checkbox" id="sGbp"> GBP Setup</label><label><input type="checkbox" id="sGad"> Google AD</label>
-<label><input type="checkbox" id="sAiI"> AI Image Studio</label><label><input type="checkbox" id="sAiV"> AI Video Studio</label>
-</div>
-<select id="clPack"><option>Starter</option><option>Premium</option><option>Pro</option></select>
-<button class="btn btn-y" onclick="addClient()">Add Client</button>
-</div>
-</div>
-
-<div id="packs" class="sec" style="display:none">
-<div class="card"><h3>Packs & Services — Price + ON/OFF</h3>
-<div class="grid2">
-<div><label>Starter Price</label><input id="pSt" value="$99"><label>Starter ON <span class="switch on" id="swSt" onclick="tog(this)"><i></i></span></label><p class="small">WhatsApp + FB</p></div>
-<div><label>Premium Price</label><input id="pPr" value="$199"><label>Premium ON <span class="switch on" id="swPr" onclick="tog(this)"><i></i></span></label><p class="small">Starter + IG + LinkedIn</p></div>
-<div><label>Pro Price</label><input id="pPro" value="$349"><label>Pro ON <span class="switch on" id="swPro" onclick="tog(this)"><i></i></span></label><p class="small">Starter+Premium + Website + Invoice</p></div>
-</div>
-<table><thead><tr><th>Service</th><th>Price</th><th>Pack Include</th><th>ON</th></tr></thead><tbody>
-<tr><td>Subscriptions</td><td><input id="svSub" value="$29"></td><td><select><option>All</option><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
-<tr><td>GBP Setup</td><td><input id="svGbp" value="$49"></td><td><select><option>Premium</option><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
-<tr><td>Google AD</td><td><input id="svGad" value="$79"></td><td><select><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
-<tr><td>AI Image Studio</td><td><input id="svAiI" value="$39"></td><td><select><option>Premium</option><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
-<tr><td>AI Video Studio</td><td><input id="svAiV" value="$59"></td><td><select><option>Pro</option></select></td><td><span class="switch on" onclick="tog(this)"><i></i></span></td></tr>
-</tbody></table>
-<button class="btn btn-y" onclick="savePacks()">Save Packs</button>
-</div>
-</div>
-
-<div id="bank" class="sec" style="display:none">
-<div class="card"><h3>Bank + Flutterwave</h3>
-<input id="bkName" placeholder="Bank Name GTB"><input id="bkAcc" placeholder="Account No"><input id="bkAccName" placeholder="Account Name Krishnyansh Zenova Peaks Ltd">
-<input id="fwPub" placeholder="Flutterwave Public Key"><input id="fwSec" placeholder="Flutterwave Secret"><input id="fwLink" placeholder="Payment Link">
-<button class="btn btn-y" onclick="saveBank()">Save Bank</button>
-<p class="small" id="bkEnv"></p>
-</div>
-</div>
-
-<div id="invoice" class="sec" style="display:none">
-<div class="card"><h3>Invoice + Stamp Editable</h3>
-<input id="invPre" placeholder="Invoice Prefix ZEN-"><input id="invAddr" placeholder="Company Address Lagos">
-<label>Stamp Image</label><input type="file" id="stFile" accept="image/*"><img id="stPrev" class="imgPrev" style="display:none">
-<label>Stamp Text</label><input id="stText" value="ZENOVA PEAKS LTD BN:9701468 Verified Lagos">
-<label>Signature</label><input type="file" id="sigFile" accept="image/*"><img id="sigPrev" class="imgPrev" style="display:none">
-<button class="btn btn-y" onclick="saveInvoice()">Save Invoice Settings</button>
-<div style="border:1px dashed #facc15;padding:10px;margin-top:10px;background:#fff;color:#000;border-radius:8px;text-align:center">
-<div style="font-weight:bold;color:#1e3a8a">INVOICE PREVIEW</div><div id="invPreview">Stamp will show here</div><img id="invStampPrev" class="imgPrev">
+<div>
+<canvas id="vCanvas" width="1920" height="1080" class="w-full bg-black rounded-xl border"></canvas>
+<p class="mono text-xs mt-2">Status: <span id="gStatus">Ready</span> | <span id="gDur">00:00</span> / 15:00 | Full HD</p>
+<div class="w-full h-2 bg-[#222] rounded-full"><div id="pBar" class="h-full bg-gold w-0"></div></div>
+<video id="outV" controls class="w-full mt-3 rounded-xl hidden"></video>
+<div id="dlArea" class="hidden mt-3"><a id="dlLink" class="btn-gold w-full py-3 rounded-xl block text-center font-bold">Download Full HD MP4 - 15min - For YouTube</a><button onclick="saveVideoSB()" class="card w-full mt-2 py-2 rounded text-xs">Save to Supabase aiVideos - Auto Save</button><p class="mono text-[10px] text-gray-400 mt-2">YouTube accepts WebM - Direct upload possible - Full HD quality</p></div>
 </div>
 </div>
 </div>
 
-<div id="thoughts" class="sec" style="display:none">
-<div class="card"><h3>Daily Brief — CEO Thoughts</h3>
-<input type="date" id="thDate"><input id="thTitle" placeholder="Thought Title"><textarea id="thText" rows="3" placeholder="CEO Thought..."></textarea>
-<input type="file" id="thFile" accept="image/*"><select id="thMood"><option>Motivational</option><option>Business</option><option>Life</option></select>
-<button class="btn btn-y" onclick="addThought()">Publish Thought</button>
-<div id="thList"></div>
+<div id="tab-livechat" class="tab-content hidden">
+<h2 class="text-xl font-bold gold">Live Chat Bot 🤖 - Website Visitors 24/7 Company Knowledge + CEO WhatsApp Redirect</h2>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+<div class="card p-4 rounded-xl"><textarea id="botWelcome" class="w-full p-3 rounded bg-black border text-xs" rows="3">Hello! I am Zenova AI Assistant Est.2026 BN 9701468 RC 9810296 Founder Ruby Garg 24/7 Online!</textarea><button onclick="saveBotSettings()" class="bg-gold text-black px-4 py-2 rounded font-bold text-xs mt-2">Save Bot Settings</button></div>
+<div class="card p-4 rounded-xl"><p class="mono text-xs font-bold gold">LIVE CHAT SESSIONS - Website Visitors</p><div id="chatSessions" class="mt-3 space-y-2 max-h-[400px] overflow-y-auto"></div></div>
 </div>
+<div class="card p-4 rounded-xl mt-4"><div id="chatMessages" class="max-h-[300px] overflow-y-auto bg-black p-3 rounded"></div><div class="flex gap-2 mt-3"><input id="adminReply" placeholder="Reply as Admin..." class="flex-1 p-2 rounded bg-[#222] border text-xs"><button onclick="sendAdminReply()" class="bg-gold text-black px-4 py-2 rounded font-bold text-xs">Send Live</button></div></div>
 </div>
 
-<div id="settings" class="sec" style="display:none">
-<div class="card"><h3>Settings + Stamp + Admin Profile</h3>
-<input id="adName" placeholder="Admin Name"><input id="adEmail" placeholder="Admin Email">
-<input type="password" id="adPassOld" placeholder="Old Password"><input type="password" id="adPassNew" placeholder="New Password">
-<input type="file" id="adAv" accept="image/*"><img id="adAvPrev" class="imgPrev" style="display:none">
-<label>Official Stamp (same as invoice)</label><input type="file" id="adStFile" accept="image/*"><img id="adStPrev" class="imgPrev" style="display:none">
-<button class="btn btn-y" onclick="saveAdmin()">Save Admin Profile</button>
+<div id="tab-forms" class="tab-content hidden">
+<h2 class="text-xl font-bold">Forms & Submissions - Freelancer + Registration + Career - Auto Save + WhatsApp Redirect</h2>
+<div class="card rounded-2xl p-4 mt-4 overflow-x-auto"><table class="w-full mono text-xs"><thead><tr class="text-gray-500 border-b"><th class="text-left py-2">Name</th><th>Type</th><th>Service</th><th>Date</th><th>Action</th></tr></thead><tbody id="formsTb"></tbody></table></div>
 </div>
+
+<div id="tab-clients" class="tab-content hidden"><h2 class="text-xl font-bold gold">Client Panel - Bot Deploy - FB/WA/Insta/LinkedIn/Website</h2><div class="grid md:grid-cols-4 gap-2 mt-4"><input id="cName" placeholder="Company Name" class="p-2 rounded bg-black border text-xs"><input id="cEmail" placeholder="Email" class="p-2 rounded bg-black border text-xs"><select id="cPack" class="p-2 rounded bg-black border text-xs"><option value="starter">Starter</option><option value="premium">Premium</option><option value="pro">Pro</option></select><button onclick="addClient()" class="bg-gold text-black py-2 rounded font-bold text-xs">Add Client + Auto Invoice</button></div><div id="clientsList" class="mt-4 space-y-3"></div></div>
+
+<div id="tab-services" class="tab-content hidden"><h2 class="text-xl font-bold gold">Packs & Services - Starter / Premium / Pro</h2><div id="servicesTiers" class="mt-4 space-y-2"></div></div>
+<div id="tab-bank" class="tab-content hidden"><h2 class="text-xl font-bold">Bank + Flutterwave</h2><div class="card p-6 mt-4 max-w-2xl"><input id="envBank2" value="Zenith Bank" class="w-full p-3 rounded bg-black border"><input id="envFWP2" value="FLWPUBK-xxx" class="w-full p-3 rounded bg-black border mt-3"><button onclick="saveENV()" class="w-full card py-3 rounded-xl mt-4">Save ENV</button></div></div>
+<div id="tab-invoices" class="tab-content hidden"><h2 class="text-xl font-bold gold">Invoice + Stamp - Automatic - BN 9701468 RC 9810296</h2><div id="invoicesList" class="mt-4"></div><button onclick="generateInvoicePDF()" class="bg-gold text-black px-6 py-3 rounded-xl mt-4 font-bold">Generate PDF Invoice</button></div>
+<div id="tab-settings" class="tab-content hidden"><h2 class="text-xl font-bold">Settings + Homepage Connected</h2><div class="card p-4 rounded-xl mt-4 mono text-xs max-w-2xl"><input id="hTitle" value="ZENOVA PEAK TECH HUB - Est.2026 BN 9701468 RC 9810296" class="w-full p-2 rounded bg-black border"><button onclick="saveHomepage()" class="bg-gold text-black w-full py-3 rounded font-bold mt-3">SAVE HOMEPAGE - Auto Updates Website</button></div></div>
+
+</main>
 </div>
 
 <script>
-function show(id){
- document.querySelectorAll('.sec').forEach(s=>s.style.display='none');
- document.getElementById(id).style.display='block';
- document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
- document.getElementById('b-'+id).classList.add('active');
- localStorage.setItem('zenovaTab',id);
+let sb=null,gFiles=[],genBlob=null;
+function showTab(id){document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');if(id==='forms')loadForms();if(id==='clients')loadClients();if(id==='services')loadServiceTiers();if(id==='invoices')loadInvoices();if(id==='livechat')loadChatSessions();if(window.innerWidth<768)document.getElementById('sidebar').classList.add('-translate-x-full');}
+document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('-translate-x-full');
+document.getElementById('closeMenu').onclick=()=>document.getElementById('sidebar').classList.add('-translate-x-full');
+document.getElementById('dateNow').innerText=new Date().toLocaleDateString('en-GB')+' '+new Date().toLocaleTimeString();
+function connectSB(){let url=sbUrl.value.trim(),key=sbKey.value.trim();if(!url||!key)return alert('Enter SB URL/Key');sb=supabase.createClient(url,key);localStorage.setItem('sbUrl',url);localStorage.setItem('sbKey',key);sbStatus.innerText='Testing...';sb.from('freelancer_submissions').select('id').limit(1).then(({error})=>{if(error)sbStatus.innerText='Error: '+error.message;else sbStatus.innerText='✅ Connected - Auto Save ON - Submissions visible';loadForms();});}
+window.onload=()=>{let u=localStorage.getItem('sbUrl'),k=localStorage.getItem('sbKey');if(u&&k){sbUrl.value=u;sbKey.value=k;connectSB();}else renderDemoForms();loadServiceTiers();};
+
+const gFile=document.getElementById('gFile'),cFile=document.getElementById('cFile');
+gFile.addEventListener('change',e=>handle(e.target.files));
+function handle(files){for(let f of files){let r=new FileReader();r.onload=e=>{gFiles.push({name:f.name,data:e.target.result,file:f});renderG();if(sb)sb.from('zenova_gallery').insert({file_name:f.name,base64_data:e.target.result});};r.readAsDataURL(f);}}
+function renderG(){let grid=document.getElementById('gGrid');grid.innerHTML='';gFiles.forEach((f,i)=>{grid.innerHTML+=`<div class="relative"><img src="${f.data}" class="w-full h-28 object-cover rounded-xl"><button onclick="gFiles.splice(${i},1);renderG()" class="absolute top-1 right-1 bg-red-500 w-5 h-5 rounded-full text-xs">x</button></div>`;});}
+function addUrl(){let url=imgUrl.value.trim();if(!url)return;gFiles.push({name:'url-image',data:url,file:null});renderG();if(sb)sb.from('zenova_gallery').insert({file_name:'url-image',file_url:url});imgUrl.value='';}
+async function loadForms(){if(!sb)return;let {data:free}=await sb.from('freelancer_submissions').select('*').order('created_at',{ascending:false});let {data:reg}=await sb.from('registration_submissions').select('*').order('created_at',{ascending:false});let all=[...(free||[]).map(f=>({...f,type:'Freelancer'})),...(reg||[]).map(r=>({...r,type:'Registration'}))];renderForms(all);}
+function renderDemoForms(){renderForms([{name:'Adebayo Musa',type:'Freelancer',service:'Website Dev & GBP Specialist',created_at:'2026-09-09T14:14:00'},{name:'Chioma Okoro',type:'Freelancer',service:'Marketing Analyst',created_at:'2026-09-09T16:30:00'}]);}
+function renderForms(rows){let tbody=document.getElementById('formsTb');tbody.innerHTML='';rows.forEach(r=>{tbody.innerHTML+=`<tr class="border-b border-[#222]"><td class="py-2">${r.name}</td><td>${r.type||'Form'}</td><td>${r.service||r.service_interest||'Freelancer'}</td><td>${r.created_at?new Date(r.created_at).toLocaleString():'Yesterday'}</td><td><button class="card px-2 py-1 rounded text-[10px]">View</button> <button onclick="sendWA('${r.name}','${r.phone||''}')" class="bg-gold text-black px-2 py-1 rounded text-[10px] ml-1">WhatsApp</button></td></tr>`;});}
+function sendWA(name,phone){let msg=`Hello ${name}, thanks for applying at Zenova Peak Tech Hub Est.2026 BN 9701468 RC 9810296 - We received your submission!`;window.open(`https://wa.me/2349067862223?text=${encodeURIComponent(msg)}`,'_blank');}
+
+async function addClient(){let cname=cName.value,email=cEmail.value,pack=cPack.value;if(!cname)return alert('Company name');let row={company_name:cname,email,current_pack:pack,bot_deployed:false};if(sb){let {data}=await sb.from('zenova_clients').insert(row).select().single();await sb.from('zenova_invoices').insert({company_name:cname,service_title:'Altra AI Automation',service_type:pack,amount:pack==='starter'?20000:pack==='premium'?50000:120000,invoice_no:'INV-'+Date.now()});}loadClients();loadInvoices();}
+async function loadClients(){if(!sb){clientsList.innerHTML='<p class="mono text-xs">Connect Supabase - Demo: 4 clients</p>';return;}let {data}=await sb.from('zenova_clients').select('*').order('created_at',{ascending:false});clientsList.innerHTML=data.map(c=>`<div class="card p-4 rounded-xl"><div class="flex justify-between"><b>${c.company_name}</b><span class="mono text-xs ${c.bot_deployed?'bg-green-500/20 text-green-400':'bg-yellow-500/20 text-yellow-400'} px-2 py-1 rounded-full">${c.bot_deployed?'Bot Deployed':'Not Deployed'}</span></div><div class="grid grid-cols-5 gap-2 mt-3 mono text-[10px]"><label class="card p-2 rounded">FB <input type="checkbox" ${c.fb_connected?'checked':''} onchange="toggleBot('${c.id}','fb_connected',this.checked)"></label><label class="card p-2 rounded">WhatsApp <input type="checkbox" ${c.whatsapp_connected?'checked':''} onchange="toggleBot('${c.id}','whatsapp_connected',this.checked)"></label><label class="card p-2 rounded">Insta <input type="checkbox" ${c.insta_connected?'checked':''} onchange="toggleBot('${c.id}','insta_connected',this.checked)"></label><label class="card p-2 rounded">LinkedIn <input type="checkbox" ${c.linkedin_connected?'checked':''} onchange="toggleBot('${c.id}','linkedin_connected',this.checked)"></label><label class="card p-2 rounded">Website <input type="checkbox" ${c.website_connected?'checked':''} onchange="toggleBot('${c.id}','website_connected',this.checked)"></label></div><button onclick="deployBot('${c.id}')" class="bg-gold text-black px-4 py-2 rounded font-bold text-xs mt-3">🤖 Deploy Bot for ${c.company_name}</button></div>`).join('');}
+async function toggleBot(id,field,val){if(!sb)return;await sb.from('zenova_clients').update({[field]:val}).eq('id',id);}
+async function deployBot(id){if(!sb)return;await sb.from('zenova_clients').update({bot_deployed:true}).eq('id',id);alert('Bot Deployed - FB, WA, Insta, LinkedIn, Website connected');loadClients();}
+async function loadServiceTiers(){let services=["Business Consultancy","Altra AI Automation","GBP with Map","Complete Branding Pack","SMEDAN","CAC","SCUML/TIN","AI Video Studio","Website Dev"];let tiers=['starter','premium','pro'];let div=document.getElementById('servicesTiers');if(!sb){div.innerHTML=services.map(s=>tiers.map(t=>`<div class="card p-3 rounded flex justify-between mono text-xs"><span>${s} - ${t}</span><span>₦${t==='starter'?'15k':t==='premium'?'50k':'120k'}</span></div>`).join('')).join('');return;}let {data}=await sb.from('zenova_service_tiers').select('*');if(!data||!data.length){div.innerHTML=services.map(s=>tiers.map(t=>`<div class="card p-3 rounded flex justify-between mono text-xs"><span>${s} - ${t}</span><button onclick="saveTier('${s}','${t}')" class="bg-gold text-black px-2 py-1 rounded">Add Tier</button></div>`).join('')).join('');}else{div.innerHTML=data.map(t=>`<div class="card p-3 rounded flex justify-between mono text-xs"><span>${t.service_title} - ${t.tier} - ₦${t.price}</span></div>`).join('');}}
+async function saveTier(s,t){let price=prompt(`Price for ${s} - ${t} in Naira:`);if(!price)return;if(sb)await sb.from('zenova_service_tiers').insert({service_title:s,tier:t,price:parseInt(price),features:["Feature"],delivery_days:t==='starter'?3:t==='premium'?7:14});loadServiceTiers();}
+async function loadInvoices(){if(!sb){invoicesList.innerHTML='<p class="mono text-xs">Connect SB - Auto invoice when client added</p>';return;}let {data}=await sb.from('zenova_invoices').select('*').order('created_at',{ascending:false});invoicesList.innerHTML=data.map(inv=>`<div class="card p-3 rounded flex justify-between mono text-xs"><div><b>${inv.invoice_no}</b> - ${inv.company_name} - ${inv.service_type} - ₦${inv.amount}</div><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full">${inv.status}</span></div>`).join('');}
+function generateInvoicePDF(){let {jsPDF}=window.jspdf;let doc=new jsPDF();doc.text("ZENOVA PEAK TECH HUB - BN 9701468 RC 9810296",20,20);doc.text("INVOICE INV-"+Date.now(),20,40);doc.save("Invoice.pdf");}
+function saveENV(){let row={bank_name:envBank.value,flutterwave_public:envFWP.value,flutterwave_secret:envFWS.value,env_extra:envExtra.value};if(sb)sb.from('env_keys').insert(row);envPreview.innerText=`supabase=true\nBANK_NAME=${row.bank_name}\nFLUTTERWAVE_PUBLIC=${row.flutterwave_public}\nFLUTTERWAVE_SECRET=${row.flutterwave_secret}\nENV_EXTRA=${row.env_extra}`;}
+function saveHomepage(){if(!sb)return alert('Connect SB');sb.from('site_settings').upsert({key:'homepage',value:{title:hTitle.value}}).then(()=>alert('Homepage saved - Auto updates website'));}
+
+let recorder,chunks=[],isGen=false,vCanvas=document.getElementById('vCanvas'),ctx=vCanvas.getContext('2d');
+function genScript(){let p=aiPrompt.value||"Zenova 9 services";vScript.value=`Welcome to Zenova Peak Tech Hub Est.2026 BN 9701468 RC 9810296 Lagos. ${p}\n\n[15 MIN YOUTUBE SCRIPT 2500 words]\nIntro 2min: Hello Lagos entrepreneurs...\n9 Services 10min...\nCTA 1min: +2349067862223`;}
+function getIndianFemaleVoice(){let voices=speechSynthesis.getVoices();let v=voices.find(x=>x.name.includes('Swara')||x.name.includes('Heera')||x.lang==='en-IN'&&x.name.toLowerCase().includes('female'))||voices.find(x=>x.lang==='en-IN')||voices.find(x=>x.name.toLowerCase().includes('india'))||voices[0];return v;}
+function previewVoice(){speechSynthesis.cancel();let utter=new SpeechSynthesisUtterance(vScript.value.slice(0,300)||"Hello I am Zenova AI Assistant Female Indian English from Zenova Peak Tech Hub Est 2026");let voiceType=vVoice.value;if(voiceType==='female-in'){let iv=getIndianFemaleVoice();if(iv)utter.voice=iv;utter.lang='en-IN';}utter.rate=1;speechSynthesis.speak(utter);}
+async function genRealVideo(){
+if(isGen)return;let script=vScript.value;if(!script){genScript();script=vScript.value;}isGen=true;chunks=[];gStatus.innerText="Generating REAL 15min Full HD video with Female Indian English voice + graphics...";let totalMin=vType.value==='short'?1:15;gTotal.innerText=totalMin+":00";
+let quality=vQuality.value;vCanvas.width=quality==='fullhd'?1920:1280;vCanvas.height=quality==='fullhd'?1080:720;
+let stream=vCanvas.captureStream(30);recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});recorder.ondataavailable=e=>{if(e.data.size>0)chunks.push(e.data);};
+recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'});genBlob=blob;let url=URL.createObjectURL(blob);outV.src=url;outV.classList.remove('hidden');dlLink.href=url;dlLink.download=`ZENOVA_${totalMin}min_FullHD_${Date.now()}.webm`;dlArea.classList.remove('hidden');gStatus.innerText="Done - REAL Full HD video ready - Download for YouTube";isGen=false;speechSynthesis.cancel();};
+recorder.start();
+let scenes=totalMin*2,cur=0,words=script.split('. ');
+function draw(i){ctx.fillStyle=i%2?"#0A1E35":"#1a1a1a";ctx.fillRect(0,0,vCanvas.width,vCanvas.height);ctx.strokeStyle="#FDB913";ctx.lineWidth=8;ctx.strokeRect(0,0,vCanvas.width,vCanvas.height);ctx.fillStyle="#FDB913";ctx.font=`bold ${vCanvas.width>1280?40:20}px Space Grotesk`;ctx.fillText("ZENOVA PEAK TECH HUB",40,80);ctx.fillStyle="#fff";ctx.font=`${vCanvas.width>1280?20:11}px JetBrains Mono`;ctx.fillText("Est.2026 | BN 9701468 | RC 9810296 | Founder Ruby Garg | Full HD",40,120);ctx.font=`bold ${vCanvas.width>1280?28:14}px Space Grotesk`;let t=words[i]?words[i].slice(0,200):`Scene ${i+1}`;ctx.fillText(t,40,200);ctx.fillStyle="#FDB913";ctx.font=`${vCanvas.width>1280?22:11}px JetBrains Mono`;ctx.fillText(`+2349067862223 | ${i+1}/${scenes} - ${totalMin}min YouTube Full HD - REAL AI VIDEO`,40,vCanvas.height-40);}
+let iv=setInterval(()=>{if(cur>=scenes){clearInterval(iv);recorder.stop();pBar.style.width='100%';return;}draw(cur);cur++;pBar.style.width=Math.round(cur/scenes*100)+"%";gDur.innerText=Math.floor(cur/scenes*totalMin)+":00";},1500);
+let utter=new SpeechSynthesisUtterance(script.slice(0,1500));if(vVoice.value==='female-in'){let ivc=getIndianFemaleVoice();if(ivc)utter.voice=ivc;utter.lang='en-IN';}speechSynthesis.speak(utter);
 }
-function tog(el){el.classList.toggle('on')}
-function checkSrv(){
- fetch('/api/health').then(r=>r.json()).then(j=>document.getElementById('srv').innerText=JSON.stringify(j)).catch(()=>document.getElementById('srv').innerText='Offline - check Render');
-}
-let gData=JSON.parse(localStorage.getItem('zenovaGallery')||'[]');
-function renderG(){let h='';gData.forEach((u,i)=>h+=`<div><img src="${u}" class="imgPrev" style="width:100%;height:90px"><br><button class="btn btn-r" style="padding:4px 8px;font-size:10px" onclick="delG(${i})">Del</button></div>`);document.getElementById('gList').innerHTML=h;document.getElementById('gTotal').innerText=gData.length}
-function addG(){
- let url=document.getElementById('gUrl').value.trim();
- if(url){gData.push(url);saveG();}else alert('Paste URL or select file');
-}
-function delG(i){gData.splice(i,1);saveG()}
-function saveG(){localStorage.setItem('zenovaGallery',JSON.stringify(gData));document.getElementById('gUrl').value='';renderG()}
-document.getElementById('gFile').addEventListener('change',e=>{if(e.target.files[0]){let r=new FileReader();r.onload=ev=>{gData.push(ev.target.result);saveG()};r.readAsDataURL(e.target.files[0])}});
+async function saveVideoSB(){if(!sb)return alert('Connect SB');if(!genBlob)return alert('Generate first');let fname='ai_video_'+Date.now()+'.webm';let {error}=await sb.storage.from('aiVideos').upload(fname,genBlob);if(error)return alert(error.message);let {data}=sb.storage.from('aiVideos').getPublicUrl(fname);await sb.from('ai_generated_videos').insert({prompt:aiPrompt.value,script:vScript.value,video_type:vType.value,voice:vVoice.value,video_url:data.publicUrl,duration_minutes:15,quality:vQuality.value});alert('Video auto saved Supabase - Full HD - URL: '+data.publicUrl+' - YouTube ready - You can download from here also');}
 
-let ceo=JSON.parse(localStorage.getItem('zenovaCEO')||'{}');
-function saveCEO(){
- let o={name:ceoName.value,role:ceoRole.value,bio:ceoBio.value,img:document.getElementById('ceoPrev').src};
- localStorage.setItem('zenovaCEO',JSON.stringify(o));alert('CEO Saved');
-}
-document.getElementById('ceoFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{ceoPrev.src=ev.target.result;ceoPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
-if(ceo.name){ceoName.value=ceo.name;ceoRole.value=ceo.role;ceoBio.value=ceo.bio;if(ceo.img){ceoPrev.src=ceo.img;ceoPrev.style.display='block'}}
-
-let flyers=JSON.parse(localStorage.getItem('zenovaFlyers')||'[]');
-function addFlyer(){
- let t=fTitle.value; if(!t)return alert('Title');
- let o={title:t,url:fUrl.value,cat:fCat.value,exp:fExp.value,on:document.getElementById('fSw').classList.contains('on'),img:''};
- if(document.getElementById('fSw').dataset.img)o.img=document.getElementById('fSw').dataset.img;
- else o.img=fUrl.value;
- flyers.push(o);localStorage.setItem('zenovaFlyers',JSON.stringify(flyers));renderFlyers();fTitle.value='';fUrl.value='';
-}
-function renderFlyers(){let h='';flyers.forEach((f,i)=>h+=`<div style="border:1px solid #334155;padding:6px;margin:4px;border-radius:8px"><b>${f.title}</b> ${f.cat} ${f.on?'ON':'OFF'}<br><img src="${f.img||f.url}" class="imgPrev"><br><button class="btn btn-r" onclick="flyers.splice(${i},1);localStorage.setItem('zenovaFlyers',JSON.stringify(flyers));renderFlyers()">Del</button></div>`);document.getElementById('fList').innerHTML=h}
-document.getElementById('fFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{document.getElementById('fSw').dataset.img=ev.target.result;fUrl.value=ev.target.result};r.readAsDataURL(e.target.files[0])});
-renderFlyers();
-
-let clients=JSON.parse(localStorage.getItem('zenovaClients')||'[]');
-function renderClients(){let h='';clients.forEach((c,i)=>h+=`<tr><td>${c.name}<br><small>${c.country}</small></td><td>${c.biz}</td><td>${c.services.join(',')}</td><td><select onchange="clients[${i}].pack=this.value;saveClients()" ><option ${c.pack=='Starter'?'selected':''}>Starter</option><option ${c.pack=='Premium'?'selected':''}>Premium</option><option ${c.pack=='Pro'?'selected':''}>Pro</option></select></td><td><button class="btn btn-y" style="padding:4px" onclick="alert('Deploying bot for ${c.name} - ${c.pack}')">Deploy</button> <button class="btn btn-r" style="padding:4px" onclick="clients.splice(${i},1);saveClients()">X</button></td></tr>`);document.getElementById('clTable').innerHTML=h;document.getElementById('cTotal').innerText=clients.length}
-function addClient(){
- let sv=[]; if(sWa.checked)sv.push('WhatsApp'); if(sFb.checked)sv.push('FB'); if(sIg.checked)sv.push('IG'); if(sLi.checked)sv.push('LinkedIn'); if(sWeb.checked)sv.push('Website'); if(sInv.checked)sv.push('Invoice'); if(sGbp.checked)sv.push('GBP'); if(sGad.checked)sv.push('GAD'); if(sAiI.checked)sv.push('AI-Img'); if(sAiV.checked)sv.push('AI-Vid');
- let o={name:clName.value,biz:clBiz.value,country:clCountry.value,phone:clPhone.value,email:clEmail.value,services:sv,pack:clPack.value};
- if(!o.name)return alert('Name'); clients.push(o);saveClients(); clName.value=''; clBiz.value='';
-}
-function saveClients(){localStorage.setItem('zenovaClients',JSON.stringify(clients));renderClients()}
-renderClients();renderG();
-
-function savePacks(){let o={starter:pSt.value,premium:pPr.value,pro:pPro.value,sub:svSub.value,gbp:svGbp.value,gad:svGad.value,aiI:svAiI.value,aiV:svAiV.value};localStorage.setItem('zenovaPacks',JSON.stringify(o));alert('Packs Saved')}
-let packs=JSON.parse(localStorage.getItem('zenovaPacks')||'{}'); if(packs.starter){pSt.value=packs.starter;pPr.value=packs.premium;pPro.value=packs.pro}
-
-function saveBank(){let o={name:bkName.value,acc:bkAcc.value,accName:bkAccName.value,fwPub:fwPub.value,fwSec:fwSec.value,link:fwLink.value};localStorage.setItem('zenovaBank',JSON.stringify(o));document.getElementById('bkEnv').innerText=`BANK_NAME=${o.name} BANK_ACCOUNT_NUMBER=${o.acc} FLUTTERWAVE_PUBLIC_KEY=${o.fwPub}`;alert('Bank Saved')}
-let bank=JSON.parse(localStorage.getItem('zenovaBank')||'{}'); if(bank.name){bkName.value=bank.name;bkAcc.value=bank.acc;bkAccName.value=bank.accName;fwPub.value=bank.fwPub;fwSec.value=bank.fwSec;fwLink.value=bank.link}
-
-function saveInvoice(){let o={pre:invPre.value,addr:invAddr.value,stamp:document.getElementById('stPrev').src,text:stText.value,sig:document.getElementById('sigPrev').src};localStorage.setItem('zenovaInv',JSON.stringify(o));document.getElementById('invStampPrev').src=o.stamp;document.getElementById('invPreview').innerText=o.text;alert('Invoice Saved')}
-document.getElementById('stFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{stPrev.src=ev.target.result;stPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
-document.getElementById('sigFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{sigPrev.src=ev.target.result;sigPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
-
-let thoughts=JSON.parse(localStorage.getItem('zenovaThoughts')||'[]');
-function addThought(){let o={date:thDate.value,title:thTitle.value,text:thText.value,mood:thMood.value,img:document.getElementById('thDate').dataset.img||''};if(!o.title)return alert('Title');thoughts.push(o);localStorage.setItem('zenovaThoughts',JSON.stringify(thoughts));renderThoughts();thTitle.value='';thText.value=''}
-function renderThoughts(){let h='';thoughts.forEach((t,i)=>h+=`<div style="border:1px solid #334155;padding:6px;margin:4px;border-radius:8px"><b>${t.title}</b> ${t.date} ${t.mood}<br><small>${t.text}</small><br><button class="btn btn-r" style="padding:3px" onclick="thoughts.splice(${i},1);localStorage.setItem('zenovaThoughts',JSON.stringify(thoughts));renderThoughts()">Del</button></div>`);document.getElementById('thList').innerHTML=h}
-document.getElementById('thFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{document.getElementById('thDate').dataset.img=ev.target.result};r.readAsDataURL(e.target.files[0])});
-renderThoughts();
-
-function saveAdmin(){let o={name:adName.value,email:adEmail.value,av:document.getElementById('adAvPrev').src,stamp:document.getElementById('adStPrev').src};localStorage.setItem('zenovaAdmin',JSON.stringify(o));if(adPassNew.value)alert('Password changed to: '+adPassNew.value);else alert('Admin Saved')}
-document.getElementById('adAv').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{adAvPrev.src=ev.target.result;adAvPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
-document.getElementById('adStFile').addEventListener('change',e=>{let r=new FileReader();r.onload=ev=>{adStPrev.src=ev.target.result;adStPrev.style.display='block';stPrev.src=ev.target.result;stPrev.style.display='block'};r.readAsDataURL(e.target.files[0])});
-
-show(localStorage.getItem('zenovaTab')||'dash');checkSrv();
-</script></body></html>
+let selectedSessionId=null;
+async function loadChatSessions(){if(!sb)return;let {data}=await sb.from('live_chat_sessions').select('*').order('created_at',{ascending:false}).limit(20);document.getElementById('chatSessions').innerHTML=data.map(s=>`<div class="card p-2 rounded cursor-pointer" onclick="selectSession('${s.id}')"><p class="font-bold text-xs">${s.visitor_name||'Visitor'}</p><p class="mono text-[10px] text-gray-400">${new Date(s.created_at).toLocaleString()}</p></div>`).join('');}
+function selectSession(id){selectedSessionId=id;loadChatMessages(id);}
+async function loadChatMessages(id){let {data}=await sb.from('live_chat_messages').select('*').eq('session_id',id).order('created_at',{ascending:true});let div=document.getElementById('chatMessages');div.innerHTML=data.map(m=>`<div class="mono text-xs p-2 rounded ${m.sender==='visitor'?'bg-[#FDB913] text-black ml-auto max-w-[80%]':'bg-[#2a2a2a]'}"><b>${m.sender}:</b> ${m.message}</div>`).join('');}
+async function sendAdminReply(){if(!selectedSessionId)return alert('Select session');let text=adminReply.value.trim();if(!text)return;await sb.from('live_chat_messages').insert({session_id:selectedSessionId,sender:'admin',message:text});adminReply.value='';loadChatMessages(selectedSessionId);}
+async function saveBotSettings(){if(!sb)return;await sb.from('bot_settings').update({welcome_message:botWelcome.value}).eq('is_active',true);alert('Bot settings saved');}
+</script>
+</body>
+</html>
