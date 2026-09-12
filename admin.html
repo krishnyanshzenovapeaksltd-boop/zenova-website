@@ -74,150 +74,201 @@ ENV_EXTRA=NODE_ENV=production</pre></div>
 </div>
 
 <!-- ===== ZENOVA AI STUDIO - MINIMUM 15 MIN - FULL HD + FEMALE INDIAN VOICE 🇮🇳 ===== -->
-<div style="padding:20px;background:#121212;border-radius:18px;border:1px solid #333">
-<h3 style="color:#FDB913;margin:0 0 8px">🎬 AI Video Studio - MIN 15 MIN - Full HD 1920x1080 - Female Indian Voice</h3>
-<p style="color:#aaa;font-size:11px;margin:0 0 12px">Est.2026 BN 9701468 RC 9810296 | Founder Ruby Garg | Your YouTube Channel via Website</p>
-<textarea id="videoPrompt15" placeholder="Prompt likho: Ex - Create 15min YouTube video for Zenova Peak Tech Hub - 9 services Business Consultancy, Altra AI, GBP Maps, Branding, SMEDAN, CAC, SCUML/TIN, AI Video, Website Dev - Starter Premium Pro pricing - Contact +2349067862223" style="width:100%;height:100px;background:#0a0a0a;border:1px solid #333;border-radius:12px;color:#fff;padding:12px;font-size:13px"></textarea>
-<div style="display:flex;gap:8px;margin-top:10px">
-<div style="background:#1a1a1a;padding:8px 12px;border-radius:8px;color:#FDB913;font-weight:800;font-size:12px">⏱️ MINIMUM 15 MIN = 900 SECONDS</div>
-<div style="background:#1a1a1a;padding:8px 12px;border-radius:8px;color:#fff;font-size:12px">🇮🇳 Female - Indian English</div>
-<div style="background:#1a1a1a;padding:8px 12px;border-radius:8px;color:#fff;font-size:12px">📺 Full HD 1920x1080</div>
+<!-- ===== ZENOVA AI STUDIO GENERIC - ANY TOPIC FOR YOUTUBE CLASSES - 15MIN MIN ===== -->
+<div style="padding:18px;background:#121212;border-radius:18px;border:1px solid #333">
+<h3 style="color:#FDB913;margin:0 0 4px">🎓 AI Studio GENERIC - YouTube Classes - ANY Topic - 15MIN MIN</h3>
+<p style="color:#aaa;font-size:11px;margin:0 0 12px">For your YouTube classes - Any subject - Not only Zenova services!</p>
+
+<textarea id="videoPromptGENERIC" placeholder="ANY TOPIC likho: Ex - Class 8 Photosynthesis full explanation with diagram | Python for Beginners Chapter 1 Variables | How to register CAC business name step by step Nigeria | Digital Marketing Class 1 - What is SEO" style="width:100%;height:100px;background:#0a0a0a;border:1px solid #333;border-radius:12px;color:#fff;padding:12px;font-size:13px"></textarea>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px">
+<div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:10px">
+<label style="color:#FDB913;font-size:11px;font-weight:800">📸 Human Presence - Your Photos</label>
+<input type="file" id="videoPhotosGENERIC" multiple accept="image/*" style="width:100%;margin-top:6px;color:#fff;font-size:11px">
+<div id="photoPreviewGENERIC" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+<div style="margin-top:6px"><label style="color:#fff;font-size:11px"><input type="checkbox" id="useHumanPiP" checked> Show my face in video (PiP)</label></div>
 </div>
-<button onclick="generate15MinVideo()" id="gen15Btn" style="width:100%;margin-top:14px;padding:16px;background:linear-gradient(135deg,#FDB913,#FF8C00);border:none;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;color:#000">🎬 GENERATE MINIMUM 15 MIN FULL HD VIDEO + FEMALE INDIAN VOICE 🇮🇳</button>
-<div id="video15Status" style="margin-top:12px;background:#000;padding:10px;border-radius:10px;color:#FDB913;font-size:12px;border:1px solid #222">Status: Ready for 15 min generation</div>
-<div style="margin-top:10px;background:#000;height:18px;border-radius:10px;overflow:hidden;border:1px solid #222"><div id="video15Progress" style="height:100%;width:0%;background:linear-gradient(90deg,#FDB913,#FF8C00);transition:width 0.5s"></div></div>
-<canvas id="video15Canvas" width="1920" height="1080" style="width:100%;max-width:720px;border-radius:14px;margin-top:14px;background:#000;display:none;border:2px solid #222"></canvas>
-<video id="preview15Video" controls style="width:100%;max-width:720px;margin-top:14px;display:none;border-radius:14px;background:#000"></video>
-<a id="download15Video" style="display:none;margin-top:14px;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:900;text-decoration:none;font-size:14px">⬇️ DOWNLOAD 15 MIN FULL HD - FOR YOUTUBE CHANNEL</a>
-<p style="color:#666;font-size:10px;margin-top:8px">Note: 15 min video = 15 min real recording time. Tab ko open rakho, close mat karo. WebM file YouTube accept karta hai. MP4 convert karne ke liye same file YouTube pe upload karo.</p>
+
+<div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:10px">
+<label style="color:#FDB913;font-size:11px;font-weight:800">🏫 Background - For Classes</label>
+<select id="videoBgGENERIC" style="width:100%;margin-top:6px;background:#1a1a1a;color:#fff;padding:8px;border-radius:8px;border:1px solid #333;font-size:12px">
+<option value="whiteboard">Whiteboard - For Teaching Classes 📚</option>
+<option value="blackboard">Blackboard - Chalk Style - School</option>
+<option value="classroom">Classroom - Educational</option>
+<option value="corporate_gold">Corporate Gold - Zenova Brand</option>
+<option value="google_maps">Google Maps - For GBP Classes</option>
+<option value="tech_dark">Tech Dark - For Coding Classes</option>
+</select>
+<label style="color:#aaa;font-size:10px;margin-top:6px;display:block">Class Style:</label>
+<select id="classStyle" style="width:100%;margin-top:4px;background:#1a1a1a;color:#fff;padding:8px;border-radius:8px;font-size:11px">
+<option value="school">School / College - Simple Explain</option>
+<option value="youtube_pro">YouTube Pro - Intro + Points + Outro</option>
+<option value="tutorial">Step-by-Step Tutorial</option>
+</select>
+</div>
+
+<div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:10px">
+<label style="color:#FDB913;font-size:11px;font-weight:800">⚙️ Video Settings</label>
+<div style="margin-top:6px"><label style="color:#fff;font-size:11px"><input type="checkbox" id="includeZenovaBrand"> Include Zenova Branding (BN RC) - Uncheck for generic class</label></div>
+<div style="margin-top:6px"><label style="color:#fff;font-size:11px"><input type="checkbox" id="includeVoice" checked> Female Indian Voice 🇮🇳 - 15min narration</label></div>
+<div style="margin-top:8px;background:#1a1a1a;padding:8px;border-radius:8px;color:#FDB913;font-weight:800;font-size:11px">⏱️ MINIMUM 15 MIN = 900 SEC - YouTube Ready</div>
+<button onclick="loadGalleryGeneric()" style="margin-top:8px;background:#1a1a1a;color:#FDB913;border:1px solid #333;padding:6px 10px;border-radius:8px;font-size:11px;cursor:pointer;width:100%">📁 Load Gallery (zenova_gallery)</button>
+<div id="galleryListGENERIC" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;max-height:80px;overflow-y:auto"></div>
+</div>
+</div>
+
+<button onclick="generateGENERIC15MinVideo()" id="genGENERICBtn" style="width:100%;margin-top:14px;padding:16px;background:linear-gradient(135deg,#FDB913,#FF8C00);border:none;border-radius:14px;font-weight:900;font-size:14px;cursor:pointer;color:#000">🎓 GENERATE 15MIN GENERIC VIDEO - ANY TOPIC - FOR YOUTUBE CLASSES + HUMAN + BG + VOICE 🇮🇳</button>
+
+<div id="videoGENERICStatus" style="margin-top:12px;background:#000;padding:10px;border-radius:10px;color:#FDB913;font-size:12px;border:1px solid #222">Status: Ready - Type ANY topic for YouTube class - Ex: Photosynthesis, Python, CAC steps</div>
+<div style="margin-top:10px;background:#000;height:20px;border-radius:10px;overflow:hidden;border:1px solid #222"><div id="videoGENERICProgress" style="height:100%;width:0%;background:linear-gradient(90deg,#FDB913,#FF8C00);transition:width 0.5s"></div></div>
+
+<canvas id="videoGENERICCanvas" width="1920" height="1080" style="width:100%;max-width:760px;border-radius:14px;margin-top:14px;background:#fff;border:2px solid #FDB913"></canvas>
+<video id="previewGENERICVideo" controls style="width:100%;max-width:760px;margin-top:14px;display:none;border-radius:14px;background:#000;border:2px solid #333"></video>
+<a id="downloadGENERICVideo" style="display:none;margin-top:14px;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:900;text-decoration:none">⬇️ DOWNLOAD 15MIN GENERIC CLASS VIDEO - FOR YOUTUBE</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SB_URL15='https://aqjoufnuddakbmuiqaql.supabase.co';
-const SB_KEY15='PASTE_YOUR_ANON_KEY_HERE'; // anon / publishable wala - secret mat dalna!
-let sb15; try{ sb15=supabase.createClient(SB_URL15, SB_KEY15); }catch(e){}
+const SB_URL_G='https://aqjoufnuddakbmuiqaql.supabase.co';
+const SB_KEY_G='PASTE_YOUR_ANON_KEY_HERE';
+let sbG=null; try{ sbG=supabase.createClient(SB_URL_G, SB_KEY_G); }catch(e){}
+let uploadedImgsG=[]; let galleryImgsG=[];
 
-function get15MinScript(prompt){
-  let base = prompt || "Zenova Peak Tech Hub 9 Services";
-  return [
-    `Welcome to ${base}. Krishnyansh Zenova Peaks Limited. Established 2026. BN 9701468. RC 9810296. Founder Ruby Garg. Lagos, Nigeria. Serving Globally.`,
-    `Our 9 Premium Services: 1. Business Consultancy Starter 99 dollars Premium 199 Pro 499. 2. Altra AI Automation for Facebook WhatsApp Instagram LinkedIn Website Bot like this one 24/7. 3. Google Business Profile with Maps Ranking N15k Global.`,
-    `4. Branding Pack Logo Flyer Letterhead Card N25k. 5. SMEDAN Certificate N12k Nigeria Only. 6. CAC Business Name and LTD Registration N30k to N80k. 7. SCUML TIN Tax Compliance N20k.`,
-    `8. AI Video Studio Full HD 1920x1080 15 minutes YouTube video with Female Indian Voice like this. N20k per video. 9. Website Development Full Control plus Live Chat Bot 24/7 Admin Panel. N100k to N500k.`,
-    `Why choose Zenova? We are registered BN 9701468 RC 9810296. Trusted by 500 plus clients globally. 24/7 Altra AI support. Auto invoice with BN RC stamp. Client portal for bot deployment Facebook WhatsApp Instagram LinkedIn Website.`,
-    `Contact CEO Ruby Garg Plus 2349067862223. Website krishnyanshzenovapeaks.com. Visit Register page for global service, Career for freelancer, Client Portal for bot.`,
-    `This video is generated from your website's AI Studio. Full HD 1920x1080 ready for YouTube channel. This is minimum 15 minutes long as you requested. Thank you for choosing Zenova Peak Tech Hub.`
-  ].join(" ").repeat(4); // Repeat to make 15 min speech (~2250 words)
-}
+document.getElementById('videoPhotosGENERIC').addEventListener('change', function(e){
+  uploadedImgsG=[]; let prev=document.getElementById('photoPreviewGENERIC'); prev.innerHTML='';
+  for(let f of e.target.files){ let u=URL.createObjectURL(f); uploadedImgsG.push(u); prev.innerHTML+=`<img src="${u}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:2px solid #FDB913">`; }
+});
 
-let gen15Blob=null;
-let indianVoice=null;
-
-function loadIndianVoice(){
-  let voices=speechSynthesis.getVoices();
-  indianVoice = voices.find(v=>v.lang==='en-IN' && v.name.toLowerCase().includes('female')) || voices.find(v=>v.lang==='en-IN') || voices.find(v=>v.name.includes('India')) || voices.find(v=>v.name.includes('Female')) || voices[0];
-}
-speechSynthesis.onvoiceschanged=loadIndianVoice; loadIndianVoice();
-
-async function generate15MinVideo(){
-  let prompt=document.getElementById('videoPrompt15').value.trim();
-  if(!prompt) return alert('Prompt likho my dear - jaise: Create 15min video for Zenova 9 services');
-  let duration=900; // MINIMUM 15 MIN = 900 SECONDS - Kam nahi hoga!
-  let status=document.getElementById('video15Status');
-  let progress=document.getElementById('video15Progress');
-  let canvas=document.getElementById('video15Canvas');
-  let ctx=canvas.getContext('2d');
-  let btn=document.getElementById('gen15Btn');
-  let preview=document.getElementById('preview15Video');
-  let dl=document.getElementById('download15Video');
-
-  btn.disabled=true; btn.innerText='⏳ RECORDING 15 MIN - PLEASE KEEP TAB OPEN - '+duration+' SECONDS...';
-  canvas.style.display='block'; preview.style.display='none'; dl.style.display='none';
-  progress.style.width='0%';
-
-  let fullScript=get15MinScript(prompt);
-  let scenes=[
-    {title:'ZENOVA PEAK TECH HUB', sub:'Est.2026 | BN 9701468 | RC 9810296 | Founder Ruby Garg', color:'#FDB913'},
-    {title:'9 GLOBAL SERVICES', sub:'Business Consultancy | Altra AI | GBP Maps | Branding | SMEDAN | CAC | SCUML/TIN | AI Video | Website Dev', color:'#fff'},
-    {title:'1. BUSINESS CONSULTANCY', sub:'Starter $99 | Premium $199 | Pro $499 | Global Strategy', color:'#FDB913'},
-    {title:'2. ALTRA AI AUTOMATION', sub:'Facebook | WhatsApp | Instagram | LinkedIn | Website Bot 24/7 like me 🤖', color:'#fff'},
-    {title:'3. GBP WITH MAPS - N15K GLOBAL', sub:'Google Business Profile Ranking + Reviews + Posts', color:'#FDB913'},
-    {title:'4. BRANDING PACK - N25K', sub:'Logo + Flyer + Letterhead + Business Card + Full Kit', color:'#fff'},
-    {title:'5. SMEDAN & 6. CAC - N12K-80K', sub:'SMEDAN N12k | CAC BN N30k LTD N80k | Nigeria', color:'#FDB913'},
-    {title:'7. SCUML/TIN - N20K', sub:'Tax Compliance + SCUML Certificate + TIN', color:'#fff'},
-    {title:'8. AI VIDEO STUDIO - N20K/VIDEO', sub:'Full HD 1920x1080 | 15 Min YouTube | Female Indian Voice 🇮🇳', color:'#FDB913'},
-    {title:'9. WEBSITE DEV + LIVE CHAT', sub:'N100k-500k | Full Control Admin Panel | Gallery + Forms + Bots', color:'#fff'}
-  ];
-
-  // Start TTS - Female Indian Voice for 15 min
+async function loadGalleryGeneric(){
+  let list=document.getElementById('galleryListGENERIC'); list.innerHTML='Loading...';
   try{
-    speechSynthesis.cancel();
-    let utter=new SpeechSynthesisUtterance(fullScript);
-    if(indianVoice) utter.voice=indianVoice;
-    utter.lang='en-IN'; utter.rate=0.9; utter.pitch=1.05; utter.volume=1;
-    speechSynthesis.speak(utter);
-    status.innerText='🔊 Female Indian Voice started - 15 min script playing... | 🎬 Recording Full HD 1920x1080...';
-  }catch(e){ status.innerText='🎬 Recording Full HD 1920x1080... (Voice: browser may need permission)'; }
+    if(!sbG || SB_KEY_G==='PASTE_YOUR_ANON_KEY_HERE'){ list.innerHTML='Add anon key - zenova_gallery table'; return; }
+    let {data} = await sbG.from('zenova_gallery').select('*').limit(20);
+    list.innerHTML=''; data.forEach(r=>{ let u=r.image_url||r.url; if(u) list.innerHTML+=`<img src="${u}" onclick="galleryImgsG.push('${u}');this.style.border='2px solid #25D366'" style="width:55px;height:55px;object-fit:cover;border-radius:8px;border:2px solid #333;cursor:pointer">`; });
+  }catch(err){ list.innerHTML=err.message; }
+}
 
-  // Canvas recording - 15 min real time
+function loadImgG(url){ return new Promise(res=>{ let i=new Image(); i.crossOrigin='anonymous'; i.onload=()=>res(i); i.onerror=()=>res(null); i.src=url; }); }
+
+function getGenericChapters(topic){
+  topic=topic.trim();
+  return [
+    {title:`Introduction to ${topic}`, time:0, content:`Welcome to today's class on ${topic}. I am your instructor. In this minimum 15 minutes video, we will cover everything you need to know about ${topic} in simple language for your YouTube learning.`},
+    {title:`What is ${topic}?`, time:150, content:`First, let us understand what is ${topic}. ${topic} is very important for students and professionals. We will explain definition, meaning, and why it matters in real life with simple examples.`},
+    {title:`Key Points of ${topic}`, time:300, content:`Now key points of ${topic}. Point 1: Basics. Point 2: Important features. Point 3: How it works. Point 4: Real life example. Point 5: Common mistakes to avoid. This will make ${topic} very easy.`},
+    {title:`Step by Step - ${topic}`, time:450, content:`Let us learn ${topic} step by step. Step 1: Start with basics. Step 2: Practice with example. Step 3: Apply in real project. Step 4: Test your understanding. Step 5: Advanced tips for ${topic}. Follow these steps for best results.`},
+    {title:`Examples & Practice - ${topic}`, time:600, content:`Let me show you live example of ${topic}. Example 1: Simple example. Example 2: Intermediate. Example 3: Advanced project. Practice these examples after class. Pause video and try yourself for ${topic}.`},
+    {title:`Conclusion - ${topic} - Next Class`, time:750, content:`Conclusion of today's class on ${topic}. We learned definition, key points, steps, and examples of ${topic}. In next class we will learn advanced ${topic}. Like, share, subscribe for more YouTube classes. Thank you for watching ${topic} class!`}
+  ];
+}
+
+async function generateGENERIC15MinVideo(){
+  let topic=document.getElementById('videoPromptGENERIC').value.trim();
+  if(!topic) return alert('ANY TOPIC likho my dear - Ex: Photosynthesis, Python, CAC registration');
+  let bg=document.getElementById('videoBgGENERIC').value;
+  let style=document.getElementById('classStyle').value;
+  let includeBrand=document.getElementById('includeZenovaBrand').checked;
+  let includeVoice=document.getElementById('includeVoice').checked;
+  let usePiP=document.getElementById('useHumanPiP').checked;
+  let duration=900;
+  let status=document.getElementById('videoGENERICStatus');
+  let progress=document.getElementById('videoGENERICProgress');
+  let canvas=document.getElementById('videoGENERICCanvas');
+  let ctx=canvas.getContext('2d');
+  let btn=document.getElementById('genGENERICBtn');
+  let preview=document.getElementById('previewGENERICVideo');
+  let dl=document.getElementById('downloadGENERICVideo');
+
+  let allImgs=[...uploadedImgsG,...galleryImgsG];
+  let loaded=[]; for(let u of allImgs){ let im=await loadImgG(u); if(im) loaded.push(im); }
+
+  btn.disabled=true; btn.innerText='⏳ RECORDING 15MIN GENERIC CLASS - '+topic.substring(0,30)+'... KEEP TAB OPEN';
+  preview.style.display='none'; dl.style.display='none'; progress.style.width='0%';
+  let chapters=getGenericChapters(topic);
+  let fullScript=chapters.map(c=>c.title+'. '+c.content).join(' ').repeat(2);
+
+  if(includeVoice){
+    try{ speechSynthesis.cancel(); let v=speechSynthesis.getVoices().find(x=>x.lang==='en-IN')||speechSynthesis.getVoices()[0];
+      let ut=new SpeechSynthesisUtterance(fullScript); if(v) ut.voice=v; ut.lang='en-IN'; ut.rate=0.88; ut.pitch=1.05; speechSynthesis.speak(ut);
+      status.innerText='🔊 Female Indian Voice - Teaching '+topic+' - 15min narration started...';
+    }catch(e){}
+  }
+
   let stream=canvas.captureStream(30);
-  let recorder=new MediaRecorder(stream, {mimeType:'video/webm;codecs=vp9', videoBitsPerSecond:2500000});
-  let chunks=[];
-  recorder.ondataavailable=e=>{ if(e.data.size>0) chunks.push(e.data); };
-  recorder.onstop=async()=>{
-    gen15Blob=new Blob(chunks,{type:'video/webm'});
-    let url=URL.createObjectURL(gen15Blob);
+  let recorder=new MediaRecorder(stream, {mimeType:'video/webm;codecs=vp9', videoBitsPerSecond:3000000});
+  let chunks=[]; recorder.ondataavailable=e=>{ if(e.data.size>0) chunks.push(e.data); };
+  recorder.onstop=()=>{
+    let blob=new Blob(chunks,{type:'video/webm'});
+    let url=URL.createObjectURL(blob);
     preview.src=url; preview.style.display='block';
-    dl.href=url; dl.download='ZENOVA_15MIN_FullHD_'+Date.now()+'_For_YouTube.webm'; dl.style.display='block';
-    status.innerText='✅ DONE! Minimum 15 MIN Full HD video ready! File size: '+(gen15Blob.size/1024/1024).toFixed(1)+' MB - Download and upload to YouTube channel!';
-    progress.style.width='100%';
-    btn.disabled=false; btn.innerText='🎬 GENERATE MINIMUM 15 MIN FULL HD VIDEO + FEMALE INDIAN VOICE 🇮🇳';
+    dl.href=url; dl.download='YOUTUBE_CLASS_'+topic.replace(/\s+/g,'_').substring(0,30)+'_15MIN_'+Date.now()+'.webm'; dl.style.display='block';
+    status.innerText='✅ DONE! 15MIN GENERIC CLASS VIDEO on "'+topic+'" ready! Size: '+(blob.size/1024/1024).toFixed(1)+'MB - Upload to YouTube Classes!';
+    progress.style.width='100%'; btn.disabled=false; btn.innerText='🎓 GENERATE 15MIN GENERIC VIDEO - ANY TOPIC - FOR YOUTUBE CLASSES + HUMAN + BG + VOICE 🇮🇳';
     speechSynthesis.cancel();
-    // Save to Supabase aiVideos bucket
-    try{
-      if(sb15 && SB_KEY15!=='PASTE_YOUR_ANON_KEY_HERE'){
-        status.innerText+=' | Saving to Supabase aiVideos...';
-        await sb15.storage.from('aiVideos').upload('zenova_15min_'+Date.now()+'.webm', gen15Blob);
-        status.innerText+=' | Saved to Supabase ✅';
-      }
-    }catch(e){ console.log('Supabase save:', e.message); }
   };
-
   recorder.start(200);
   let start=Date.now();
   let timer=setInterval(()=>{
     let elapsed=Math.floor((Date.now()-start)/1000);
     if(elapsed>=duration){ clearInterval(timer); recorder.stop(); return; }
-    let sceneIdx=Math.floor((elapsed / duration) * scenes.length);
-    let scene=scenes[Math.min(sceneIdx, scenes.length-1)];
-    let pct=Math.round((elapsed/duration)*100);
-    progress.style.width=pct+'%';
+    let pct=Math.round((elapsed/duration)*100); progress.style.width=pct+'%';
+    let chap=chapters.find((c,i)=> elapsed>=c.time && (i===chapters.length-1 || elapsed<chapters[i+1].time)) || chapters[0];
+    let imgIdx= loaded.length? Math.floor((elapsed/25)%loaded.length) : -1;
+    let curImg= imgIdx>=0? loaded[imgIdx] : null;
 
-    // Draw Full HD frame
-    ctx.fillStyle='#080808'; ctx.fillRect(0,0,1920,1080);
-    // Top gold line
-    ctx.fillStyle='#FDB913'; ctx.fillRect(0,0,1920,14);
-    // Company header
-    ctx.fillStyle='#FDB913'; ctx.font='bold 72px Arial'; ctx.fillText('KRISHNYANSH ZENOVA PEAKS LTD', 80, 150);
-    ctx.fillStyle='#aaa'; ctx.font='30px Arial'; ctx.fillText('Est.2026 | BN 9701468 | RC 9810296 | Founder: Ruby Garg | +2349067862223 | krishnyanshzenovapeaks.com', 80, 210);
-    // Scene box
-    ctx.fillStyle='rgba(253,185,19,0.1)'; ctx.fillRect(80,280,1760,480);
-    ctx.strokeStyle='#FDB913'; ctx.lineWidth=4; ctx.strokeRect(80,280,1760,480);
-    ctx.fillStyle=scene.color; ctx.font='bold 84px Arial'; ctx.fillText(scene.title, 120, 400);
-    ctx.fillStyle='#fff'; ctx.font='38px Arial';
-    // Wrap text
-    let words=scene.sub.split(' '); let line=''; let y=480;
-    for(let n=0;n<words.length;n++){ let test=line+words[n]+' '; if(ctx.measureText(test).width>1600 && n>0){ ctx.fillText(line,120,y); line=words[n]+' '; y+=55; } else line=test; } ctx.fillText(line,120,y);
-    // Prompt at bottom
-    ctx.fillStyle='#888'; ctx.font='26px Arial'; ctx.fillText('Prompt: '+prompt.substring(0,100), 80, 850);
-    // Progress & timer - 15 MIN
-    ctx.fillStyle='#333'; ctx.fillRect(80,1000,1760,24);
-    ctx.fillStyle='#FDB913'; ctx.fillRect(80,1000,1760*(elapsed/duration),24);
-    ctx.fillStyle='#fff'; ctx.font='bold 36px Arial'; ctx.fillText('MINIMUM 15 MIN VIDEO - '+elapsed+'s / 900s - '+pct+'% - Full HD 1920x1080 - Female Indian Voice 🇮🇳 - For YouTube', 80, 970);
+    // ===== BACKGROUND - FOR CLASSES - REAL GRAPHICS =====
+    if(bg==='whiteboard'){
+      ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,1920,1080);
+      ctx.strokeStyle='#e0e0e0'; for(let i=0;i<1920;i+=90){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); } for(let j=0;j<1080;j+=90){ ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(1920,j); ctx.stroke(); }
+      ctx.fillStyle='#f5f5f5'; ctx.fillRect(0,0,1920,120);
+    }else if(bg==='blackboard'){
+      ctx.fillStyle='#1a2a1a'; ctx.fillRect(0,0,1920,1080);
+      ctx.fillStyle='rgba(255,255,255,0.04)'; for(let i=0;i<200;i++){ ctx.fillRect(Math.random()*1920,Math.random()*1080,2,2); }
+    }else if(bg==='classroom'){
+      ctx.fillStyle='#e3f2fd'; ctx.fillRect(0,0,1920,1080); ctx.fillStyle='#90caf9'; ctx.fillRect(0,0,1920,16);
+    }else if(bg==='corporate_gold'){
+      let g=ctx.createLinearGradient(0,0,1920,1080); g.addColorStop(0,'#1a1200'); g.addColorStop(1,'#3d2a00'); ctx.fillStyle=g; ctx.fillRect(0,0,1920,1080);
+    }else if(bg==='google_maps'){
+      ctx.fillStyle='#e8f0fe'; ctx.fillRect(0,0,1920,1080); ctx.fillStyle='#fff'; ctx.fillRect(80,80,1760,920); ctx.fillStyle='#FDB913'; ctx.beginPath(); ctx.arc(960,540,30,0,Math.PI*2); ctx.fill();
+    }else{
+      ctx.fillStyle='#050508'; ctx.fillRect(0,0,1920,1080);
+    }
 
-    status.innerText='🎬 Recording MINIMUM 15 MIN: '+elapsed+'s / 900s ('+pct+'%) | Full HD 1920x1080 | Female Indian Voice playing... Keep tab open!';
+    // Human photo background with opacity
+    if(curImg){ let sc=1+(elapsed%25)/100; let r=Math.max(1920/curImg.width,1080/curImg.height)*sc; ctx.save(); ctx.globalAlpha=0.28; ctx.drawImage(curImg,(1920-curImg.width*r)/2,(1080-curImg.height*r)/2,curImg.width*r,curImg.height*r); ctx.restore(); }
+
+    // Top bar
+    if(includeBrand){ ctx.fillStyle='#FDB913'; ctx.fillRect(0,0,1920,14); ctx.fillStyle='#FDB913'; ctx.font='bold 58px Arial'; ctx.fillText('KRISHNYANSH ZENOVA PEAKS LTD | BN 9701468 RC 9810296', 70, 90); }
+    else{ ctx.fillStyle='#FDB913'; ctx.fillRect(0,0,1920,10); ctx.fillStyle='#222'; if(bg==='whiteboard'||bg==='classroom') ctx.fillStyle='#111'; else ctx.fillStyle='#fff'; ctx.font='bold 62px Arial'; ctx.fillText(chap.title.substring(0,55).toUpperCase(), 70, 110); }
+
+    // Main teaching board
+    ctx.fillStyle= (bg==='whiteboard'||bg==='classroom')? 'rgba(255,255,255,0.96)' : 'rgba(0,0,0,0.78)';
+    ctx.fillRect(70,150,1240,700); ctx.strokeStyle='#FDB913'; ctx.lineWidth=4; ctx.strokeRect(70,150,1240,700);
+    ctx.fillStyle= (bg==='whiteboard'||bg==='classroom')? '#111' : '#fff';
+    ctx.font='bold 48px Arial'; ctx.fillText(chap.title, 95, 220);
+    ctx.font='30px Arial';
+    let words=chap.content.split(' '); let line=''; let y=280;
+    for(let w of words){ let t=line+w+' '; if(ctx.measureText(t).width>1150){ ctx.fillText(line,95,y); line=w+' '; y+=42; if(y>750) break; }else line=t; } if(line) ctx.fillText(line,95,y);
+
+    // Topic badge
+    ctx.fillStyle='#FDB913'; ctx.fillRect(70,860,1240,60);
+    ctx.fillStyle='#000'; ctx.font='bold 32px Arial'; ctx.fillText('TOPIC: '+topic.substring(0,60)+' | Class: '+style+' | '+elapsed+'s / 900s', 85, 898);
+
+    // Human Presence PiP
+    if(curImg && usePiP){
+      let pw=380, ph=280, px=1920-pw-70, py=170;
+      ctx.save(); ctx.beginPath(); ctx.arc(px+pw/2, py+ph/2, pw/2, 0, Math.PI*2); ctx.clip(); ctx.drawImage(curImg, px, py, pw, ph); ctx.restore();
+      ctx.strokeStyle='#FDB913'; ctx.lineWidth=5; ctx.beginPath(); ctx.arc(px+pw/2, py+ph/2, pw/2, 0, Math.PI*2); ctx.stroke();
+      ctx.fillStyle='#000'; ctx.fillRect(px, py+ph+10, pw, 36); ctx.fillStyle='#FDB913'; ctx.font='bold 20px Arial'; ctx.fillText('Instructor Presence', px+10, py+ph+32);
+    }
+
+    // Progress
+    ctx.fillStyle='#222'; ctx.fillRect(70,1000,1780,22); ctx.fillStyle='#FDB913'; ctx.fillRect(70,1000,1780*(elapsed/duration),22);
+    ctx.fillStyle=(bg==='whiteboard'||bg==='classroom')?'#000':'#fff'; ctx.font='bold 28px Arial'; ctx.fillText('YOUTUBE CLASS - '+topic.substring(0,30)+' - '+elapsed+'s / 900s - '+pct+'% - 15MIN MIN - For Students', 70, 975);
+    status.innerText='🎓 Teaching '+topic+' - Chapter: '+chap.title+' - '+elapsed+'s/900s '+pct+'% | Photos: '+loaded.length+' | BG: '+bg+' | Generic Class Video';
   }, 1000/30);
+}
+</script>
 }
 </script>
 </div>
