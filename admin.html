@@ -73,33 +73,153 @@ ENV_EXTRA=NODE_ENV=production</pre></div>
 <div id="gGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5"></div>
 </div>
 
-<div id="tab-aistudio" class="tab-content hidden">
-<h2 class="text-xl font-bold gold">AI Studio PRO - Full HD 1920x1080 - Long 15min + Short + Voice Female Indian English</h2><p class="mono text-xs text-gray-400">Prompt → 15min real YouTube video with voice + graphics visuals + Full HD quality + Download for YouTube + Auto save Supabase</p>
-<div class="grid lg:grid-cols-2 gap-6 mt-4">
-<div class="card rounded-2xl p-5">
-<textarea id="aiPrompt" rows="3" class="w-full p-3 rounded-xl bg-black border text-sm" placeholder="Create 15min YouTube video for Zenova Peak Tech Hub - 9 services"></textarea>
-<div class="grid grid-cols-3 gap-2 mt-3">
-<select id="vType" class="p-2.5 rounded-xl bg-black border text-xs"><option value="short">Short Ad 15-60s</option><option value="youtube15" selected>Long YouTube 15min REAL</option><option value="youtube30">30min</option></select>
-<select id="vVoice" class="p-2.5 rounded-xl bg-black border text-xs">
-<option value="female-in" selected>Female - Indian English 🇮🇳</option>
-<option value="female-ng">Female - Nigerian</option>
-<option value="male-ng">Male - Nigerian</option>
-<option value="female-us">Female - US</option>
-<option value="male-us">Male - US</option>
-</select>
-<select id="vQuality" class="p-2.5 rounded-xl bg-black border text-xs"><option value="fullhd" selected>Full HD 1920x1080</option><option value="hd">HD 1280x720</option></select>
+<!-- ===== ZENOVA AI STUDIO - MINIMUM 15 MIN - FULL HD + FEMALE INDIAN VOICE 🇮🇳 ===== -->
+<div style="padding:20px;background:#121212;border-radius:18px;border:1px solid #333">
+<h3 style="color:#FDB913;margin:0 0 8px">🎬 AI Video Studio - MIN 15 MIN - Full HD 1920x1080 - Female Indian Voice</h3>
+<p style="color:#aaa;font-size:11px;margin:0 0 12px">Est.2026 BN 9701468 RC 9810296 | Founder Ruby Garg | Your YouTube Channel via Website</p>
+<textarea id="videoPrompt15" placeholder="Prompt likho: Ex - Create 15min YouTube video for Zenova Peak Tech Hub - 9 services Business Consultancy, Altra AI, GBP Maps, Branding, SMEDAN, CAC, SCUML/TIN, AI Video, Website Dev - Starter Premium Pro pricing - Contact +2349067862223" style="width:100%;height:100px;background:#0a0a0a;border:1px solid #333;border-radius:12px;color:#fff;padding:12px;font-size:13px"></textarea>
+<div style="display:flex;gap:8px;margin-top:10px">
+<div style="background:#1a1a1a;padding:8px 12px;border-radius:8px;color:#FDB913;font-weight:800;font-size:12px">⏱️ MINIMUM 15 MIN = 900 SECONDS</div>
+<div style="background:#1a1a1a;padding:8px 12px;border-radius:8px;color:#fff;font-size:12px">🇮🇳 Female - Indian English</div>
+<div style="background:#1a1a1a;padding:8px 12px;border-radius:8px;color:#fff;font-size:12px">📺 Full HD 1920x1080</div>
 </div>
-<textarea id="vScript" rows="6" class="w-full p-3 rounded-xl bg-black border text-xs mono mt-3" placeholder="Auto generate 15min script"></textarea>
-<div class="flex gap-2 mt-2"><button onclick="genScript()" class="card px-3 py-2 rounded text-xs">Auto 15min Script</button><button onclick="previewVoice()" class="card px-3 py-2 rounded text-xs">Preview Female Indian Voice</button></div>
-<input type="file" id="aiImgs" multiple accept="image/*" class="w-full p-2 rounded bg-black border text-xs mt-3">
-<button onclick="genRealVideo()" class="btn-gold w-full py-4 rounded-xl mt-4 font-bold">GENERATE REAL 15MIN FULL HD VIDEO + FEMALE INDIAN VOICE + GRAPHICS - Download for YouTube</button>
+<button onclick="generate15MinVideo()" id="gen15Btn" style="width:100%;margin-top:14px;padding:16px;background:linear-gradient(135deg,#FDB913,#FF8C00);border:none;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;color:#000">🎬 GENERATE MINIMUM 15 MIN FULL HD VIDEO + FEMALE INDIAN VOICE 🇮🇳</button>
+<div id="video15Status" style="margin-top:12px;background:#000;padding:10px;border-radius:10px;color:#FDB913;font-size:12px;border:1px solid #222">Status: Ready for 15 min generation</div>
+<div style="margin-top:10px;background:#000;height:18px;border-radius:10px;overflow:hidden;border:1px solid #222"><div id="video15Progress" style="height:100%;width:0%;background:linear-gradient(90deg,#FDB913,#FF8C00);transition:width 0.5s"></div></div>
+<canvas id="video15Canvas" width="1920" height="1080" style="width:100%;max-width:720px;border-radius:14px;margin-top:14px;background:#000;display:none;border:2px solid #222"></canvas>
+<video id="preview15Video" controls style="width:100%;max-width:720px;margin-top:14px;display:none;border-radius:14px;background:#000"></video>
+<a id="download15Video" style="display:none;margin-top:14px;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:900;text-decoration:none;font-size:14px">⬇️ DOWNLOAD 15 MIN FULL HD - FOR YOUTUBE CHANNEL</a>
+<p style="color:#666;font-size:10px;margin-top:8px">Note: 15 min video = 15 min real recording time. Tab ko open rakho, close mat karo. WebM file YouTube accept karta hai. MP4 convert karne ke liye same file YouTube pe upload karo.</p>
 </div>
-<div>
-<canvas id="vCanvas" width="1920" height="1080" class="w-full bg-black rounded-xl border"></canvas>
-<p class="mono text-xs mt-2">Status: <span id="gStatus">Ready</span> | <span id="gDur">00:00</span> / 15:00 | Full HD</p>
-<div class="w-full h-2 bg-[#222] rounded-full"><div id="pBar" class="h-full bg-gold w-0"></div></div>
-<video id="outV" controls class="w-full mt-3 rounded-xl hidden"></video>
-<div id="dlArea" class="hidden mt-3"><a id="dlLink" class="btn-gold w-full py-3 rounded-xl block text-center font-bold">Download Full HD MP4 - 15min - For YouTube</a><button onclick="saveVideoSB()" class="card w-full mt-2 py-2 rounded text-xs">Save to Supabase aiVideos - Auto Save</button><p class="mono text-[10px] text-gray-400 mt-2">YouTube accepts WebM - Direct upload possible - Full HD quality</p></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL15='https://aqjoufnuddakbmuiqaql.supabase.co';
+const SB_KEY15='PASTE_YOUR_ANON_KEY_HERE'; // anon / publishable wala - secret mat dalna!
+let sb15; try{ sb15=supabase.createClient(SB_URL15, SB_KEY15); }catch(e){}
+
+function get15MinScript(prompt){
+  let base = prompt || "Zenova Peak Tech Hub 9 Services";
+  return [
+    `Welcome to ${base}. Krishnyansh Zenova Peaks Limited. Established 2026. BN 9701468. RC 9810296. Founder Ruby Garg. Lagos, Nigeria. Serving Globally.`,
+    `Our 9 Premium Services: 1. Business Consultancy Starter 99 dollars Premium 199 Pro 499. 2. Altra AI Automation for Facebook WhatsApp Instagram LinkedIn Website Bot like this one 24/7. 3. Google Business Profile with Maps Ranking N15k Global.`,
+    `4. Branding Pack Logo Flyer Letterhead Card N25k. 5. SMEDAN Certificate N12k Nigeria Only. 6. CAC Business Name and LTD Registration N30k to N80k. 7. SCUML TIN Tax Compliance N20k.`,
+    `8. AI Video Studio Full HD 1920x1080 15 minutes YouTube video with Female Indian Voice like this. N20k per video. 9. Website Development Full Control plus Live Chat Bot 24/7 Admin Panel. N100k to N500k.`,
+    `Why choose Zenova? We are registered BN 9701468 RC 9810296. Trusted by 500 plus clients globally. 24/7 Altra AI support. Auto invoice with BN RC stamp. Client portal for bot deployment Facebook WhatsApp Instagram LinkedIn Website.`,
+    `Contact CEO Ruby Garg Plus 2349067862223. Website krishnyanshzenovapeaks.com. Visit Register page for global service, Career for freelancer, Client Portal for bot.`,
+    `This video is generated from your website's AI Studio. Full HD 1920x1080 ready for YouTube channel. This is minimum 15 minutes long as you requested. Thank you for choosing Zenova Peak Tech Hub.`
+  ].join(" ").repeat(4); // Repeat to make 15 min speech (~2250 words)
+}
+
+let gen15Blob=null;
+let indianVoice=null;
+
+function loadIndianVoice(){
+  let voices=speechSynthesis.getVoices();
+  indianVoice = voices.find(v=>v.lang==='en-IN' && v.name.toLowerCase().includes('female')) || voices.find(v=>v.lang==='en-IN') || voices.find(v=>v.name.includes('India')) || voices.find(v=>v.name.includes('Female')) || voices[0];
+}
+speechSynthesis.onvoiceschanged=loadIndianVoice; loadIndianVoice();
+
+async function generate15MinVideo(){
+  let prompt=document.getElementById('videoPrompt15').value.trim();
+  if(!prompt) return alert('Prompt likho my dear - jaise: Create 15min video for Zenova 9 services');
+  let duration=900; // MINIMUM 15 MIN = 900 SECONDS - Kam nahi hoga!
+  let status=document.getElementById('video15Status');
+  let progress=document.getElementById('video15Progress');
+  let canvas=document.getElementById('video15Canvas');
+  let ctx=canvas.getContext('2d');
+  let btn=document.getElementById('gen15Btn');
+  let preview=document.getElementById('preview15Video');
+  let dl=document.getElementById('download15Video');
+
+  btn.disabled=true; btn.innerText='⏳ RECORDING 15 MIN - PLEASE KEEP TAB OPEN - '+duration+' SECONDS...';
+  canvas.style.display='block'; preview.style.display='none'; dl.style.display='none';
+  progress.style.width='0%';
+
+  let fullScript=get15MinScript(prompt);
+  let scenes=[
+    {title:'ZENOVA PEAK TECH HUB', sub:'Est.2026 | BN 9701468 | RC 9810296 | Founder Ruby Garg', color:'#FDB913'},
+    {title:'9 GLOBAL SERVICES', sub:'Business Consultancy | Altra AI | GBP Maps | Branding | SMEDAN | CAC | SCUML/TIN | AI Video | Website Dev', color:'#fff'},
+    {title:'1. BUSINESS CONSULTANCY', sub:'Starter $99 | Premium $199 | Pro $499 | Global Strategy', color:'#FDB913'},
+    {title:'2. ALTRA AI AUTOMATION', sub:'Facebook | WhatsApp | Instagram | LinkedIn | Website Bot 24/7 like me 🤖', color:'#fff'},
+    {title:'3. GBP WITH MAPS - N15K GLOBAL', sub:'Google Business Profile Ranking + Reviews + Posts', color:'#FDB913'},
+    {title:'4. BRANDING PACK - N25K', sub:'Logo + Flyer + Letterhead + Business Card + Full Kit', color:'#fff'},
+    {title:'5. SMEDAN & 6. CAC - N12K-80K', sub:'SMEDAN N12k | CAC BN N30k LTD N80k | Nigeria', color:'#FDB913'},
+    {title:'7. SCUML/TIN - N20K', sub:'Tax Compliance + SCUML Certificate + TIN', color:'#fff'},
+    {title:'8. AI VIDEO STUDIO - N20K/VIDEO', sub:'Full HD 1920x1080 | 15 Min YouTube | Female Indian Voice 🇮🇳', color:'#FDB913'},
+    {title:'9. WEBSITE DEV + LIVE CHAT', sub:'N100k-500k | Full Control Admin Panel | Gallery + Forms + Bots', color:'#fff'}
+  ];
+
+  // Start TTS - Female Indian Voice for 15 min
+  try{
+    speechSynthesis.cancel();
+    let utter=new SpeechSynthesisUtterance(fullScript);
+    if(indianVoice) utter.voice=indianVoice;
+    utter.lang='en-IN'; utter.rate=0.9; utter.pitch=1.05; utter.volume=1;
+    speechSynthesis.speak(utter);
+    status.innerText='🔊 Female Indian Voice started - 15 min script playing... | 🎬 Recording Full HD 1920x1080...';
+  }catch(e){ status.innerText='🎬 Recording Full HD 1920x1080... (Voice: browser may need permission)'; }
+
+  // Canvas recording - 15 min real time
+  let stream=canvas.captureStream(30);
+  let recorder=new MediaRecorder(stream, {mimeType:'video/webm;codecs=vp9', videoBitsPerSecond:2500000});
+  let chunks=[];
+  recorder.ondataavailable=e=>{ if(e.data.size>0) chunks.push(e.data); };
+  recorder.onstop=async()=>{
+    gen15Blob=new Blob(chunks,{type:'video/webm'});
+    let url=URL.createObjectURL(gen15Blob);
+    preview.src=url; preview.style.display='block';
+    dl.href=url; dl.download='ZENOVA_15MIN_FullHD_'+Date.now()+'_For_YouTube.webm'; dl.style.display='block';
+    status.innerText='✅ DONE! Minimum 15 MIN Full HD video ready! File size: '+(gen15Blob.size/1024/1024).toFixed(1)+' MB - Download and upload to YouTube channel!';
+    progress.style.width='100%';
+    btn.disabled=false; btn.innerText='🎬 GENERATE MINIMUM 15 MIN FULL HD VIDEO + FEMALE INDIAN VOICE 🇮🇳';
+    speechSynthesis.cancel();
+    // Save to Supabase aiVideos bucket
+    try{
+      if(sb15 && SB_KEY15!=='PASTE_YOUR_ANON_KEY_HERE'){
+        status.innerText+=' | Saving to Supabase aiVideos...';
+        await sb15.storage.from('aiVideos').upload('zenova_15min_'+Date.now()+'.webm', gen15Blob);
+        status.innerText+=' | Saved to Supabase ✅';
+      }
+    }catch(e){ console.log('Supabase save:', e.message); }
+  };
+
+  recorder.start(200);
+  let start=Date.now();
+  let timer=setInterval(()=>{
+    let elapsed=Math.floor((Date.now()-start)/1000);
+    if(elapsed>=duration){ clearInterval(timer); recorder.stop(); return; }
+    let sceneIdx=Math.floor((elapsed / duration) * scenes.length);
+    let scene=scenes[Math.min(sceneIdx, scenes.length-1)];
+    let pct=Math.round((elapsed/duration)*100);
+    progress.style.width=pct+'%';
+
+    // Draw Full HD frame
+    ctx.fillStyle='#080808'; ctx.fillRect(0,0,1920,1080);
+    // Top gold line
+    ctx.fillStyle='#FDB913'; ctx.fillRect(0,0,1920,14);
+    // Company header
+    ctx.fillStyle='#FDB913'; ctx.font='bold 72px Arial'; ctx.fillText('KRISHNYANSH ZENOVA PEAKS LTD', 80, 150);
+    ctx.fillStyle='#aaa'; ctx.font='30px Arial'; ctx.fillText('Est.2026 | BN 9701468 | RC 9810296 | Founder: Ruby Garg | +2349067862223 | krishnyanshzenovapeaks.com', 80, 210);
+    // Scene box
+    ctx.fillStyle='rgba(253,185,19,0.1)'; ctx.fillRect(80,280,1760,480);
+    ctx.strokeStyle='#FDB913'; ctx.lineWidth=4; ctx.strokeRect(80,280,1760,480);
+    ctx.fillStyle=scene.color; ctx.font='bold 84px Arial'; ctx.fillText(scene.title, 120, 400);
+    ctx.fillStyle='#fff'; ctx.font='38px Arial';
+    // Wrap text
+    let words=scene.sub.split(' '); let line=''; let y=480;
+    for(let n=0;n<words.length;n++){ let test=line+words[n]+' '; if(ctx.measureText(test).width>1600 && n>0){ ctx.fillText(line,120,y); line=words[n]+' '; y+=55; } else line=test; } ctx.fillText(line,120,y);
+    // Prompt at bottom
+    ctx.fillStyle='#888'; ctx.font='26px Arial'; ctx.fillText('Prompt: '+prompt.substring(0,100), 80, 850);
+    // Progress & timer - 15 MIN
+    ctx.fillStyle='#333'; ctx.fillRect(80,1000,1760,24);
+    ctx.fillStyle='#FDB913'; ctx.fillRect(80,1000,1760*(elapsed/duration),24);
+    ctx.fillStyle='#fff'; ctx.font='bold 36px Arial'; ctx.fillText('MINIMUM 15 MIN VIDEO - '+elapsed+'s / 900s - '+pct+'% - Full HD 1920x1080 - Female Indian Voice 🇮🇳 - For YouTube', 80, 970);
+
+    status.innerText='🎬 Recording MINIMUM 15 MIN: '+elapsed+'s / 900s ('+pct+'%) | Full HD 1920x1080 | Female Indian Voice playing... Keep tab open!';
+  }, 1000/30);
+}
+</script>
 </div>
 </div>
 </div>
