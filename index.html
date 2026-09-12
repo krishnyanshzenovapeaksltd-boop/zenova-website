@@ -484,11 +484,13 @@ async function submitRegistration(e){
 
 <!-- ===== ULTRA MINIMAL BOT - NO SUPABASE - 100% OPEN HOGA ===== -->
 <style>
-#zenova-chat-btn{position:fixed!important;bottom:20px!important;right:20px!important;width:64px;height:64px;background:linear-gradient(135deg,#FDB913,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.4);z-index:2147483647!important;font-size:32px;border:3px solid #fff;user-select:none}
+<!-- ===== FINAL BOT - 100% OPEN + SMART REPLY - INDEX.HTML KE LIYE ===== -->
+<style>
+#zenova-chat-btn{position:fixed!important;bottom:20px!important;right:20px!important;width:64px;height:64px;background:linear-gradient(135deg,#FDB913,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.4);z-index:2147483647!important;font-size:32px;border:3px solid #fff}
 #zenova-chat-window{position:fixed!important;bottom:95px!important;right:20px!important;width:360px;max-width:90vw;height:480px;background:#121212;border:1px solid #333;border-radius:18px;display:none;flex-direction:column;z-index:2147483647!important;overflow:hidden}
-#zenova-header{background:#FDB913;color:#000;padding:12px 14px;font-weight:900;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+#zenova-header{background:#FDB913;color:#000;padding:12px 14px;font-weight:900;display:flex;justify-content:space-between;font-size:14px}
 #zenova-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#0a0a0a}
-.msg{padding:9px 13px;border-radius:14px;font-size:13px;max-width:80%;line-height:1.3}
+.msg{padding:9px 13px;border-radius:14px;font-size:13px;max-width:80%;line-height:1.4;white-space:pre-wrap}
 .msg.bot{background:#1e1e1e;color:#fff;align-self:flex-start;border:1px solid #2a2a2a}
 .msg.user{background:#FDB913;color:#000;align-self:flex-end;font-weight:600}
 </style>
@@ -496,29 +498,59 @@ async function submitRegistration(e){
 <div id="zenova-chat-btn" onclick="window.toggleZenovaChat()">🤖</div>
 <div id="zenova-chat-window">
   <div id="zenova-header">ZENOVA AI 24/7 <span onclick="window.toggleZenovaChat()" style="cursor:pointer;font-size:24px">×</span></div>
-  <div id="41 lines hidden"><div class="msg bot">Hello! 👋 I am Zenova AI Assistant 24/7<br>Est.2026 BN 9701468 RC 9810296<br>Founder Ruby Garg +2349067862223<br><br>How can I help? Tell me business name?</div></div>
-  <div style="display:flex;padding:8px;background:#1a1a1a;gap:6px"><input id="zenova-inp" placeholder="Type message..." style="flex:1;background:#0a0a0a;border:1px solid #333;border-radius:20px;padding:10px 14px;color:#fff;outline:none;font-size:13px" onkeydown="if(event.key==='Enter') window.sendZenovaMsg()"><button onclick="window.sendZenovaMsg()" style="background:#FDB913;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;font-weight:900">➤</button></div>
+  <div id="zenova-msgs"><div class="msg bot">Hello! 👋 I am Zenova AI 24/7
+Est.2026 BN 9701468 RC 9810296
+Founder Ruby Garg +2349067862223
+
+How can I help? Tell me business name + service?</div></div>
+  <div style="display:flex;padding:8px;background:#1a1a1a;gap:6px"><input id="zenova-inp" placeholder="Type CAC, SMEDAN, GBP, Video, Price..." style="flex:1;background:#0a0a0a;border:1px solid #333;border-radius:20px;padding:10px 14px;color:#fff;outline:none;font-size:13px" onkeydown="if(event.key==='Enter') window.sendZenovaMsg()"><button onclick="window.sendZenovaMsg()" style="background:#FDB913;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;font-weight:900">➤</button></div>
 </div>
 
 <script>
-// ===== BOT FUNCTIONS - NO SUPABASE DEPENDENCY - DEFINED FIRST =====
+// ===== BOT OPEN - NO SUPABASE - 100% GUARANTEED =====
 window.toggleZenovaChat = function(){
-  var w = document.getElementById('zenova-chat-window');
+  var w=document.getElementById('zenova-chat-window');
   if(!w) return;
-  if(w.style.display==='flex'){ w.style.display='none'; }
-  else { w.style.display='flex'; }
-  console.log('Bot toggled:', w.style.display);
+  w.style.display = (w.style.display==='flex') ? 'none' : 'flex';
 };
+
+// ===== SMART KNOWLEDGE - 9 SERVICES =====
+window.ZENOVA_KNOWLEDGE = {
+  company: "KRISHNYANSH ZENOVA PEAKS LTD - Est.2026 - BN 9701468 - RC 9810296",
+  founder: "Ruby Garg - CEO - +2349067862223 - Lagos",
+  s1: "Business Consultancy Starter $99 Premium $199 Pro $499",
+  s2: "Altra AI Automation FB WA Insta LinkedIn Website Bot 24/7 - $149-$599",
+  s3: "GBP with Maps N15k Global - Google Ranking",
+  s4: "Branding Pack N25k - Logo Flyer Letterhead Card",
+  s5: "SMEDAN N12k - Nigeria Only",
+  s6: "CAC BN N30k LTD N80k - 5-7 days",
+  s7: "SCUML/TIN N20k - Compliance",
+  s8: "AI Video Studio Full HD 15min Female Indian Voice N20k/video",
+  s9: "Website Dev N100k-500k + Live Chat Bot + Admin Full Control"
+};
+
+window.getSmartReply = function(q){
+  q=q.toLowerCase();
+  if(q.includes('cac')) return "CAC Registration:\n"+ZENOVA_KNOWLEDGE.s6+"\nDocs: Business Name + Address + ID + Phone\nTime: 5-7 days\nBN 9701468 RC 9810296\nTell me Business Name + BN/LTD?";
+  if(q.includes('smedan')) return "SMEDAN Certificate:\n"+ZENOVA_KNOWLEDGE.s5+"\nFor loan + grant\nNeed: CAC + ID\nCEO Ruby +2349067862223";
+  if(q.includes('gbp')||q.includes('map')||q.includes('google')) return "GBP with Maps N35k Global:\n"+ZENOVA_KNOWLEDGE.s3+"\nWe rank on Google Map + Reviews\nShare Map link?";
+  if(q.includes('video')||q.includes('youtube')) return "AI Video Studio Full HD:\n"+ZENOVA_KNOWLEDGE.s8+"\nPrompt se 15min video + Female Indian Voice 🇮🇳\nAdmin → AI Studio → Generate → Download → YouTube";
+  if(q.includes('price')||q.includes('cost')) return "9 Services Pricing:\n1. "+ZENOVA_KNOWLEDGE.s1+"\n2. "+ZENOVA_KNOWLEDGE.s2+"\n3. "+ZENOVA_KNOWLEDGE.s3+"\n4. "+ZENOVA_KNOWLEDGE.s4+"\n5. "+ZENOVA_KNOWLEDGE.s5+"\n6. "+ZENOVA_KNOWLEDGE.s6+"\n7. "+ZENOVA_KNOWLEDGE.s7+"\n8. "+ZENOVA_KNOWLEDGE.s8+"\n9. "+ZENOVA_KNOWLEDGE.s9+"\nTell service + tier - I will invoice with BN RC stamp!";
+  if(q.includes('ruby')||q.includes('founder')||q.includes('ceo')) return ZENOVA_KNOWLEDGE.company+"\n"+ZENOVA_KNOWLEDGE.founder+"\nWebsite: krishnyanshzenovapeaks.com\nGlobal - CAC/SMEDAN Nigeria Only";
+  return "Thanks for: \""+q+"\"\n\n"+ZENOVA_KNOWLEDGE.company+"\nFounder: "+ZENOVA_KNOWLEDGE.founder+"\n\n9 Services:\n1 Consultancy\n2 Altra AI 24/7\n3 GBP N15k\n4 Branding N25k\n5 SMEDAN N12k\n6 CAC N30k-80k\n7 SCUML/TIN N20k\n8 AI Video 15min Full HD 🇮🇳\n9 Website + Bot\n\nTell me: Business Name + Service? I will quote + invoice + deploy bot!";
+};
+
 window.sendZenovaMsg = function(){
-  var inp = document.getElementById('zenova-inp');
-  var c = document.getElementById('zenova-msgs');
-  var t = inp.value.trim(); if(!t) return;
-  c.innerHTML += '<div class="msg user">'+t+'</div>';
-  inp.value='';
-  setTimeout(function(){ c.innerHTML += '<div class="msg bot">Thanks for "'+t+'" - For quote contact CEO Ruby +2349067862223 - BN 9701468 RC 9810296<br>9 Services: Consultancy, Altra AI, GBP, Branding, SMEDAN, CAC, SCUML/TIN, AI Video, Website Dev</div>'; c.scrollTop=c.scrollHeight; },400);
+  var inp=document.getElementById('zenova-inp'); var c=document.getElementById('zenova-msgs');
+  var t=inp.value.trim(); if(!t) return;
+  c.innerHTML+='<div class="msg user">'+t+'</div>'; inp.value='';
+  setTimeout(function(){
+    c.innerHTML+='<div class="msg bot">'+window.getSmartReply(t)+'</div>';
+    c.scrollTop=c.scrollHeight;
+  },400);
   c.scrollTop=c.scrollHeight;
 };
-console.log('Zenova bot loaded ✅ toggleZenovaChat ready');
+console.log('Zenova Smart Bot Loaded ✅');
 </script>
 <!-- ===== BOT END ===== -->
 </body>
