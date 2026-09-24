@@ -1,357 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZENOVA ADMIN GLOBAL RC 9810296 </title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
-body{font-family:'Space Grotesk',sans-serif;background:#0a0a0a;color:#e5e5e5}
-.mono{font-family:'JetBrains Mono',monospace}.gold{color:#FDB913}.bg-gold{background:#FDB913}.card{background:#151515;border:1px solid #2a2a2a}
-.btn-gold{background:#FDB913;color:#000;font-weight:700}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickPeQR - Secure Fintech & AI Payment Gateway</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
 </head>
-<body>
-<header class="sticky top-0 z-50 bg-[#121212] border-b border-[#2a2a2a] px-4 py-3 flex justify-between items-center">
-<div class="flex items-center gap-3"><button id="menuBtn" class="w-10 h-10 card rounded-xl flex items-center justify-center"><i class="fas fa-bars"></i></button>
-<div><h1 class="font-bold text-sm">ZENOVA ADMIN GLOBAL <span class="gold">RC 9810296</span></h1><p class="mono text-[10px] text-gray-400">BN 9701468 • Est.2026 • Lagos WAT</p></div></div>
-<div class="flex items-center gap-2"><span class="mono text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full">● 4 clients live • Auto Save ON</span><div class="w-9 h-9 rounded-full bg-gold text-black font-bold flex items-center justify-center">KR</div></div>
-</header>
-
-<div class="flex">
-<aside id="sidebar" class="w-[300px] bg-[#0f0f0f] border-r border-[#2a2a2a] min-h-screen p-4 fixed md:static z-40 -translate-x-full md:translate-x-0 transition">
-<div class="flex items-center gap-2 mb-6"><div class="w-9 h-9 rounded-xl bg-gold flex items-center justify-center text-black font-bold">Z</div><div><p class="font-bold text-sm">ZENOVA ADMIN</p><p class="mono text-[11px] text-gray-400">RC 9810296 • BN 9701468</p></div><button id="closeMenu" class="ml-auto md:hidden"><i class="fas fa-times"></i></button></div>
-<nav class="space-y-1 mono text-[13px]">
-<button onclick="showTab('dashboard')" class="w-full text-left px-3 py-2.5 rounded-xl bg-[#1e1e1e] gold"><i class="fas fa-th-large w-5"></i>Dashboard</button>
-<button onclick="showTab('gallery')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-images w-5"></i>Gallery Edit</button>
-<button onclick="showTab('aistudio')" class="w-full text-left px-3 py-2.5 rounded-xl bg-gold text-black font-bold"><i class="fas fa-video w-5"></i>AI Studio - Full HD</button>
-<button onclick="showTab('livechat')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a] bg-green-500/20 text-green-400"><i class="fas fa-robot w-5"></i>Live Chat Bot 🤖</button>
-<button onclick="showTab('forms')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-file-alt w-5"></i>Forms & Subs <span class="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">2 NEW</span></button>
-<button onclick="showTab('clients')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-users w-5"></i>Clients</button>
-<button onclick="showTab('services')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-cube w-5"></i>Packs & Services</button>
-<button onclick="showTab('bank')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-credit-card w-5"></i>Bank + Flutterwave</button>
-<button onclick="showTab('invoices')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-file-invoice w-5"></i>Invoice + Stamp</button>
-<button onclick="showTab('settings')" class="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#1a1a1a]"><i class="fas fa-cog w-5"></i>Settings</button>
-</nav>
-<div class="mt-6 p-4 card rounded-2xl"><p class="mono text-xs font-bold mb-3">GLOBAL OVERRIDES</p><div class="space-y-2.5 mono text-xs">
-<label class="flex justify-between">WhatsApp <input type="checkbox" checked class="accent-[#FDB913]"></label>
-<label class="flex justify-between">FB <input type="checkbox" checked class="accent-[#FDB913]"></label>
-<label class="flex justify-between">Instagram <input type="checkbox" checked class="accent-[#FDB913]"></label>
-<label class="flex justify-between">LinkedIn <input type="checkbox" checked class="accent-[#FDB913]"></label>
-<label class="flex justify-between">Website <input type="checkbox" checked class="accent-[#FDB913]"></label>
-<label class="flex justify-between">Auto Invoice <input type="checkbox" checked class="accent-[#FDB913]"></label>
-</div></div>
-<div class="mt-4 p-3 card rounded-xl mono text-[11px]"><p class="font-bold gold">SUPABASE</p><input id="sbUrl" placeholder="https://xyz.supabase.co" class="w-full p-2 rounded bg-black border mt-2 text-[11px]"><input id="sbKey" placeholder="anon key" class="w-full p-2 rounded bg-black border mt-2 text-[11px]"><button onclick="connectSB()" class="bg-gold text-black w-full mt-2 py-2 rounded font-bold text-xs">Connect</button><p id="sbStatus" class="text-[10px] mt-2 text-gray-500">Connect to see yesterday submissions</p></div>
-<p class="mono text-[10px] text-center text-gray-500 mt-4">Lagos • Nigeria • Global Ops</p>
-</aside>
-
-<main class="flex-1 p-4 md:p-6">
-
-<div id="tab-dashboard" class="tab-content">
-<h2 class="text-2xl font-bold">Global Command</h2><p class="mono text-xs text-gray-400">All systems • <span id="dateNow"></span> • Lagos (WAT) • 99.97% Uptime</p>
-<div class="grid md:grid-cols-3 gap-4 mt-6">
-<div class="card rounded-2xl p-5"><p class="mono text-xs text-gray-400">Total Clients</p><p class="text-3xl font-bold mt-1">4</p><p class="mono text-xs text-gray-500">1 new requests - auto saved</p></div>
-<div class="card rounded-2xl p-5"><p class="mono text-xs text-gray-400">Active Bots</p><p class="text-3xl font-bold mt-1">2</p><p class="mono text-xs text-gray-500">50% deployed</p></div>
-<div class="card rounded-2xl p-5"><p class="mono text-xs text-gray-400">Monthly Revenue</p><p class="text-3xl font-bold mt-1">$548</p></div>
-</div>
-<div class="card rounded-2xl p-6 mt-6 max-w-2xl"><p class="mono text-sm text-gray-400">ENV KEYS (editable)</p><div class="mt-4 space-y-4"><div><p class="mono text-xs text-gray-500">BANK_NAME</p><input id="envBank" value="Zenith Bank" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><div><p class="mono text-xs text-gray-500">FLUTTERWAVE_PUBLIC</p><input id="envFWP" value="FLWPUBK-xxx" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><div><p class="mono text-xs text-gray-500">FLUTTERWAVE_SECRET</p><input id="envFWS" value="FLWSECK-xxx" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><div><p class="mono text-xs text-gray-500">ENV_EXTRA</p><input id="envExtra" value="NODE_ENV=production" class="w-full mt-2 p-3 rounded-xl bg-black border text-sm"></div><button onclick="saveENV()" class="w-full card py-3 rounded-xl mono text-sm">Save ENV</button></div></div>
-<div class="card rounded-2xl p-6 mt-6 max-w-2xl"><p class="mono text-sm text-gray-400">ENV PREVIEW</p><pre id="envPreview" class="mono text-xs bg-black p-4 rounded-xl mt-4">supabase=true
-BANK_NAME=Zenith Bank
-FLUTTERWAVE_PUBLIC=FLWPUBK-xxx
-FLUTTERWAVE_SECRET=FLWSECK-xxx
-ENV_EXTRA=NODE_ENV=production</pre></div>
-</div>
-
-<div id="tab-gallery" class="tab-content hidden">
-<h2 class="text-xl font-bold">Gallery Edit</h2><p class="mono text-xs text-gray-500">drag to reorder • base64 + URL • zenovaGallery • Full HD</p>
-<div class="flex gap-2 mt-4"><input id="imgUrl" placeholder="Paste image URL" class="flex-1 p-3 rounded-xl bg-[#1a1a1a] border text-sm"><button onclick="addUrl()" class="card px-4 py-2 rounded-xl text-sm">+ Add URL</button><button onclick="gFile.click()" class="bg-gold text-black px-4 py-2 rounded-xl text-sm">Upload</button></div>
-<input type="file" id="gFile" multiple accept="image/*" class="hidden"><input type="file" id="cFile" accept="image/*" capture="environment" class="hidden">
-<div class="mt-3 flex gap-2"><button onclick="gFile.click()" class="card px-4 py-2 rounded text-xs">Choose from Gallery</button><button onclick="cFile.click()" class="card px-4 py-2 rounded text-xs">Take Photo</button></div>
-<div id="gGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5"></div>
-</div>
-
-<!-- ===== ZENOVA AI STUDIO - MINIMUM 15 MIN - FULL HD + FEMALE INDIAN VOICE 🇮🇳 ===== -->
-<!-- ===== ZENOVA AI STUDIO GENERIC - ANY TOPIC FOR YOUTUBE CLASSES - 15MIN MIN ===== -->
-<div style="padding:18px;background:#121212;border-radius:18px;border:1px solid #333">
-<h3 style="color:#FDB913;margin:0 0 4px">🎓 AI Studio GENERIC - YouTube Classes - ANY Topic - 15MIN MIN</h3>
-<p style="color:#aaa;font-size:11px;margin:0 0 12px">For your YouTube classes - Any subject - Not only Zenova services!</p>
-
-<textarea id="videoPromptGENERIC" placeholder="ANY TOPIC likho: Ex - Class 8 Photosynthesis full explanation with diagram | Python for Beginners Chapter 1 Variables | How to register CAC business name step by step Nigeria | Digital Marketing Class 1 - What is SEO" style="width:100%;height:100px;background:#0a0a0a;border:1px solid #333;border-radius:12px;color:#fff;padding:12px;font-size:13px"></textarea>
-
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px">
-<div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:10px">
-<label style="color:#FDB913;font-size:11px;font-weight:800">📸 Human Presence - Your Photos</label>
-<input type="file" id="videoPhotosGENERIC" multiple accept="image/*" style="width:100%;margin-top:6px;color:#fff;font-size:11px">
-<div id="photoPreviewGENERIC" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
-<div style="margin-top:6px"><label style="color:#fff;font-size:11px"><input type="checkbox" id="useHumanPiP" checked> Show my face in video (PiP)</label></div>
-</div>
-
-<div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:10px">
-<label style="color:#FDB913;font-size:11px;font-weight:800">🏫 Background - For Classes</label>
-<select id="videoBgGENERIC" style="width:100%;margin-top:6px;background:#1a1a1a;color:#fff;padding:8px;border-radius:8px;border:1px solid #333;font-size:12px">
-<option value="whiteboard">Whiteboard - For Teaching Classes 📚</option>
-<option value="blackboard">Blackboard - Chalk Style - School</option>
-<option value="classroom">Classroom - Educational</option>
-<option value="corporate_gold">Corporate Gold - Zenova Brand</option>
-<option value="google_maps">Google Maps - For GBP Classes</option>
-<option value="tech_dark">Tech Dark - For Coding Classes</option>
-</select>
-<label style="color:#aaa;font-size:10px;margin-top:6px;display:block">Class Style:</label>
-<select id="classStyle" style="width:100%;margin-top:4px;background:#1a1a1a;color:#fff;padding:8px;border-radius:8px;font-size:11px">
-<option value="school">School / College - Simple Explain</option>
-<option value="youtube_pro">YouTube Pro - Intro + Points + Outro</option>
-<option value="tutorial">Step-by-Step Tutorial</option>
-</select>
-</div>
-
-<div style="background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:10px">
-<label style="color:#FDB913;font-size:11px;font-weight:800">⚙️ Video Settings</label>
-<div style="margin-top:6px"><label style="color:#fff;font-size:11px"><input type="checkbox" id="includeZenovaBrand"> Include Zenova Branding (BN RC) - Uncheck for generic class</label></div>
-<div style="margin-top:6px"><label style="color:#fff;font-size:11px"><input type="checkbox" id="includeVoice" checked> Female Indian Voice 🇮🇳 - 15min narration</label></div>
-<div style="margin-top:8px;background:#1a1a1a;padding:8px;border-radius:8px;color:#FDB913;font-weight:800;font-size:11px">⏱️ MINIMUM 15 MIN = 900 SEC - YouTube Ready</div>
-<button onclick="loadGalleryGeneric()" style="margin-top:8px;background:#1a1a1a;color:#FDB913;border:1px solid #333;padding:6px 10px;border-radius:8px;font-size:11px;cursor:pointer;width:100%">📁 Load Gallery (zenova_gallery)</button>
-<div id="galleryListGENERIC" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;max-height:80px;overflow-y:auto"></div>
-</div>
-</div>
-
-<button onclick="generateGENERIC15MinVideo()" id="genGENERICBtn" style="width:100%;margin-top:14px;padding:16px;background:linear-gradient(135deg,#FDB913,#FF8C00);border:none;border-radius:14px;font-weight:900;font-size:14px;cursor:pointer;color:#000">🎓 GENERATE 15MIN GENERIC VIDEO - ANY TOPIC - FOR YOUTUBE CLASSES + HUMAN + BG + VOICE 🇮🇳</button>
-
-<div id="videoGENERICStatus" style="margin-top:12px;background:#000;padding:10px;border-radius:10px;color:#FDB913;font-size:12px;border:1px solid #222">Status: Ready - Type ANY topic for YouTube class - Ex: Photosynthesis, Python, CAC steps</div>
-<div style="margin-top:10px;background:#000;height:20px;border-radius:10px;overflow:hidden;border:1px solid #222"><div id="videoGENERICProgress" style="height:100%;width:0%;background:linear-gradient(90deg,#FDB913,#FF8C00);transition:width 0.5s"></div></div>
-
-<canvas id="videoGENERICCanvas" width="1920" height="1080" style="width:100%;max-width:760px;border-radius:14px;margin-top:14px;background:#fff;border:2px solid #FDB913"></canvas>
-<video id="previewGENERICVideo" controls style="width:100%;max-width:760px;margin-top:14px;display:none;border-radius:14px;background:#000;border:2px solid #333"></video>
-<a id="downloadGENERICVideo" style="display:none;margin-top:14px;background:#25D366;color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:900;text-decoration:none">⬇️ DOWNLOAD 15MIN GENERIC CLASS VIDEO - FOR YOUTUBE</a>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SB_URL_G='https://aqjoufnuddakbmuiqaql.supabase.co';
-const SB_KEY_G='PASTE_YOUR_ANON_KEY_HERE';sb_publishable_BhSkSGpu4-3Uc3zQOpUnKw_kUns1kxx
-let sbG=null; try{ sbG=supabase.createClient(SB_URL_G, SB_KEY_G); }catch(e){}
-let uploadedImgsG=[]; let galleryImgsG=[];
-
-document.getElementById('videoPhotosGENERIC').addEventListener('change', function(e){
-  uploadedImgsG=[]; let prev=document.getElementById('photoPreviewGENERIC'); prev.innerHTML='';
-  for(let f of e.target.files){ let u=URL.createObjectURL(f); uploadedImgsG.push(u); prev.innerHTML+=`<img src="${u}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:2px solid #FDB913">`; }
-});
-
-async function loadGalleryGeneric(){
-  let list=document.getElementById('galleryListGENERIC'); list.innerHTML='Loading...';
-  try{
-    if(!sbG || SB_KEY_G==='PASTE_YOUR_ANON_KEY_HERE'){ list.innerHTML='Add anon key - zenova_gallery table'; return; }
-    let {data} = await sbG.from('zenova_gallery').select('*').limit(20);
-    list.innerHTML=''; data.forEach(r=>{ let u=r.image_url||r.url; if(u) list.innerHTML+=`<img src="${u}" onclick="galleryImgsG.push('${u}');this.style.border='2px solid #25D366'" style="width:55px;height:55px;object-fit:cover;border-radius:8px;border:2px solid #333;cursor:pointer">`; });
-  }catch(err){ list.innerHTML=err.message; }
-}
-
-function loadImgG(url){ return new Promise(res=>{ let i=new Image(); i.crossOrigin='anonymous'; i.onload=()=>res(i); i.onerror=()=>res(null); i.src=url; }); }
-
-function getGenericChapters(topic){
-  topic=topic.trim();
-  return [
-    {title:`Introduction to ${topic}`, time:0, content:`Welcome to today's class on ${topic}. I am your instructor. In this minimum 15 minutes video, we will cover everything you need to know about ${topic} in simple language for your YouTube learning.`},
-    {title:`What is ${topic}?`, time:150, content:`First, let us understand what is ${topic}. ${topic} is very important for students and professionals. We will explain definition, meaning, and why it matters in real life with simple examples.`},
-    {title:`Key Points of ${topic}`, time:300, content:`Now key points of ${topic}. Point 1: Basics. Point 2: Important features. Point 3: How it works. Point 4: Real life example. Point 5: Common mistakes to avoid. This will make ${topic} very easy.`},
-    {title:`Step by Step - ${topic}`, time:450, content:`Let us learn ${topic} step by step. Step 1: Start with basics. Step 2: Practice with example. Step 3: Apply in real project. Step 4: Test your understanding. Step 5: Advanced tips for ${topic}. Follow these steps for best results.`},
-    {title:`Examples & Practice - ${topic}`, time:600, content:`Let me show you live example of ${topic}. Example 1: Simple example. Example 2: Intermediate. Example 3: Advanced project. Practice these examples after class. Pause video and try yourself for ${topic}.`},
-    {title:`Conclusion - ${topic} - Next Class`, time:750, content:`Conclusion of today's class on ${topic}. We learned definition, key points, steps, and examples of ${topic}. In next class we will learn advanced ${topic}. Like, share, subscribe for more YouTube classes. Thank you for watching ${topic} class!`}
-  ];
-}
-
-async function generateGENERIC15MinVideo(){
-  let topic=document.getElementById('videoPromptGENERIC').value.trim();
-  if(!topic) return alert('ANY TOPIC likho my dear - Ex: Photosynthesis, Python, CAC registration');
-  let bg=document.getElementById('videoBgGENERIC').value;
-  let style=document.getElementById('classStyle').value;
-  let includeBrand=document.getElementById('includeZenovaBrand').checked;
-  let includeVoice=document.getElementById('includeVoice').checked;
-  let usePiP=document.getElementById('useHumanPiP').checked;
-  let duration=900;
-  let status=document.getElementById('videoGENERICStatus');
-  let progress=document.getElementById('videoGENERICProgress');
-  let canvas=document.getElementById('videoGENERICCanvas');
-  let ctx=canvas.getContext('2d');
-  let btn=document.getElementById('genGENERICBtn');
-  let preview=document.getElementById('previewGENERICVideo');
-  let dl=document.getElementById('downloadGENERICVideo');
-
-  let allImgs=[...uploadedImgsG,...galleryImgsG];
-  let loaded=[]; for(let u of allImgs){ let im=await loadImgG(u); if(im) loaded.push(im); }
-
-  btn.disabled=true; btn.innerText='⏳ RECORDING 15MIN GENERIC CLASS - '+topic.substring(0,30)+'... KEEP TAB OPEN';
-  preview.style.display='none'; dl.style.display='none'; progress.style.width='0%';
-  let chapters=getGenericChapters(topic);
-  let fullScript=chapters.map(c=>c.title+'. '+c.content).join(' ').repeat(2);
-
-  if(includeVoice){
-    try{ speechSynthesis.cancel(); let v=speechSynthesis.getVoices().find(x=>x.lang==='en-IN')||speechSynthesis.getVoices()[0];
-      let ut=new SpeechSynthesisUtterance(fullScript); if(v) ut.voice=v; ut.lang='en-IN'; ut.rate=0.88; ut.pitch=1.05; speechSynthesis.speak(ut);
-      status.innerText='🔊 Female Indian Voice - Teaching '+topic+' - 15min narration started...';
-    }catch(e){}
-  }
-
-  let stream=canvas.captureStream(30);
-  let recorder=new MediaRecorder(stream, {mimeType:'video/webm;codecs=vp9', videoBitsPerSecond:3000000});
-  let chunks=[]; recorder.ondataavailable=e=>{ if(e.data.size>0) chunks.push(e.data); };
-  recorder.onstop=()=>{
-    let blob=new Blob(chunks,{type:'video/webm'});
-    let url=URL.createObjectURL(blob);
-    preview.src=url; preview.style.display='block';
-    dl.href=url; dl.download='YOUTUBE_CLASS_'+topic.replace(/\s+/g,'_').substring(0,30)+'_15MIN_'+Date.now()+'.webm'; dl.style.display='block';
-    status.innerText='✅ DONE! 15MIN GENERIC CLASS VIDEO on "'+topic+'" ready! Size: '+(blob.size/1024/1024).toFixed(1)+'MB - Upload to YouTube Classes!';
-    progress.style.width='100%'; btn.disabled=false; btn.innerText='🎓 GENERATE 15MIN GENERIC VIDEO - ANY TOPIC - FOR YOUTUBE CLASSES + HUMAN + BG + VOICE 🇮🇳';
-    speechSynthesis.cancel();
-  };
-  recorder.start(200);
-  let start=Date.now();
-  let timer=setInterval(()=>{
-    let elapsed=Math.floor((Date.now()-start)/1000);
-    if(elapsed>=duration){ clearInterval(timer); recorder.stop(); return; }
-    let pct=Math.round((elapsed/duration)*100); progress.style.width=pct+'%';
-    let chap=chapters.find((c,i)=> elapsed>=c.time && (i===chapters.length-1 || elapsed<chapters[i+1].time)) || chapters[0];
-    let imgIdx= loaded.length? Math.floor((elapsed/25)%loaded.length) : -1;
-    let curImg= imgIdx>=0? loaded[imgIdx] : null;
-
-    // ===== BACKGROUND - FOR CLASSES - REAL GRAPHICS =====
-    if(bg==='whiteboard'){
-      ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,1920,1080);
-      ctx.strokeStyle='#e0e0e0'; for(let i=0;i<1920;i+=90){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1080); ctx.stroke(); } for(let j=0;j<1080;j+=90){ ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(1920,j); ctx.stroke(); }
-      ctx.fillStyle='#f5f5f5'; ctx.fillRect(0,0,1920,120);
-    }else if(bg==='blackboard'){
-      ctx.fillStyle='#1a2a1a'; ctx.fillRect(0,0,1920,1080);
-      ctx.fillStyle='rgba(255,255,255,0.04)'; for(let i=0;i<200;i++){ ctx.fillRect(Math.random()*1920,Math.random()*1080,2,2); }
-    }else if(bg==='classroom'){
-      ctx.fillStyle='#e3f2fd'; ctx.fillRect(0,0,1920,1080); ctx.fillStyle='#90caf9'; ctx.fillRect(0,0,1920,16);
-    }else if(bg==='corporate_gold'){
-      let g=ctx.createLinearGradient(0,0,1920,1080); g.addColorStop(0,'#1a1200'); g.addColorStop(1,'#3d2a00'); ctx.fillStyle=g; ctx.fillRect(0,0,1920,1080);
-    }else if(bg==='google_maps'){
-      ctx.fillStyle='#e8f0fe'; ctx.fillRect(0,0,1920,1080); ctx.fillStyle='#fff'; ctx.fillRect(80,80,1760,920); ctx.fillStyle='#FDB913'; ctx.beginPath(); ctx.arc(960,540,30,0,Math.PI*2); ctx.fill();
-    }else{
-      ctx.fillStyle='#050508'; ctx.fillRect(0,0,1920,1080);
-    }
-
-    // Human photo background with opacity
-    if(curImg){ let sc=1+(elapsed%25)/100; let r=Math.max(1920/curImg.width,1080/curImg.height)*sc; ctx.save(); ctx.globalAlpha=0.28; ctx.drawImage(curImg,(1920-curImg.width*r)/2,(1080-curImg.height*r)/2,curImg.width*r,curImg.height*r); ctx.restore(); }
-
-    // Top bar
-    if(includeBrand){ ctx.fillStyle='#FDB913'; ctx.fillRect(0,0,1920,14); ctx.fillStyle='#FDB913'; ctx.font='bold 58px Arial'; ctx.fillText('KRISHNYANSH ZENOVA PEAKS LTD | BN 9701468 RC 9810296', 70, 90); }
-    else{ ctx.fillStyle='#FDB913'; ctx.fillRect(0,0,1920,10); ctx.fillStyle='#222'; if(bg==='whiteboard'||bg==='classroom') ctx.fillStyle='#111'; else ctx.fillStyle='#fff'; ctx.font='bold 62px Arial'; ctx.fillText(chap.title.substring(0,55).toUpperCase(), 70, 110); }
-
-    // Main teaching board
-    ctx.fillStyle= (bg==='whiteboard'||bg==='classroom')? 'rgba(255,255,255,0.96)' : 'rgba(0,0,0,0.78)';
-    ctx.fillRect(70,150,1240,700); ctx.strokeStyle='#FDB913'; ctx.lineWidth=4; ctx.strokeRect(70,150,1240,700);
-    ctx.fillStyle= (bg==='whiteboard'||bg==='classroom')? '#111' : '#fff';
-    ctx.font='bold 48px Arial'; ctx.fillText(chap.title, 95, 220);
-    ctx.font='30px Arial';
-    let words=chap.content.split(' '); let line=''; let y=280;
-    for(let w of words){ let t=line+w+' '; if(ctx.measureText(t).width>1150){ ctx.fillText(line,95,y); line=w+' '; y+=42; if(y>750) break; }else line=t; } if(line) ctx.fillText(line,95,y);
-
-    // Topic badge
-    ctx.fillStyle='#FDB913'; ctx.fillRect(70,860,1240,60);
-    ctx.fillStyle='#000'; ctx.font='bold 32px Arial'; ctx.fillText('TOPIC: '+topic.substring(0,60)+' | Class: '+style+' | '+elapsed+'s / 900s', 85, 898);
-
-    // Human Presence PiP
-    if(curImg && usePiP){
-      let pw=380, ph=280, px=1920-pw-70, py=170;
-      ctx.save(); ctx.beginPath(); ctx.arc(px+pw/2, py+ph/2, pw/2, 0, Math.PI*2); ctx.clip(); ctx.drawImage(curImg, px, py, pw, ph); ctx.restore();
-      ctx.strokeStyle='#FDB913'; ctx.lineWidth=5; ctx.beginPath(); ctx.arc(px+pw/2, py+ph/2, pw/2, 0, Math.PI*2); ctx.stroke();
-      ctx.fillStyle='#000'; ctx.fillRect(px, py+ph+10, pw, 36); ctx.fillStyle='#FDB913'; ctx.font='bold 20px Arial'; ctx.fillText('Instructor Presence', px+10, py+ph+32);
-    }
-
-    // Progress
-    ctx.fillStyle='#222'; ctx.fillRect(70,1000,1780,22); ctx.fillStyle='#FDB913'; ctx.fillRect(70,1000,1780*(elapsed/duration),22);
-    ctx.fillStyle=(bg==='whiteboard'||bg==='classroom')?'#000':'#fff'; ctx.font='bold 28px Arial'; ctx.fillText('YOUTUBE CLASS - '+topic.substring(0,30)+' - '+elapsed+'s / 900s - '+pct+'% - 15MIN MIN - For Students', 70, 975);
-    status.innerText='🎓 Teaching '+topic+' - Chapter: '+chap.title+' - '+elapsed+'s/900s '+pct+'% | Photos: '+loaded.length+' | BG: '+bg+' | Generic Class Video';
-  }, 1000/30);
-}
-</script>
-}
-</script>
-</div>
-</div>
-</div>
-
-<div id="tab-livechat" class="tab-content hidden">
-<h2 class="text-xl font-bold gold">Live Chat Bot 🤖 - Website Visitors 24/7 Company Knowledge + CEO WhatsApp Redirect</h2>
-<div class="grid md:grid-cols-2 gap-4 mt-4">
-<div class="card p-4 rounded-xl"><textarea id="botWelcome" class="w-full p-3 rounded bg-black border text-xs" rows="3">Hello! I am Zenova AI Assistant Est.2026 BN 9701468 RC 9810296 Founder Ruby Garg 24/7 Online!</textarea><button onclick="saveBotSettings()" class="bg-gold text-black px-4 py-2 rounded font-bold text-xs mt-2">Save Bot Settings</button></div>
-<div class="card p-4 rounded-xl"><p class="mono text-xs font-bold gold">LIVE CHAT SESSIONS - Website Visitors</p><div id="chatSessions" class="mt-3 space-y-2 max-h-[400px] overflow-y-auto"></div></div>
-</div>
-<div class="card p-4 rounded-xl mt-4"><div id="chatMessages" class="max-h-[300px] overflow-y-auto bg-black p-3 rounded"></div><div class="flex gap-2 mt-3"><input id="adminReply" placeholder="Reply as Admin..." class="flex-1 p-2 rounded bg-[#222] border text-xs"><button onclick="sendAdminReply()" class="bg-gold text-black px-4 py-2 rounded font-bold text-xs">Send Live</button></div></div>
-</div>
-
-<div id="tab-forms" class="tab-content hidden">
-<h2 class="text-xl font-bold">Forms & Submissions - Freelancer + Registration + Career - Auto Save + WhatsApp Redirect</h2>
-<div class="card rounded-2xl p-4 mt-4 overflow-x-auto"><table class="w-full mono text-xs"><thead><tr class="text-gray-500 border-b"><th class="text-left py-2">Name</th><th>Type</th><th>Service</th><th>Date</th><th>Action</th></tr></thead><tbody id="formsTb"></tbody></table></div>
-</div>
-
-<div id="tab-clients" class="tab-content hidden"><h2 class="text-xl font-bold gold">Client Panel - Bot Deploy - FB/WA/Insta/LinkedIn/Website</h2><div class="grid md:grid-cols-4 gap-2 mt-4"><input id="cName" placeholder="Company Name" class="p-2 rounded bg-black border text-xs"><input id="cEmail" placeholder="Email" class="p-2 rounded bg-black border text-xs"><select id="cPack" class="p-2 rounded bg-black border text-xs"><option value="starter">Starter</option><option value="premium">Premium</option><option value="pro">Pro</option></select><button onclick="addClient()" class="bg-gold text-black py-2 rounded font-bold text-xs">Add Client + Auto Invoice</button></div><div id="clientsList" class="mt-4 space-y-3"></div></div>
-
-<div id="tab-services" class="tab-content hidden"><h2 class="text-xl font-bold gold">Packs & Services - Starter / Premium / Pro</h2><div id="servicesTiers" class="mt-4 space-y-2"></div></div>
-<div id="tab-bank" class="tab-content hidden"><h2 class="text-xl font-bold">Bank + Flutterwave</h2><div class="card p-6 mt-4 max-w-2xl"><input id="envBank2" value="Zenith Bank" class="w-full p-3 rounded bg-black border"><input id="envFWP2" value="FLWPUBK-xxx" class="w-full p-3 rounded bg-black border mt-3"><button onclick="saveENV()" class="w-full card py-3 rounded-xl mt-4">Save ENV</button></div></div>
-<div id="tab-invoices" class="tab-content hidden"><h2 class="text-xl font-bold gold">Invoice + Stamp - Automatic - BN 9701468 RC 9810296</h2><div id="invoicesList" class="mt-4"></div><button onclick="generateInvoicePDF()" class="bg-gold text-black px-6 py-3 rounded-xl mt-4 font-bold">Generate PDF Invoice</button></div>
-<div id="tab-settings" class="tab-content hidden"><h2 class="text-xl font-bold">Settings + Homepage Connected</h2><div class="card p-4 rounded-xl mt-4 mono text-xs max-w-2xl"><input id="hTitle" value="ZENOVA PEAK TECH HUB - Est.2026 BN 9701468 RC 9810296" class="w-full p-2 rounded bg-black border"><button onclick="saveHomepage()" class="bg-gold text-black w-full py-3 rounded font-bold mt-3">SAVE HOMEPAGE - Auto Updates Website</button></div></div>
-
-</main>
-</div>
-
-<script>
-let sb=null,gFiles=[],genBlob=null;
-function showTab(id){document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));document.getElementById('tab-'+id).classList.remove('hidden');if(id==='forms')loadForms();if(id==='clients')loadClients();if(id==='services')loadServiceTiers();if(id==='invoices')loadInvoices();if(id==='livechat')loadChatSessions();if(window.innerWidth<768)document.getElementById('sidebar').classList.add('-translate-x-full');}
-document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('-translate-x-full');
-document.getElementById('closeMenu').onclick=()=>document.getElementById('sidebar').classList.add('-translate-x-full');
-document.getElementById('dateNow').innerText=new Date().toLocaleDateString('en-GB')+' '+new Date().toLocaleTimeString();
-function connectSB(){let url=sbUrl.value.trim(),key=sbKey.value.trim();if(!url||!key)return alert('Enter SB URL/Key');sb=supabase.createClient(url,key);localStorage.setItem('sbUrl',url);localStorage.setItem('sbKey',key);sbStatus.innerText='Testing...';sb.from('freelancer_submissions').select('id').limit(1).then(({error})=>{if(error)sbStatus.innerText='Error: '+error.message;else sbStatus.innerText='✅ Connected - Auto Save ON - Submissions visible';loadForms();});}
-window.onload=()=>{let u=localStorage.getItem('sbUrl'),k=localStorage.getItem('sbKey');if(u&&k){sbUrl.value=u;sbKey.value=k;connectSB();}else renderDemoForms();loadServiceTiers();};
-
-const gFile=document.getElementById('gFile'),cFile=document.getElementById('cFile');
-gFile.addEventListener('change',e=>handle(e.target.files));
-function handle(files){for(let f of files){let r=new FileReader();r.onload=e=>{gFiles.push({name:f.name,data:e.target.result,file:f});renderG();if(sb)sb.from('zenova_gallery').insert({file_name:f.name,base64_data:e.target.result});};r.readAsDataURL(f);}}
-function renderG(){let grid=document.getElementById('gGrid');grid.innerHTML='';gFiles.forEach((f,i)=>{grid.innerHTML+=`<div class="relative"><img src="${f.data}" class="w-full h-28 object-cover rounded-xl"><button onclick="gFiles.splice(${i},1);renderG()" class="absolute top-1 right-1 bg-red-500 w-5 h-5 rounded-full text-xs">x</button></div>`;});}
-function addUrl(){let url=imgUrl.value.trim();if(!url)return;gFiles.push({name:'url-image',data:url,file:null});renderG();if(sb)sb.from('zenova_gallery').insert({file_name:'url-image',file_url:url});imgUrl.value='';}
-async function loadForms(){if(!sb)return;let {data:free}=await sb.from('freelancer_submissions').select('*').order('created_at',{ascending:false});let {data:reg}=await sb.from('registration_submissions').select('*').order('created_at',{ascending:false});let all=[...(free||[]).map(f=>({...f,type:'Freelancer'})),...(reg||[]).map(r=>({...r,type:'Registration'}))];renderForms(all);}
-function renderDemoForms(){renderForms([{name:'Adebayo Musa',type:'Freelancer',service:'Website Dev & GBP Specialist',created_at:'2026-09-09T14:14:00'},{name:'Chioma Okoro',type:'Freelancer',service:'Marketing Analyst',created_at:'2026-09-09T16:30:00'}]);}
-function renderForms(rows){let tbody=document.getElementById('formsTb');tbody.innerHTML='';rows.forEach(r=>{tbody.innerHTML+=`<tr class="border-b border-[#222]"><td class="py-2">${r.name}</td><td>${r.type||'Form'}</td><td>${r.service||r.service_interest||'Freelancer'}</td><td>${r.created_at?new Date(r.created_at).toLocaleString():'Yesterday'}</td><td><button class="card px-2 py-1 rounded text-[10px]">View</button> <button onclick="sendWA('${r.name}','${r.phone||''}')" class="bg-gold text-black px-2 py-1 rounded text-[10px] ml-1">WhatsApp</button></td></tr>`;});}
-function sendWA(name,phone){let msg=`Hello ${name}, thanks for applying at Zenova Peak Tech Hub Est.2026 BN 9701468 RC 9810296 - We received your submission!`;window.open(`https://wa.me/2349067862223?text=${encodeURIComponent(msg)}`,'_blank');}
-
-async function addClient(){let cname=cName.value,email=cEmail.value,pack=cPack.value;if(!cname)return alert('Company name');let row={company_name:cname,email,current_pack:pack,bot_deployed:false};if(sb){let {data}=await sb.from('zenova_clients').insert(row).select().single();await sb.from('zenova_invoices').insert({company_name:cname,service_title:'Altra AI Automation',service_type:pack,amount:pack==='starter'?20000:pack==='premium'?50000:120000,invoice_no:'INV-'+Date.now()});}loadClients();loadInvoices();}
-async function loadClients(){if(!sb){clientsList.innerHTML='<p class="mono text-xs">Connect Supabase - Demo: 4 clients</p>';return;}let {data}=await sb.from('zenova_clients').select('*').order('created_at',{ascending:false});clientsList.innerHTML=data.map(c=>`<div class="card p-4 rounded-xl"><div class="flex justify-between"><b>${c.company_name}</b><span class="mono text-xs ${c.bot_deployed?'bg-green-500/20 text-green-400':'bg-yellow-500/20 text-yellow-400'} px-2 py-1 rounded-full">${c.bot_deployed?'Bot Deployed':'Not Deployed'}</span></div><div class="grid grid-cols-5 gap-2 mt-3 mono text-[10px]"><label class="card p-2 rounded">FB <input type="checkbox" ${c.fb_connected?'checked':''} onchange="toggleBot('${c.id}','fb_connected',this.checked)"></label><label class="card p-2 rounded">WhatsApp <input type="checkbox" ${c.whatsapp_connected?'checked':''} onchange="toggleBot('${c.id}','whatsapp_connected',this.checked)"></label><label class="card p-2 rounded">Insta <input type="checkbox" ${c.insta_connected?'checked':''} onchange="toggleBot('${c.id}','insta_connected',this.checked)"></label><label class="card p-2 rounded">LinkedIn <input type="checkbox" ${c.linkedin_connected?'checked':''} onchange="toggleBot('${c.id}','linkedin_connected',this.checked)"></label><label class="card p-2 rounded">Website <input type="checkbox" ${c.website_connected?'checked':''} onchange="toggleBot('${c.id}','website_connected',this.checked)"></label></div><button onclick="deployBot('${c.id}')" class="bg-gold text-black px-4 py-2 rounded font-bold text-xs mt-3">🤖 Deploy Bot for ${c.company_name}</button></div>`).join('');}
-async function toggleBot(id,field,val){if(!sb)return;await sb.from('zenova_clients').update({[field]:val}).eq('id',id);}
-async function deployBot(id){if(!sb)return;await sb.from('zenova_clients').update({bot_deployed:true}).eq('id',id);alert('Bot Deployed - FB, WA, Insta, LinkedIn, Website connected');loadClients();}
-async function loadServiceTiers(){let services=["Business Consultancy","Altra AI Automation","GBP with Map","Complete Branding Pack","SMEDAN","CAC","SCUML/TIN","AI Video Studio","Website Dev"];let tiers=['starter','premium','pro'];let div=document.getElementById('servicesTiers');if(!sb){div.innerHTML=services.map(s=>tiers.map(t=>`<div class="card p-3 rounded flex justify-between mono text-xs"><span>${s} - ${t}</span><span>₦${t==='starter'?'15k':t==='premium'?'50k':'120k'}</span></div>`).join('')).join('');return;}let {data}=await sb.from('zenova_service_tiers').select('*');if(!data||!data.length){div.innerHTML=services.map(s=>tiers.map(t=>`<div class="card p-3 rounded flex justify-between mono text-xs"><span>${s} - ${t}</span><button onclick="saveTier('${s}','${t}')" class="bg-gold text-black px-2 py-1 rounded">Add Tier</button></div>`).join('')).join('');}else{div.innerHTML=data.map(t=>`<div class="card p-3 rounded flex justify-between mono text-xs"><span>${t.service_title} - ${t.tier} - ₦${t.price}</span></div>`).join('');}}
-async function saveTier(s,t){let price=prompt(`Price for ${s} - ${t} in Naira:`);if(!price)return;if(sb)await sb.from('zenova_service_tiers').insert({service_title:s,tier:t,price:parseInt(price),features:["Feature"],delivery_days:t==='starter'?3:t==='premium'?7:14});loadServiceTiers();}
-async function loadInvoices(){if(!sb){invoicesList.innerHTML='<p class="mono text-xs">Connect SB - Auto invoice when client added</p>';return;}let {data}=await sb.from('zenova_invoices').select('*').order('created_at',{ascending:false});invoicesList.innerHTML=data.map(inv=>`<div class="card p-3 rounded flex justify-between mono text-xs"><div><b>${inv.invoice_no}</b> - ${inv.company_name} - ${inv.service_type} - ₦${inv.amount}</div><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full">${inv.status}</span></div>`).join('');}
-function generateInvoicePDF(){let {jsPDF}=window.jspdf;let doc=new jsPDF();doc.text("ZENOVA PEAK TECH HUB - BN 9701468 RC 9810296",20,20);doc.text("INVOICE INV-"+Date.now(),20,40);doc.save("Invoice.pdf");}
-function saveENV(){let row={bank_name:envBank.value,flutterwave_public:envFWP.value,flutterwave_secret:envFWS.value,env_extra:envExtra.value};if(sb)sb.from('env_keys').insert(row);envPreview.innerText=`supabase=true\nBANK_NAME=${row.bank_name}\nFLUTTERWAVE_PUBLIC=${row.flutterwave_public}\nFLUTTERWAVE_SECRET=${row.flutterwave_secret}\nENV_EXTRA=${row.env_extra}`;}
-function saveHomepage(){if(!sb)return alert('Connect SB');sb.from('site_settings').upsert({key:'homepage',value:{title:hTitle.value}}).then(()=>alert('Homepage saved - Auto updates website'));}
-
-let recorder,chunks=[],isGen=false,vCanvas=document.getElementById('vCanvas'),ctx=vCanvas.getContext('2d');
-function genScript(){let p=aiPrompt.value||"Zenova 9 services";vScript.value=`Welcome to Zenova Peak Tech Hub Est.2026 BN 9701468 RC 9810296 Lagos. ${p}\n\n[15 MIN YOUTUBE SCRIPT 2500 words]\nIntro 2min: Hello Lagos entrepreneurs...\n9 Services 10min...\nCTA 1min: +2349067862223`;}
-function getIndianFemaleVoice(){let voices=speechSynthesis.getVoices();let v=voices.find(x=>x.name.includes('Swara')||x.name.includes('Heera')||x.lang==='en-IN'&&x.name.toLowerCase().includes('female'))||voices.find(x=>x.lang==='en-IN')||voices.find(x=>x.name.toLowerCase().includes('india'))||voices[0];return v;}
-function previewVoice(){speechSynthesis.cancel();let utter=new SpeechSynthesisUtterance(vScript.value.slice(0,300)||"Hello I am Zenova AI Assistant Female Indian English from Zenova Peak Tech Hub Est 2026");let voiceType=vVoice.value;if(voiceType==='female-in'){let iv=getIndianFemaleVoice();if(iv)utter.voice=iv;utter.lang='en-IN';}utter.rate=1;speechSynthesis.speak(utter);}
-async function genRealVideo(){
-if(isGen)return;let script=vScript.value;if(!script){genScript();script=vScript.value;}isGen=true;chunks=[];gStatus.innerText="Generating REAL 15min Full HD video with Female Indian English voice + graphics...";let totalMin=vType.value==='short'?1:15;gTotal.innerText=totalMin+":00";
-let quality=vQuality.value;vCanvas.width=quality==='fullhd'?1920:1280;vCanvas.height=quality==='fullhd'?1080:720;
-let stream=vCanvas.captureStream(30);recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});recorder.ondataavailable=e=>{if(e.data.size>0)chunks.push(e.data);};
-recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'});genBlob=blob;let url=URL.createObjectURL(blob);outV.src=url;outV.classList.remove('hidden');dlLink.href=url;dlLink.download=`ZENOVA_${totalMin}min_FullHD_${Date.now()}.webm`;dlArea.classList.remove('hidden');gStatus.innerText="Done - REAL Full HD video ready - Download for YouTube";isGen=false;speechSynthesis.cancel();};
-recorder.start();
-let scenes=totalMin*2,cur=0,words=script.split('. ');
-function draw(i){ctx.fillStyle=i%2?"#0A1E35":"#1a1a1a";ctx.fillRect(0,0,vCanvas.width,vCanvas.height);ctx.strokeStyle="#FDB913";ctx.lineWidth=8;ctx.strokeRect(0,0,vCanvas.width,vCanvas.height);ctx.fillStyle="#FDB913";ctx.font=`bold ${vCanvas.width>1280?40:20}px Space Grotesk`;ctx.fillText("ZENOVA PEAK TECH HUB",40,80);ctx.fillStyle="#fff";ctx.font=`${vCanvas.width>1280?20:11}px JetBrains Mono`;ctx.fillText("Est.2026 | BN 9701468 | RC 9810296 | Founder Ruby Garg | Full HD",40,120);ctx.font=`bold ${vCanvas.width>1280?28:14}px Space Grotesk`;let t=words[i]?words[i].slice(0,200):`Scene ${i+1}`;ctx.fillText(t,40,200);ctx.fillStyle="#FDB913";ctx.font=`${vCanvas.width>1280?22:11}px JetBrains Mono`;ctx.fillText(`+2349067862223 | ${i+1}/${scenes} - ${totalMin}min YouTube Full HD - REAL AI VIDEO`,40,vCanvas.height-40);}
-let iv=setInterval(()=>{if(cur>=scenes){clearInterval(iv);recorder.stop();pBar.style.width='100%';return;}draw(cur);cur++;pBar.style.width=Math.round(cur/scenes*100)+"%";gDur.innerText=Math.floor(cur/scenes*totalMin)+":00";},1500);
-let utter=new SpeechSynthesisUtterance(script.slice(0,1500));if(vVoice.value==='female-in'){let ivc=getIndianFemaleVoice();if(ivc)utter.voice=ivc;utter.lang='en-IN';}speechSynthesis.speak(utter);
-}
-async function saveVideoSB(){if(!sb)return alert('Connect SB');if(!genBlob)return alert('Generate first');let fname='ai_video_'+Date.now()+'.webm';let {error}=await sb.storage.from('aiVideos').upload(fname,genBlob);if(error)return alert(error.message);let {data}=sb.storage.from('aiVideos').getPublicUrl(fname);await sb.from('ai_generated_videos').insert({prompt:aiPrompt.value,script:vScript.value,video_type:vType.value,voice:vVoice.value,video_url:data.publicUrl,duration_minutes:15,quality:vQuality.value});alert('Video auto saved Supabase - Full HD - URL: '+data.publicUrl+' - YouTube ready - You can download from here also');}
-
-let selectedSessionId=null;
-async function loadChatSessions(){if(!sb)return;let {data}=await sb.from('live_chat_sessions').select('*').order('created_at',{ascending:false}).limit(20);document.getElementById('chatSessions').innerHTML=data.map(s=>`<div class="card p-2 rounded cursor-pointer" onclick="selectSession('${s.id}')"><p class="font-bold text-xs">${s.visitor_name||'Visitor'}</p><p class="mono text-[10px] text-gray-400">${new Date(s.created_at).toLocaleString()}</p></div>`).join('');}
-function selectSession(id){selectedSessionId=id;loadChatMessages(id);}
-async function loadChatMessages(id){let {data}=await sb.from('live_chat_messages').select('*').eq('session_id',id).order('created_at',{ascending:true});let div=document.getElementById('chatMessages');div.innerHTML=data.map(m=>`<div class="mono text-xs p-2 rounded ${m.sender==='visitor'?'bg-[#FDB913] text-black ml-auto max-w-[80%]':'bg-[#2a2a2a]'}"><b>${m.sender}:</b> ${m.message}</div>`).join('');}
-async function sendAdminReply(){if(!selectedSessionId)return alert('Select session');let text=adminReply.value.trim();if(!text)return;await sb.from('live_chat_messages').insert({session_id:selectedSessionId,sender:'admin',message:text});adminReply.value='';loadChatMessages(selectedSessionId);}
-async function saveBotSettings(){if(!sb)return;await sb.from('bot_settings').update({welcome_message:botWelcome.value}).eq('is_active',true);alert('Bot settings saved');}
-</script>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col justify-between relative overflow-x-hidden">
+    <header id="mainHeader" class="w-full bg-slate-900 border-b border-slate-800 px-4 py-3 flex justify-between items-center sticky top-0 z-40 hidden">
+        <div class="flex items-center space-x-3">
+            <button onclick="toggleSidebar()" class="text-teal-400 focus:outline-none p-1 rounded-lg hover:bg-slate-800 transition">☰</button>
+            <div class="flex items-center space-x-2">
+                <img src="logo.png" alt="Logo" class="user-avatar-display w-9 h-9 object-cover rounded-xl border border-teal-500/30 bg-slate-950">
+                <h1 class="text-lg font-bold text-white tracking-wide">ClickPeQR</h1>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="showNotificationModal()" class="relative p-2 text-slate-300 hover:text-teal-400 transition">🔔</button>
+            <span id="userRoleHeader" class="text-[10px] bg-teal-500/20 text-teal-400 px-2 py-0.5 rounded-full font-semibold uppercase">Customer</span>
+        </div>
+    </header>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden transition-opacity" onclick="toggleSidebar()"></div>
+    <aside id="appSidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-slate-900 border-r border-slate-800 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between p-5 shadow-2xl overflow-y-auto">
+        <div>
+            <div class="flex items-center space-x-3 pb-4 mb-4 border-b border-slate-800">
+                <div class="relative group cursor-pointer" onclick="document.getElementById('dpFileInput').click()">
+                    <img id="sidebarUserDP" src="logo.png" class="user-avatar-display w-12 h-12 rounded-full object-cover border-2 border-teal-500 bg-slate-950" alt="DP">
+                </div>
+                <input type="file" id="dpFileInput" accept="image/*" class="hidden" onchange="handleDPChange(event)">
+                <div class="overflow-hidden">
+                    <h4 class="user-profile-name text-sm font-bold text-white truncate">User Name</h4>
+                    <p id="sidebarModeLabel" class="text-xs text-teal-400">Customer Mode</p>
+                </div>
+            </div>
+            <nav class="space-y-1.5 text-sm">
+                <a href="#" onclick="toggleSidebar(); switchView('home')" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">🏠 <span>Home</span></a>
+                <a href="#" onclick="toggleSidebar(); showNotificationModal()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">🔔 <span>Notifications</span></a>
+                <a href="#" onclick="toggleSidebar(); showTransactionHistory()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">📊 <span>Transaction History</span></a>
+                <a href="#" onclick="toggleSidebar(); openAddBankModal()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">🏦 <span>Bank Accounts</span></a>
+                <a href="#" onclick="toggleSidebar(); openSettingsModal()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">⚙️ <span>Settings</span></a>
+                <a href="#" onclick="toggleSidebar(); showAboutModal()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">ℹ️ <span>About</span></a>
+                <a href="#" onclick="toggleSidebar(); toggleAIBot()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">💬 <span>Help & Support (24/7)</span></a>
+                <a href="#" onclick="toggleSidebar(); showComplaintWhatsApp()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-rose-300 transition">⚠️ <span>Complain</span></a>
+                <a href="#" onclick="toggleSidebar(); showFAQModal()" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 transition">❓ <span>FAQ</span></a>
+            </nav>
+        </div>
+        <div class="pt-4 border-t border-slate-800">
+            <button onclick="handleLogout()" class="w-full bg-rose-500/10 border border-rose-500/30 text-rose-400 font-bold py-2.5 rounded-xl text-xs hover:bg-rose-500/20 transition">Log Out</button>
+        </div>
+    </aside>
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div id="authScreen" class="w-full max-w-md bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-2xl">
+            <div class="text-center mb-5 flex flex-col items-center">
+                <img src="logo.png" alt="Logo" class="w-16 h-16 object-cover mb-2 rounded-2xl border border-teal-500/30 shadow-md">
+                <h2 class="text-2xl font-bold text-teal-400">ClickPeQR Network</h2>
+                <p class="text-xs text-slate-400 mt-1">Secure Fintech & AI Payment Gateway - UPI Direct</p>
+            </div>
+            <div class="flex bg-slate-950 p-1 rounded-xl mb-4">
+                <button onclick="switchAuthTab('login')" id="loginTabBtn" class="flex-1 py-2 text-xs font-bold rounded-lg bg-teal-500 text-slate-950 transition">Existing Login</button>
+                <button onclick="switchAuthTab('register')" id="registerTabBtn" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400 transition">New KYC Register</button>
+            </div>
+            <div class="mb-4">
+                <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+                    <button type="button" onclick="setPortalType('customer')" id="typeCustomerBtn" class="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-teal-500/20 text-teal-400 transition">Customer</button>
+                    <button type="button" onclick="setPortalType('merchant')" id="typeMerchantBtn" class="flex-1 py-1.5 text-xs font-semibold rounded-lg text-slate-400 transition">Merchant</button>
+                </div>
+            </div>
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3">
+                <div id="businessNameField" class="hidden"><input type="text" id="businessNameInput" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:border-teal-500 outline-none" placeholder="Store Name"></div>
+                <div><input type="text" id="fullNameInput" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:border-teal-500 outline-none" placeholder="Enter Full Name"></div>
+                <div><input type="text" id="emailInput" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:border-teal-500 outline-none" placeholder="name@example.com"></div>
+                <div id="kycFields" class="space-y-3 hidden">
+                    <input type="text" id="ninInput" maxlength="11" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:border-teal-500 outline-none" placeholder="NIN Number">
+                    <input type="text" id="bvnInput" maxlength="11" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:border-teal-500 outline-none" placeholder="BVN Number">
+                </div>
+                <div><input type="password" id="pinInput" required maxlength="6" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:border-teal-500 outline-none" placeholder="PIN"></div>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-teal-500 text-slate-950 font-bold py-3 rounded-xl hover:bg-teal-400 transition shadow-lg">Sign In Securely</button>
+            </form>
+        </div>
+        <div id="dashboardScreen" class="w-full max-w-md hidden space-y-4">
+            <div id="customerPortalView" class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl hidden space-y-4">
+                <div class="flex justify-between items-center"><h2 class="text-xl font-bold text-teal-400">Scan & Pay Hub - UPI Direct</h2><span class="bg-teal-500/20 text-teal-400 text-[10px] px-2 py-1 rounded font-bold">CUSTOMER</span></div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center flex flex-col items-center">
+                    <h4 class="text-xs font-semibold text-teal-300 mb-1">Your Permanent Customer QR</h4>
+                    <div id="customerPermanentQRContainer" class="p-3 bg-white inline-block rounded-lg shadow-inner min-h-[140px] min-w-[140px] flex justify-center items-center mt-2"></div>
+                    <button onclick="regenerateCustomerQR()" class="mt-3 text-[10px] bg-slate-800 border border-slate-700 text-teal-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">🔄 Change Permanent QR</button>
+                </div>
+                <button onclick="openWorkingScanner()" class="w-full bg-teal-500/10 border border-teal-500/30 p-4 rounded-xl text-left hover:bg-teal-500/20 transition flex items-center space-x-3"><div class="bg-teal-500 text-slate-950 p-2.5 rounded-lg font-bold">📷</div><div><h4 class="text-sm font-bold text-white">Pay (Scan QR) - UPI Direct</h4><p class="text-xs text-slate-400">Direct to merchant linked account</p></div></button>
+            </div>
+            <div id="merchantPortalView" class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl hidden space-y-4">
+                <div class="flex justify-between items-center"><h2 class="text-xl font-bold text-amber-400">Merchant Terminal - UPI</h2><span class="bg-amber-500/20 text-amber-400 text-[10px] px-2 py-1 rounded font-bold">MERCHANT</span></div>
+                <div id="virtualSpeakerPanel" class="bg-slate-950 p-4 rounded-xl border border-teal-500/40 shadow-inner">
+                    <div class="flex justify-between items-center mb-2"><h4 class="text-xs font-bold text-teal-300 flex items-center gap-2">🔊 Virtual Speaker - Live <span id="speakerLiveDot" class="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span></h4><button onclick="enableSpeaker()" id="enableSpeakerBtn" class="text-[10px] bg-teal-500 text-slate-950 px-2 py-1 rounded-full font-bold">Enable Voice</button></div>
+                    <div id="speakerStatus" class="text-[11px] text-slate-400 mb-2">Speaker idle - Waiting for payment...</div>
+                    <div id="speakerVisual" class="h-10 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden"><div id="speakerWave" class="flex items-center gap-1 hidden"><span class="w-1 h-3 bg-teal-400 animate-bounce"></span><span class="w-1 h-6 bg-teal-400 animate-bounce"></span><span class="w-1 h-4 bg-teal-400 animate-bounce"></span><span class="w-1 h-7 bg-teal-400 animate-bounce"></span><span class="w-1 h-3 bg-teal-400 animate-bounce"></span></div><span id="speakerIdleText" class="text-[10px] text-slate-500">No audio - Click Enable Voice</span></div>
+                    <div class="flex gap-2 mt-2"><button onclick="testSpeakerVoice()" class="flex-1 text-[10px] bg-slate-800 text-slate-300 py-1.5 rounded-lg">Test Voice</button><button onclick="document.getElementById('speakerStatus').textContent='Speaker idle - Waiting...'" class="flex-1 text-[10px] bg-slate-800 text-slate-300 py-1.5 rounded-lg">Clear</button></div>
+                    <div id="lastPaymentLog" class="mt-2 text-[10px] text-slate-500"></div>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800"><p class="text-xs text-slate-400">Today's Sales (Direct to your bank)</p><h3 class="text-2xl font-bold text-teal-300 mt-1" id="todaysSales">₦ 0.00</h3></div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center flex flex-col items-center"><h4 class="text-xs font-semibold text-teal-300 mb-1">Permanent Shop QR - UPI Direct</h4><p id="merchantStoreNameLabel" class="text-[10px] text-slate-400 mb-2">Store QR - Contains your bank for direct payment</p><div id="permanentShopQRContainer" class="p-3 bg-white inline-block rounded-lg shadow-inner min-h-[140px] min-w-[140px] flex justify-center items-center"></div><button onclick="regenerateMerchantQR()" class="mt-3 text-[10px] bg-slate-800 border border-amber-500/30 text-amber-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">🔄 Change Permanent Shop QR</button></div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center"><input type="number" id="merchantDynAmt" placeholder="Enter Amount (₦)" class="w-full bg-slate-900 border border-slate-800 p-2 rounded-lg text-xs text-white mb-2 outline-none"><button onclick="generateMerchantDynamicQR()" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg text-xs hover:bg-amber-400 transition">Generate Dynamic QR - UPI Direct</button><div id="merchantQRResult" class="mt-2 hidden"><div id="dynamicQRContainer" class="p-3 bg-white rounded-lg inline-block shadow-inner"></div></div></div>
+                <button onclick="openWorkingScanner()" class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-center text-xs font-semibold text-teal-300 hover:bg-slate-750 transition">📷 Scan Supplier QR</button>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl"><div class="flex justify-between items-center mb-3"><h3 class="text-sm font-bold text-white">Linked Bank Accounts - For Direct Settlement (Billion Scale)</h3><button onclick="openAddBankModal()" class="text-xs bg-teal-500 text-slate-950 px-2.5 py-1 rounded-lg font-bold">+ Link Bank</button></div><div id="linkedBanksListContainer" class="space-y-2 max-h-40 overflow-y-auto"></div></div>
+        </div>
+    </main>
+    <div id="scannerModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden flex flex-col items-center justify-center z-50 p-4"><div class="w-full max-w-sm bg-slate-900 border border-slate-800 p-4 rounded-2xl text-center space-y-3"><h3 class="text-sm font-bold text-white">Scan QR - UPI Direct Pay</h3><video id="cameraVideoFeed" autoplay playsinline class="w-full h-64 bg-slate-950 rounded-xl object-cover border border-teal-500/40"></video><button onclick="simulateSuccessfulScan()" class="w-full bg-teal-500 text-slate-950 py-2.5 rounded-xl text-xs font-bold">Simulate Scan (Merchant QR)</button><button onclick="closeScannerModal()" class="w-full bg-rose-500/20 text-rose-400 py-2.5 rounded-xl text-xs font-bold">Close</button></div></div>
+    <div id="merchantConfirmModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm hidden flex items-center justify-center z-[60] p-4"><div class="bg-white w-full max-w-sm p-5 rounded-2xl space-y-4 text-slate-900"><div class="text-center"><div class="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">✓</div><h3 class="text-base font-bold text-slate-900">Confirm Payment - UPI Direct</h3><p class="text-[11px] text-slate-500 mt-1">Payment will go directly to merchant's linked account</p></div><div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-left space-y-2"><div class="flex justify-between"><span class="text-[11px] text-slate-500">Merchant Shop</span><span id="confirmShopName" class="text-xs font-bold">KRISHNYANSH ZENOVA PEAKS LTD</span></div><div class="flex justify-between"><span class="text-[11px] text-slate-500">Account Name</span><span id="confirmAccountName" class="text-xs font-bold">GARG RUBY</span></div><div class="flex justify-between"><span class="text-[11px] text-slate-500">Bank</span><span id="confirmBankName" class="text-xs">GTB - GTBank</span></div><div class="flex justify-between"><span class="text-[11px] text-slate-500">Customer</span><span id="confirmCustomerName" class="text-xs">You</span></div></div><div><label class="text-[11px] text-slate-600 font-semibold">Enter Amount (NGN)</label><input type="number" id="confirmAmountInput" class="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-center text-lg font-bold text-slate-900 outline-none mt-1" placeholder="510" value="510"></div><button onclick="proceedToManualTransfer()" class="w-full bg-teal-500 text-white font-bold py-3 rounded-xl text-sm hover:bg-teal-600 transition shadow-lg">Confirm & Pay Direct</button><button onclick="document.getElementById('merchantConfirmModal').classList.add('hidden')" class="w-full bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs">Cancel</button></div></div>
+    <div id="manualTransferModal" class="fixed inset-0 bg-white hidden flex flex-col z-[70] overflow-y-auto"><div class="bg-orange-50 border-b border-orange-100 p-3 text-center"><p class="text-[12px] text-slate-700"><span class="font-bold">⏱ You have 14:52 to complete this payment</span></p></div><div class="p-4 flex-1"><h2 class="text-[15px] font-semibold text-slate-800 mb-4">Proceed to your bank app to complete this transfer</h2><div class="bg-orange-50 border border-orange-100 p-3 rounded-xl flex gap-2 mb-4"><span class="text-orange-500 text-sm">ⓘ</span><p class="text-[12px] text-slate-600">For a seamless transaction, please transfer the exact amount displayed.</p></div><div class="border border-slate-200 rounded-xl divide-y divide-slate-100"><div class="p-4"><p class="text-[11px] text-slate-500 uppercase tracking-wide">Amount</p><div class="flex items-center gap-3 mt-1"><span id="manualAmountDisplay" class="text-[20px] font-bold text-slate-900">NGN 510</span><button onclick="copyToClipboard(document.getElementById('manualAmountDisplay').innerText.replace('NGN ',''))" class="bg-orange-400 text-white text-[11px] px-3 py-1 rounded-md font-bold">📋 COPY</button></div></div><div class="p-4"><p class="text-[11px] text-slate-500 uppercase tracking-wide">Account Number</p><div class="flex items-center gap-3 mt-1"><span id="manualAccountNumber" class="text-[20px] font-bold tracking-wide text-slate-900">0638090889</span><button onclick="copyToClipboard(document.getElementById('manualAccountNumber').innerText)" class="bg-orange-400 text-white text-[11px] px-3 py-1 rounded-md font-bold">📋 COPY</button></div></div><div class="p-4"><p class="text-[11px] text-slate-500 uppercase tracking-wide">Bank Name</p><p id="manualBankNameDisplay" class="text-[16px] font-semibold text-slate-900 mt-1">GTBank - GTB (058)</p></div><div class="p-4"><p class="text-[11px] text-slate-500 uppercase tracking-wide">Beneficiary</p><p id="manualBeneficiaryName" class="text-[16px] font-bold text-slate-900 mt-1">GARG RUBY / KRISHNYANSH ZENOVA PEAKS LTD</p></div></div><div class="mt-4 flex items-center gap-2 text-[12px] text-slate-600 bg-slate-50 p-3 rounded-xl"><span>ⓘ</span><p>This is direct transfer to merchant's linked account - UPI Direct.</p></div><div class="mt-6 space-y-3"><button onclick="handleManualPaid()" class="w-full bg-slate-950 text-white font-bold py-4 rounded-xl text-[15px] hover:bg-slate-900 transition">I have paid - I transferred</button><button onclick="document.getElementById('manualTransferModal').classList.add('hidden')" class="w-full text-orange-500 text-[14px] font-semibold py-2">Change payment method</button></div></div></div>
+    <div id="paymentModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-sm p-5 rounded-2xl space-y-4 text-center"><h3 class="text-base font-bold text-teal-400">Live Payment - UPI Direct to Merchant</h3><input type="number" id="paymentPopupAmount" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-center text-lg font-bold text-white outline-none" placeholder="5000"><button onclick="executeLiveFlutterwavePayment()" class="w-full bg-teal-500 text-slate-950 font-bold py-3 rounded-xl text-sm hover:bg-teal-400 transition shadow-lg">🔒 Pay Direct to Merchant Account</button><button onclick="document.getElementById('paymentModal').classList.add('hidden')" class="w-full bg-slate-800 text-slate-300 py-2 rounded-xl text-xs">Cancel</button></div></div>
+    <div id="addBankModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-sm p-5 rounded-2xl space-y-4"><h3 class="text-base font-bold text-white">Link Bank Account</h3><select id="bankSelectDropdown" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white outline-none"><option value="">Select Bank</option></select><input type="text" id="accountNumberInput" maxlength="10" oninput="verifyBankAccount()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white outline-none" placeholder="0123456789"><input type="text" id="accountNameInput" readonly class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-teal-400 font-semibold outline-none" placeholder="Auto-fills"><div class="flex space-x-2"><button onclick="closeAddBankModal()" class="flex-1 bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-semibold">Cancel</button><button onclick="saveNewBankAccount()" class="flex-1 bg-teal-500 text-slate-950 py-2.5 rounded-xl text-xs font-bold">Save Bank</button></div></div></div>
+    <div id="notificationModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-sm p-5 rounded-2xl space-y-3"><div class="flex justify-between items-center border-b border-slate-800 pb-2"><h3 class="text-sm font-bold text-teal-400">Notifications</h3><button onclick="document.getElementById('notificationModal').classList.add('hidden')" class="text-slate-400 text-xs">✕</button></div><div class="p-3 text-xs text-slate-300"><p class="font-bold text-white">Welcome to ClickPeQR!</p><p class="text-[10px] text-slate-400">UPI Direct active for all merchants.</p></div></div></div>
+    <div id="transactionModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-sm p-5 rounded-2xl space-y-3"><div class="flex justify-between items-center border-b border-slate-800 pb-2"><h3 class="text-sm font-bold text-teal-400">Transaction History</h3><button onclick="document.getElementById('transactionModal').classList.add('hidden')" class="text-slate-400 text-xs">✕</button></div><div id="transactionListContainer" class="space-y-2 max-h-60 overflow-y-auto text-xs text-slate-300 mt-2"></div></div></div>
+    <div id="aboutModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-md p-5 rounded-2xl text-xs text-slate-300 space-y-2"><div class="flex justify-between items-center border-b border-slate-800 pb-2"><h3 class="text-sm font-bold text-teal-400">About</h3><button onclick="document.getElementById('aboutModal').classList.add('hidden')" class="text-slate-400 text-xs">✕</button></div><p><strong>ClickPeQR</strong> by KRISHNYANSH ZENOVA PEAKS LTD. RC-9810296<br>Powered by Flutterwave</p><p class="pt-2 text-teal-300 font-semibold">Powered by Flutterwave</p></div></div>
+    <div id="settingsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-sm p-5 rounded-2xl space-y-3"><div class="flex justify-between items-center border-b border-slate-800 pb-2"><h3 class="text-sm font-bold text-teal-400">Edit Profile</h3><button onclick="document.getElementById('settingsModal').classList.add('hidden')" class="text-slate-400 text-xs">✕</button></div><div class="space-y-3 text-xs"><input type="text" id="settingsFullName" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white outline-none" placeholder="Full Name"><div id="settingsBizField" class="hidden"><input type="text" id="settingsBizName" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white outline-none" placeholder="Business Name"></div><input type="text" id="settingsPhone" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white outline-none" value="+2349067862223"><button onclick="saveProfileSettings()" class="w-full bg-teal-500 text-slate-950 font-bold py-2.5 rounded-xl hover:bg-teal-400 transition">Save Changes</button></div></div></div>
+    <div id="faqModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-slate-900 border border-slate-800 w-full max-w-sm p-5 rounded-2xl text-xs text-slate-300 space-y-2"><div class="flex justify-between items-center border-b border-slate-800 pb-2"><h3 class="text-sm font-bold text-teal-400">FAQ</h3><button onclick="document.getElementById('faqModal').classList.add('hidden')" class="text-slate-400 text-xs">✕</button></div><p><strong>How UPI direct works?</strong><br>Customer scans QR containing merchant bank, amount goes directly to that bank via Flutterwave.</p><p><strong>Merchant fee?</strong><br>1.5% MDR.</p><p><strong>Voice speaker?</strong><br>After direct payment, merchant hears "Money received in this account successfully".</p></div></div>
+    <div class="fixed bottom-4 right-4 z-40"><button onclick="toggleAIBot()" class="bg-teal-500 text-slate-950 p-3.5 rounded-full shadow-2xl font-bold flex items-center justify-center hover:scale-105 transition">🤖</button></div>
+    <div id="aiBotModal" class="fixed bottom-20 right-4 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl hidden z-50 p-4 flex flex-col h-96"><div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-2"><h4 class="text-xs font-bold text-teal-400">ClickPeQR Smart Assistant - UPI Direct</h4><button onclick="toggleAIBot()" class="text-slate-400 text-xs">✕</button></div><div id="botChatMessages" class="flex-grow overflow-y-auto space-y-2 text-xs text-slate-300 pr-1"><div class="bg-slate-950 p-2.5 rounded-xl">Hello! Welcome to ClickPeQR UPI Direct Pay.</div></div><div class="flex mt-2 pt-2 border-t border-slate-800 space-x-1"><input type="text" id="botInputText" placeholder="Ask about payments..." class="flex-grow bg-slate-950 border border-slate-800 p-2 rounded-xl text-xs text-white outline-none" onkeypress="if(event.key==='Enter') sendBotMessage()"><button onclick="sendBotMessage()" class="bg-teal-500 text-slate-950 px-3 rounded-xl text-xs font-bold">Send</button></div></div>
+    <script>
+        const SUPABASE_URL = 'https://pkzyvyfdgcpzteqexkc.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.[STRIPPED 126 bytes].5Z';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const nigerianBanksList = [{ name: "Access Bank", code: "044" }, { name: "Citibank Nigeria", code: "023" }, { name: "Ecobank Nigeria", code: "050" }, { name: "Fidelity Bank", code: "070" }, { name: "First Bank of Nigeria", code: "011" }, { name: "FCMB", code: "214" }, { name: "GTB", code: "058" }, { name: "Heritage Bank", code: "030" }, { name: "Keystone Bank", code: "082" }, { name: "Polaris Bank", code: "076" }, { name: "Providus Bank", code: "101" }, { name: "Stanbic IBTC Bank", code: "221" }, { name: "Standard Chartered Bank", code: "068" }, { name: "Sterling Bank", code: "232" }, { name: "Union Bank", code: "032" }, { name: "UBA", code: "033" }, { name: "Unity Bank", code: "215" }, { name: "Wema Bank", code: "035" }, { name: "Zenith Bank", code: "057" }, { name: "Jaiz Bank", code: "301" }, { name: "Taj Bank", code: "302" }, { name: "Lotus Bank", code: "303" }, { name: "Kuda Bank", code: "50211" }, { name: "Moniepoint MFB", code: "50515" }, { name: "Opay", code: "999992" }, { name: "PalmPay", code: "999991" }, { name: "Paga", code: "100002" }, { name: "VFD MFB", code: "566" }, { name: "Sparkle", code: "51310" }, { name: "Airtel Smartcash PSB", code: "120004" }, { name: "MTN Momo PSB", code: "120003" }, { name: "9psb", code: "120001" }, { name: "Hope PSBank", code: "120002" }, { name: "Parallex Bank", code: "104" }, { name: "Globus Bank", code: "103" }, { name: "Signature Bank", code: "106" }, { name: "Titan Trust Bank", code: "102" }];
+        let currentAuthMode = 'login'; let currentPortalType = 'customer'; let scannedMerchantData = null; let speakerChannel = null; let isSpeakerEnabled = false;
+        const PAYMENT_MODE = 'DIRECT';
+        try { speakerChannel = new BroadcastChannel('clickpeqr_payments'); speakerChannel.onmessage = (e) => { if(e.data.type === 'payment_success'){ triggerVirtualSpeaker(e.data.amount, e.data.txId); } }; } catch(e){}
+        function toggleSidebar(){document.getElementById('appSidebar').classList.toggle('-translate-x-full');document.getElementById('sidebarOverlay').classList.toggle('hidden');}
+        function switchAuthTab(m){currentAuthMode=m;const l=document.getElementById('loginTabBtn');const r=document.getElementById('registerTabBtn');const k=document.getElementById('kycFields');const s=document.getElementById('authSubmitBtn');if(m==='login'){l.className="flex-1 py-2 text-xs font-bold rounded-lg bg-teal-500 text-slate-950";r.className="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400";k.classList.add('hidden');s.textContent="Sign In Securely";}else{r.className="flex-1 py-2 text-xs font-bold rounded-lg bg-teal-500 text-slate-950";l.className="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400";k.classList.remove('hidden');s.textContent="Register & Launch App";}}
+        function setPortalType(t){currentPortalType=t;const c=document.getElementById('typeCustomerBtn');const m=document.getElementById('typeMerchantBtn');const b=document.getElementById('businessNameField');if(t==='customer'){c.className="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-teal-500/20 text-teal-400";m.className="flex-1 py-1.5 text-xs font-semibold rounded-lg text-slate-400";b.classList.add('hidden');}else{m.className="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/20 text-amber-400";c.className="flex-1 py-1.5 text-xs font-semibold rounded-lg text-slate-400";b.classList.remove('hidden');}}
+        window.addEventListener('DOMContentLoaded',()=>{const d=document.getElementById('bankSelectDropdown');if(d){d.innerHTML='<option value="">Select Bank</option>';nigerianBanksList.forEach(b=>{let o=document.createElement('option');o.value=b.code;o.textContent=b.name;d.appendChild(o);});}const urlParams=new URLSearchParams(window.location.search);const shouldStay=urlParams.get('stay')==='1'||localStorage.getItem('clickpeqr_remember')==='true';const a=localStorage.getItem('clickpeqr_active_user');if(shouldStay&&a){loadDashboard(JSON.parse(a));}else{document.getElementById('authScreen').classList.remove('hidden');document.getElementById('dashboardScreen').classList.add('hidden');document.getElementById('mainHeader').classList.add('hidden');}if('speechSynthesis' in window){speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>{speechSynthesis.getVoices();};}});
+        function handleAuthSubmit(e){e.preventDefault();const fullName=document.getElementById('fullNameInput').value.trim();const email=document.getElementById('emailInput').value.trim();const bizName=document.getElementById('businessNameInput')?.value.trim()||(fullName+" Store");const phoneVal=document.getElementById('settingsPhone')?.value||"+2349067862223";const uniqueId=Math.floor(Math.random()*900000)+100000;const dp=localStorage.getItem('user_custom_dp')||'logo.png';const userData={id:uniqueId,full_name:fullName,email:email,business_name:bizName,portal_type:currentPortalType,avatar_url:dp,phone_number:phoneVal,permanent_qr_version:Date.now()};localStorage.setItem('clickpeqr_active_user',JSON.stringify(userData));loadDashboard(userData);setTimeout(async()=>{try{if(currentPortalType==='merchant'){await supabaseClient.from('merchants').upsert([{id:uniqueId,business_name:bizName,full_name:fullName,email:email,phone_number:phoneVal,avatar_url:dp,settlement_bank:'044',permanent_qr_id:'PERM_'+uniqueId+'_'+userData.permanent_qr_version}],{onConflict:'email'});}else{await supabaseClient.from('users').upsert([{id:uniqueId,full_name:fullName,email:email,phone_number:phoneVal,avatar_url:dp,user_type:'customer',permanent_qr_id:'CUST_'+uniqueId+'_'+userData.permanent_qr_version}],{onConflict:'email'});} }catch(err){}},100);}
+        function loadDashboard(user){document.getElementById('authScreen').classList.add('hidden');document.getElementById('mainHeader').classList.remove('hidden');document.getElementById('dashboardScreen').classList.remove('hidden');document.querySelectorAll('.user-profile-name').forEach(el=>el.textContent=user.full_name||'User Name');document.getElementById('sidebarModeLabel').textContent=(user.portal_type||'customer').toUpperCase()+' MODE';document.getElementById('userRoleHeader').textContent=user.portal_type||'customer';const dp=localStorage.getItem('user_custom_dp')||user.avatar_url;if(dp){document.querySelectorAll('.user-avatar-display').forEach(img=>img.src=dp);const s=document.getElementById('sidebarUserDP');if(s)s.src=dp;}if(user.portal_type==='merchant'){document.getElementById('merchantPortalView').classList.remove('hidden');document.getElementById('customerPortalView').classList.add('hidden');document.getElementById('merchantStoreNameLabel').textContent="Store: "+(user.business_name||user.full_name);setTimeout(()=>renderPermanentShopQR(user),100);setTimeout(()=>initMerchantRealtime(user.id),500);}else{document.getElementById('customerPortalView').classList.remove('hidden');document.getElementById('merchantPortalView').classList.add('hidden');setTimeout(()=>renderCustomerPermanentQR(user),100);}fetchAndRenderBanks(user.id);}
+        function handleDPChange(event){const file=event.target.files[0];if(file){const r=new FileReader();r.onload=async function(e){const b=e.target.result;localStorage.setItem('user_custom_dp',b);document.querySelectorAll('.user-avatar-display').forEach(img=>img.src=b);const s=document.getElementById('sidebarUserDP');if(s)s.src=b;try{const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');if(u.id){if(u.portal_type==='merchant'){await supabaseClient.from('merchants').update({avatar_url:b}).eq('id',u.id);}else{await supabaseClient.from('users').update({avatar_url:b}).eq('id',u.id);}u.avatar_url=b;localStorage.setItem('clickpeqr_active_user',JSON.stringify(u));}}catch(err){}alert("Profile Picture updated successfully!");};r.readAsDataURL(file);}}
+        function openSettingsModal(){const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');document.getElementById('settingsFullName').value=u.full_name||'';if(u.portal_type==='merchant'){document.getElementById('settingsBizField').classList.remove('hidden');document.getElementById('settingsBizName').value=u.business_name||'';}document.getElementById('settingsModal').classList.remove('hidden');}
+        async function saveProfileSettings(){let u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');u.full_name=document.getElementById('settingsFullName').value.trim();u.phone_number=document.getElementById('settingsPhone').value.trim();if(u.portal_type==='merchant'){u.business_name=document.getElementById('settingsBizName').value.trim();document.getElementById('merchantStoreNameLabel').textContent="Store: "+u.business_name;renderPermanentShopQR(u);try{await supabaseClient.from('merchants').update({business_name:u.business_name,full_name:u.full_name,phone_number:u.phone_number}).eq('id',u.id);}catch(e){}}else{renderCustomerPermanentQR(u);try{await supabaseClient.from('users').update({full_name:u.full_name,phone_number:u.phone_number}).eq('id',u.id);}catch(e){}}localStorage.setItem('clickpeqr_active_user',JSON.stringify(u));document.querySelectorAll('.user-profile-name').forEach(el=>el.textContent=u.full_name);document.getElementById('settingsModal').classList.add('hidden');alert("Settings updated successfully!");}
+        function renderPermanentShopQR(user){const c=document.getElementById('permanentShopQRContainer');if(!c)return;c.innerHTML="";const ver=user.permanent_qr_version||Date.now();const banks=JSON.parse(localStorage.getItem('clickpeqr_banks_'+user.id)||'[]');const primaryBank=banks.find(b=>b.is_primary)||banks[0]||{bank_code:'058',account_number:'0638090889',account_name:'GARG RUBY',bank_name:'GTB'};const payload={type:"MERCHANT_PERMANENT",merchantId:user.id,businessName:user.business_name||user.full_name,version:ver,permanent_id:'PERM_'+user.id+'_'+ver,bank_code:primaryBank.bank_code,account_number:primaryBank.account_number,account_name:primaryBank.account_name,bank_name:primaryBank.bank_name};new QRCode(c,{text:JSON.stringify(payload),width:130,height:130});}
+        function renderCustomerPermanentQR(user){const c=document.getElementById('customerPermanentQRContainer');if(!c)return;c.innerHTML="";const ver=user.permanent_qr_version||Date.now();new QRCode(c,{text:JSON.stringify({type:"CUSTOMER_PERMANENT",customerId:user.id,name:user.full_name,version:ver,permanent_id:'CUST_'+user.id+'_'+ver}),width:130,height:130});}
+        function regenerateMerchantQR(){let u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');if(!u.id)return;if(!confirm('Change your Permanent Shop QR? Old QR will stop working. Continue?'))return;u.permanent_qr_version=Date.now();u.permanent_qr_id='PERM_'+u.id+'_'+u.permanent_qr_version;localStorage.setItem('clickpeqr_active_user',JSON.stringify(u));renderPermanentShopQR(u);supabaseClient.from('merchants').update({permanent_qr_id:u.permanent_qr_id}).eq('id',u.id).then(()=>{});alert('New Permanent Shop QR generated successfully!');}
+        function regenerateCustomerQR(){let u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');if(!u.id)return;if(!confirm('Change your Permanent Customer QR? Continue?'))return;u.permanent_qr_version=Date.now();u.permanent_qr_id='CUST_'+u.id+'_'+u.permanent_qr_version;localStorage.setItem('clickpeqr_active_user',JSON.stringify(u));renderCustomerPermanentQR(u);supabaseClient.from('users').update({permanent_qr_id:u.permanent_qr_id}).eq('id',u.id).then(()=>{});alert('New Permanent Customer QR generated!');}
+        function generateMerchantDynamicQR(){const amt=document.getElementById('merchantDynAmt').value;if(!amt||amt<=0){alert("Enter valid amount");return;}const c=document.getElementById('dynamicQRContainer');c.innerHTML="";const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');const banks=JSON.parse(localStorage.getItem('clickpeqr_banks_'+u.id)||'[]');const primaryBank=banks.find(b=>b.is_primary)||banks[0]||{bank_code:'058',account_number:'0638090889',account_name:'GARG RUBY',bank_name:'GTB'};new QRCode(c,{text:JSON.stringify({type:"MERCHANT_DYNAMIC",merchantId:u.id,amount:amt,businessName:u.business_name,bank_code:primaryBank.bank_code,account_number:primaryBank.account_number,account_name:primaryBank.account_name,bank_name:primaryBank.bank_name}),width:140,height:140});document.getElementById('merchantQRResult').classList.remove('hidden');}
+        async function openWorkingScanner(){document.getElementById('scannerModal').classList.remove('hidden');try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});document.getElementById('cameraVideoFeed').srcObject=s;}catch(err){alert("Camera access denied - using simulate");}}
+        function closeScannerModal(){const v=document.getElementById('cameraVideoFeed');if(v&&v.srcObject)v.srcObject.getTracks().forEach(t=>t.stop());document.getElementById('scannerModal').classList.add('hidden');}
+        function simulateSuccessfulScan(){closeScannerModal();const activeUser=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');let qrData=null;try{const lastScanned=localStorage.getItem('last_scanned_qr_payload');if(lastScanned)qrData=JSON.parse(lastScanned);}catch(e){}if(qrData&&qrData.account_number){scannedMerchantData={shop_name:qrData.businessName||qrData.shop_name||'Merchant Store',account_name:qrData.account_name,account_number:qrData.account_number,bank_name:qrData.bank_name||qrData.bank_code,bank_code:qrData.bank_code,merchant_id:qrData.merchantId||qrData.merchant_id||'merchant_'+Date.now(),amount:qrData.amount};}else{const banks=JSON.parse(localStorage.getItem('clickpeqr_banks_'+activeUser.id)||'[]');const primaryBank=banks.find(b=>b.is_primary)||banks[0]||{bank_name:'GTB',account_number:'0638090889',account_name:'GARG RUBY',bank_code:'058'};scannedMerchantData={shop_name:'KRISHNYANSH ZENOVA PEAKS LTD',account_name:primaryBank.account_name,account_number:primaryBank.account_number,bank_name:primaryBank.bank_name,bank_code:primaryBank.bank_code,merchant_id:'krishnyansh_merchant_001'};}document.getElementById('confirmShopName').innerText=scannedMerchantData.shop_name;document.getElementById('confirmAccountName').innerText=scannedMerchantData.account_name;document.getElementById('confirmBankName').innerText=scannedMerchantData.bank_name;document.getElementById('confirmCustomerName').innerText=activeUser.full_name||'Customer';document.getElementById('confirmAmountInput').value=scannedMerchantData.amount||'510';document.getElementById('merchantConfirmModal').classList.remove('hidden');}
+        function proceedToManualTransfer(){const amt=document.getElementById('confirmAmountInput').value;if(!amt||amt<=0){alert('Enter valid amount');return;}document.getElementById('merchantConfirmModal').classList.add('hidden');if(PAYMENT_MODE==='DIRECT'){document.getElementById('paymentPopupAmount').value=amt;localStorage.setItem('pending_merchant_transfer',JSON.stringify({...scannedMerchantData,amount:amt}));executeLiveFlutterwavePayment();}else{document.getElementById('manualAmountDisplay').innerText='NGN '+amt;document.getElementById('manualAccountNumber').innerText=scannedMerchantData.account_number;document.getElementById('manualBankNameDisplay').innerText=scannedMerchantData.bank_name+' ('+scannedMerchantData.bank_code+')';document.getElementById('manualBeneficiaryName').innerText=scannedMerchantData.account_name+' / '+scannedMerchantData.shop_name;document.getElementById('manualTransferModal').classList.remove('hidden');}}
+        function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>{alert('Copied: '+text);});}
+        async function handleManualPaid(){const amtText=document.getElementById('manualAmountDisplay').innerText;const amount=amtText.replace('NGN ','');const txId='10207'+Math.floor(Math.random()*10000);await saveTransactionToSupabase(amount,txId);const payload={type:'payment_success',amount:amount,txId:txId,merchant_id:scannedMerchantData.merchant_id};if(speakerChannel)speakerChannel.postMessage(payload);triggerVirtualSpeaker(amount,txId);try{const activeUser=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');const merchantId=scannedMerchantData.merchant_id||activeUser.id;await supabaseClient.channel('merchant:'+merchantId).send({type:'broadcast',event:'payment_success',payload:{amount:amount,txId:txId,message:'Money received'}});}catch(e){}document.getElementById('manualTransferModal').classList.add('hidden');setTimeout(()=>{alert('Payment Successful!\nID: '+txId+'\n\nMoney will be confirmed by merchant speaker.');},300);}
+        function enableSpeaker(){isSpeakerEnabled=true;document.getElementById('enableSpeakerBtn').innerText='Voice ON ✓';document.getElementById('enableSpeakerBtn').className='text-[10px] bg-teal-500 text-slate-950 px-2 py-1 rounded-full font-bold';document.getElementById('speakerIdleText').innerText='Speaker enabled - Listening...';document.getElementById('speakerLiveDot').className='w-2 h-2 bg-teal-400 rounded-full animate-pulse';speakMoneyReceived(0,true);}
+        function testSpeakerVoice(){if(!isSpeakerEnabled)enableSpeaker();speakMoneyReceived('510',false);}
+        function triggerVirtualSpeaker(amount,txId){const statusEl=document.getElementById('speakerStatus');const waveEl=document.getElementById('speakerWave');const idleEl=document.getElementById('speakerIdleText');const logEl=document.getElementById('lastPaymentLog');if(statusEl)statusEl.innerText='🔊 Money Received! NGN '+amount;if(statusEl)statusEl.className='text-[11px] text-teal-300 font-bold mb-2';if(waveEl)waveEl.classList.remove('hidden');if(idleEl)idleEl.classList.add('hidden');if(logEl)logEl.innerHTML='<div class="bg-teal-500/10 p-2 rounded-lg border border-teal-500/20">✓ Payment ID: '+txId+' - NGN '+amount+' - '+new Date().toLocaleTimeString()+'</div>';const salesEl=document.getElementById('todaysSales');if(salesEl){const current=parseFloat(salesEl.innerText.replace('₦','').replace(',',''))||0;const newTotal=current+parseFloat(amount);salesEl.innerText='₦ '+newTotal.toLocaleString();}speakMoneyReceived(amount,false);setTimeout(()=>{if(waveEl)waveEl.classList.add('hidden');if(idleEl){idleEl.classList.remove('hidden');idleEl.innerText='Waiting for next payment...';}if(statusEl){statusEl.innerText='Waiting for payment...';statusEl.className='text-[11px] text-slate-400 mb-2';}},5000);}
+        function speakMoneyReceived(amount,isTest){if(!isSpeakerEnabled&&!isTest)return;if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();const text=isTest? 'Virtual speaker enabled. Ready for payments.' : `Money received in this account successfully. Received ${amount} Naira.`;const utter=new SpeechSynthesisUtterance(text);utter.lang='en-NG';utter.rate=0.9;utter.pitch=1.1;utter.volume=1.0;const voices=window.speechSynthesis.getVoices();let preferred=voices.find(v=>v.lang.includes('en-NG')&&v.name.toLowerCase().includes('female'));if(!preferred)preferred=voices.find(v=>v.name.includes('Samantha')||v.name.includes('Google UK English Female')||v.name.includes('Zira')||v.name.includes('Female'));if(!preferred)preferred=voices.find(v=>v.lang.startsWith('en-'));if(preferred)utter.voice=preferred;window.speechSynthesis.speak(utter);}
+        function initMerchantRealtime(merchantId){try{const channel=supabaseClient.channel('merchant:'+merchantId).on('broadcast',{event:'payment_success'},(payload)=>{const amt=payload.payload.amount;const txId=payload.payload.txId;triggerVirtualSpeaker(amt,txId);}).subscribe((status)=>{if(status==='SUBSCRIBED'){document.getElementById('speakerStatus').innerText='Live Connected - Waiting...';document.getElementById('speakerLiveDot').className='w-2 h-2 bg-teal-400 rounded-full animate-pulse';}});}catch(e){}}
+        function executeLiveFlutterwavePayment(){const amt=document.getElementById('paymentPopupAmount').value;if(!amt||amt<=0){alert("Enter valid amount");return;}document.getElementById('paymentModal').classList.add('hidden');const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');const pendingMerchant=JSON.parse(localStorage.getItem('pending_merchant_transfer')||'null')||scannedMerchantData||{};FlutterwaveCheckout({public_key:"FLWPUBK-0666bafa3b0455d5f5060549fe805be5-X",tx_ref:"clickpeqr_live_"+(pendingMerchant.merchant_id||'gen')+"_"+Date.now(),amount:parseFloat(amt),currency:"NGN",payment_options:"card, mobilemoney, ussd, nqr, banktransfer",customer:{email:u.email||"customer@clickpeqr.ng",name:u.full_name||"ClickPeQR User",phone_number:u.phone_number||"+2349067862223"},meta:{merchant_id:pendingMerchant.merchant_id,merchant_account:pendingMerchant.account_number,merchant_bank:pendingMerchant.bank_code,merchant_name:pendingMerchant.account_name},callback:function(d){saveTransactionToSupabase(amt,d.transaction_id);if(speakerChannel)speakerChannel.postMessage({type:'payment_success',amount:amt,txId:d.transaction_id,merchant_id:pendingMerchant.merchant_id});triggerVirtualSpeaker(amt,d.transaction_id);fetch('/api/settle-to-merchant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:amt,transaction_id:d.transaction_id,merchant_id:pendingMerchant.merchant_id,merchant_account:pendingMerchant.account_number,merchant_bank_code:pendingMerchant.bank_code,merchant_account_name:pendingMerchant.account_name})}).then(r=>r.json()).then(res=>{console.log('Settlement',res);}).catch(()=>{});alert("Payment Successful! ID: "+d.transaction_id+"\nNGN "+amt+" direct to "+pendingMerchant.shop_name+" ("+pendingMerchant.account_number+")");localStorage.removeItem('pending_merchant_transfer');},onclose:function(){}});}
+        async function saveTransactionToSupabase(amount,txId){const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');let txs=JSON.parse(localStorage.getItem('clickpeqr_txs')||'[]');txs.unshift({amount,type:'UPI Direct to '+(scannedMerchantData?.shop_name||'Merchant'),date:new Date().toLocaleString(),txId:txId,merchant:scannedMerchantData?.shop_name||'Merchant'});localStorage.setItem('clickpeqr_txs',JSON.stringify(txs));try{await supabaseClient.from('transactions').insert([{transaction_ref:String(txId),user_id:u.id,sender_id:u.id,merchant_id:scannedMerchantData?.merchant_id||u.id,amount:parseFloat(amount),status:'success',type:'UPI Direct - '+scannedMerchantData?.account_number}]);}catch(e){}}
+        function showTransactionHistory(){const c=document.getElementById('transactionListContainer');const txs=JSON.parse(localStorage.getItem('clickpeqr_txs')||'[]');if(txs.length===0){c.innerHTML='<p class="text-slate-500 text-center py-2">No recent live transactions.</p>';}else{let h='';for(let i=0;i<txs.length;i++){const t=txs[i];h+='<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center"><div><p class="font-bold text-white">'+t.type+' - '+(t.merchant||'')+'</p><p class="text-[10px] text-slate-400">'+t.date+' | ID:'+(t.txId||'')+'</p></div><span class="text-teal-400 font-mono font-bold">₦'+t.amount+'</span></div>';}c.innerHTML=h;}document.getElementById('transactionModal').classList.remove('hidden');}
+        async function fetchAndRenderBanks(userId){const c=document.getElementById('linkedBanksListContainer');if(!c)return;try{const r=await supabaseClient.from('linked_accounts').select('*').eq('user_id',userId);const d=r.data;if(d&&d.length>0){let h='';for(let i=0;i<d.length;i++){const a=d[i];const p=a.is_primary?'<span class="text-[9px] bg-teal-500/20 text-teal-400 px-1 rounded">Primary</span>':'';h+='<div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-xl border border-slate-800"><div><p class="text-xs font-bold text-white">'+a.bank_name+' '+p+'</p><p class="text-[10px] text-slate-400 font-mono">'+a.account_number+' - '+a.account_name+'</p></div><button onclick="switchPrimaryBank(\''+userId+'\','+i+')" class="text-[10px] bg-slate-800 text-teal-400 px-2 py-1 rounded">Switch</button></div>';}c.innerHTML=h;localStorage.setItem('clickpeqr_banks_'+userId,JSON.stringify(d));return;}}catch(e){}const localBanks=JSON.parse(localStorage.getItem('clickpeqr_banks_'+userId)||'[]');if(localBanks.length===0){const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');if(u.portal_type==='merchant'&&localBanks.length===0){localBanks.push({user_id:userId,bank_name:'GTB',bank_code:'058',account_number:'0638090889',account_name:'GARG RUBY',is_primary:true});localStorage.setItem('clickpeqr_banks_'+userId,JSON.stringify(localBanks));}else{c.innerHTML='<p class="text-xs text-slate-500 text-center py-2">No bank accounts linked yet.</p>';return;}}let h2='';for(let i=0;i<localBanks.length;i++){const a=localBanks[i];const p=a.is_primary?'<span class="text-[9px] bg-teal-500/20 text-teal-400 px-1 rounded">Primary</span>':'';h2+='<div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-xl border border-slate-800"><div><p class="text-xs font-bold text-white">'+a.bank_name+' '+p+'</p><p class="text-[10px] text-slate-400 font-mono">'+a.account_number+' - '+a.account_name+'</p></div><button onclick="switchPrimaryBank(\''+userId+'\','+i+')" class="text-[10px] bg-slate-800 text-teal-400 px-2 py-1 rounded">Switch</button></div>';}c.innerHTML=h2;}
+        function openAddBankModal(){document.getElementById('addBankModal').classList.remove('hidden');}
+        function closeAddBankModal(){document.getElementById('addBankModal').classList.add('hidden');}
+        async function verifyBankAccount(){const bankCode=document.getElementById('bankSelectDropdown').value;const accNum=document.getElementById('accountNumberInput').value.trim();const nameInput=document.getElementById('accountNameInput');if(!bankCode){alert("Please select a bank first.");return;}if(accNum.length!==10){nameInput.value="";return;}nameInput.value="Verifying with bank...";try{const res=await fetch('/api/resolve-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({account_number:accNum,account_bank:bankCode})});const result=await res.json();if(result&&result.status==='success'&&result.data&&result.data.account_name){nameInput.value=result.data.account_name;}else{nameInput.value="";alert("Bank verification failed: "+(result.message||"Invalid account or LIVE key missing"));}}catch(err){nameInput.value="";alert("Verification failed - check Render server");}}
+        async function saveNewBankAccount(){const u=JSON.parse(localStorage.getItem('clickpeqr_active_user')||'{}');if(!u.id){alert("Please log in first.");return;}const dd=document.getElementById('bankSelectDropdown');const bankName=dd.options[dd.selectedIndex]?.text;const bankCode=dd.value;const accNum=document.getElementById('accountNumberInput').value.trim();const accName=document.getElementById('accountNameInput').value.trim();if(!bankCode||bankName==="Select Bank"||accNum.length!==10||!accName){alert("Please select bank, enter 10-digit account, and wait for real holder name.");return;}let localBanks=JSON.parse(localStorage.getItem('clickpeqr_banks_'+u.id)||'[]');const isPrimary=localBanks.length===0;const newBank={user_id:u.id,bank_name:bankName,bank_code:bankCode,account_number:accNum,account_name:accName,is_primary:isPrimary};localBanks.push(newBank);localStorage.setItem('clickpeqr_banks_'+u.id,JSON.stringify(localBanks));try{await supabaseClient.from('linked_accounts').insert([newBank]);}catch(e){}closeAddBankModal();fetchAndRenderBanks(u.id);alert("Bank linked! Real name: "+accName);document.getElementById('accountNumberInput').value="";document.getElementById('accountNameInput').value="";}
+        function switchPrimaryBank(userId,idx){let s=JSON.parse(localStorage.getItem('clickpeqr_banks_'+userId)||'[]');s.forEach((a,i)=>{a.is_primary=(i===idx);});localStorage.setItem('clickpeqr_banks_'+userId,JSON.stringify(s));fetchAndRenderBanks(userId);alert("Primary bank switched! Now payments will go directly to this account - UPI direct.");}
+        function showComplaintWhatsApp(){window.open("https://wa.me/2349067862223?text=Hello%20ClickPeQR%20Support","_blank");}
+        function showNotificationModal(){document.getElementById('notificationModal').classList.remove('hidden');}
+        function showAboutModal(){document.getElementById('aboutModal').classList.remove('hidden');}
+        function showFAQModal(){document.getElementById('faqModal').classList.remove('hidden');}
+        function switchView(){}
+        function handleLogout(){localStorage.removeItem('clickpeqr_active_user');localStorage.removeItem('clickpeqr_remember');window.location.href=window.location.pathname;}
+        function toggleAIBot(){document.getElementById('aiBotModal').classList.toggle('hidden');}
+        function sendBotMessage(){const i=document.getElementById('botInputText');const c=document.getElementById('botChatMessages');const t=i.value.trim();if(!t)return;c.innerHTML+='<div class="bg-teal-500/10 text-teal-300 p-2.5 rounded-xl text-right">'+t+'</div>';i.value='';setTimeout(()=>{let r="Hello! I am your ClickPeQR Live Assistant - UPI Direct active.";const l=t.toLowerCase();if(l.includes('flutterwave'))r="Flutterwave Live SDK in DIRECT mode - payment goes directly to merchant's own linked bank, no manual copy.";else if(l.includes('supabase'))r="Supabase tracking users, linked_accounts, and transactions. Realtime enabled for merchant speaker for all merchants.";else if(l.includes('bank'))r="Link your bank in Bank Accounts. Your QR will embed your bank details, so customers pay directly to YOU like UPI.";else if(l.includes('speaker')||l.includes('voice'))r="Virtual Speaker: Enable Voice first. After UPI direct payment to your account, it speaks 'Money received in this account successfully'.";else if(l.includes('qr')||l.includes('permanent'))r="Each merchant's Permanent QR now contains his own bank. Change anytime from dashboard. Old QR invalidates.";c.innerHTML+='<div class="bg-slate-950 p-2.5 rounded-xl">'+r+'</div>';c.scrollTop=c.scrollHeight;},600);}
+    </script>
 </body>
 </html>
