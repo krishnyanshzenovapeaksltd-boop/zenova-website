@@ -159,7 +159,7 @@ app.post('/api/gemini', async (req, res) => {
   }
   const systemPrompt = `You are Zenova AI Assistant for Krishnyansh Zenova Peaks Ltd RC-9810296 Lagos. CEO Ruby Garg +2349067862223. Services: CAC BN 60K LTD 150K NGO 220K, SMEDAN 10K SCUML/TIN 15K, Branding from 50K, Website 120K-550K, AltraAI Starter 55K+10K/mo Premium 85K+15K/mo Pro 150K+20K/mo, GBP 35K, Google Ads 70K/mo, AI Video 15K/ad. Be short, friendly Nigerian, ask business name + phone for lead. User: ${userMessage}`;
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       body: JSON.stringify({
