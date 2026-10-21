@@ -176,20 +176,43 @@ app.post('/api/gemini', async (req, res) => {
   }
 });
 
-// ================= NEW: SAVE LEADS TO SUPABASE =================
+// ================= SAVE LEADS TO SUPABASE + GOOGLE SHEET =================
 app.post('/api/zenova-lead', async (req, res) => {
   try {
-    const { business_name, service, raw } = req.body;
+    const { business_name, service, raw, phone } = req.body;
     console.log('Zenova Lead:', business_name, service);
+    
     if (supabase) {
       await supabase.from('contacts').insert([{ 
         name: business_name, 
         email: `${business_name}@lead.com`, 
+        phone: phone || "",
         message: `${service} | ${raw}`, 
         service: service,
         created_at: new Date().toISOString() 
       }]);
     }
+
+    const sheetUrl = process.env.GOOGLE_SHEET_URL;
+    if (sheetUrl) {
+      try {
+        await fetch(sheetUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            business_name: business_name,
+            service: service,
+            raw: raw,
+            phone: phone || "",
+            source: "Website Bot - Zenova AI"
+          })
+        });
+        console.log('✅ Sheet saved');
+      } catch (e) {
+        console.log('Sheet error:', e.message);
+      }
+    }
+
     res.json({ success: true });
   } catch (e) {
     res.json({ success: true });
