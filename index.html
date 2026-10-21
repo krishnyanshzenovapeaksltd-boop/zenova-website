@@ -483,17 +483,31 @@ async function submitRegistration(e){
 </script>
 
 <!-- ===== ULTRA MINIMAL BOT - NO SUPABASE - 100% OPEN HOGA ===== -->
-<!-- ===== FINAL BOT - ICON + OPEN 100% FIXED - INDEX.HTML ===== -->
+<!-- ===== ZENOVA BOT - GEMINI ONLY - AUTO POPUP - CRM + 【entity-WHATSAPP¦canonical_name=WhatsApp】 ===== -->
 <style>
-#zenova-chat-btn{position:fixed;bottom:20px;right:20px;width:68px;height:68px;background:linear-gradient(135deg,#FDB913,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.5);z-index:9999999;font-size:34px;border:3px solid #fff}
-#zenova-chat-window{position:fixed;bottom:100px;right:20px;width:360px;max-width:92vw;height:480px;background:#121212;border:1px solid #333;border-radius:18px;display:none;flex-direction:column;z-index:9999999;overflow:hidden}
+#zenova-chat-btn{position:fixed;bottom:20px;right:20px;width:68px;height:68px;background:linear-gradient(135deg,#FDB913,#FF8A00);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99999;box-shadow:0 4px 20px rgba(0,0,0,0.3);font-size:32px;animation:zenova-pulse 2s infinite}
+@keyframes zenova-pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+#zenova-chat-window{position:fixed;bottom:100px;right:20px;width:360px;max-width:92vw;height:480px;background:#121212;border-radius:16px;display:none;flex-direction:column;z-index:99999;box-shadow:0 8px 30px rgba(0,0,0,0.4);overflow:hidden;border:1px solid #333}
+#zenova-msgs div{padding:8px 12px;border-radius:12px;max-width:85%;font-size:14px;line-height:1.4;word-wrap:break-word}
+.msg-user{align-self:flex-end;background:#FDB913;color:#000}
+.msg-bot{align-self:flex-start;background:#2a2a2a;color:#fff}
+#zenova-inp{flex:1;padding:10px 12px;border-radius:20px;border:1px solid #333;background:#2a2a2a;color:#fff;outline:none}
+#zenova-send{background:#FDB913;border:none;padding:10px 14px;border-radius:20px;font-weight:900;cursor:pointer}
 </style>
 
 <div id="zenova-chat-btn">🤖</div>
 <div id="zenova-chat-window">
-  <div style="background:#FDB913;color:#000;padding:12px 14px;font-weight:900;display:flex;justify-content:space-between">ZENOVA AI 24/7 <span id="zenova-close" style="cursor:pointer;font-size:24px">×</span></div>
-  <div id="zenova-msgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#0a0a0a"><div style="padding:9px 13px;border-radius:14px;background:#1e1e1e;color:#fff;align-self:flex-start;border:1px solid #2a2a2a;font-size:13px">Hello! 👋 Zenova AI<br>BN 9701468 RC 9810296<br>Ruby Garg +2349067862223<br>Tell business name + service?</div></div>
-  <div style="display:flex;padding:8px;background:#1a1a1a;gap:6px"><input id="zenova-inp" placeholder="Type CAC, Price, Video..." style="flex:1;background:#0a0a0a;border:1px solid #333;border-radius:20px;padding:10px 14px;color:#fff;outline:none;font-size:13px"><button id="zenova-send" style="background:#FDB913;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;font-weight:900">➤</button></div>
+  <div style="background:#FDB913;color:#000;padding:12px 14px;font-weight:900;display:flex;justify-content:space-between;align-items:center">
+    <span>ZENOVA AI 24/7 • RC-9810296</span>
+    <span id="zenova-close" style="cursor:pointer;font-size:22px;padding:0 6px">×</span>
+  </div>
+  <div id="zenova-msgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#1a1a1a">
+    <!-- First message will be added by JS popup -->
+  </div>
+  <div style="display:flex;padding:8px;background:#1a1a1a;gap:6px">
+    <input id="zenova-inp" placeholder="Type CAC, Price, Branding..."/>
+    <button id="zenova-send">Send</button>
+  </div>
 </div>
 
 <script>
@@ -501,37 +515,86 @@ async function submitRegistration(e){
   var btn=document.getElementById('zenova-chat-btn');
   var win=document.getElementById('zenova-chat-window');
   var close=document.getElementById('zenova-close');
+  var msgs=document.getElementById('zenova-msgs');
   var inp=document.getElementById('zenova-inp');
   var send=document.getElementById('zenova-send');
-  var msgs=document.getElementById('zenova-msgs');
-
-  function toggleChat(){
-    console.log('Bot clicked - toggling');
-    if(win.style.display==='flex'){ win.style.display='none'; }
-    else { win.style.display='flex'; win.style.flexDirection='column'; }
+  
+  function toggleWin(){ 
+    win.style.display = (win.style.display==='flex') ? 'none' : 'flex'; 
+    if(win.style.display==='flex') inp.focus();
   }
-  btn.addEventListener('click', toggleChat);
-  close.addEventListener('click', toggleChat);
+  btn.onclick=toggleWin;
+  close.onclick=function(){ win.style.display='none'; };
 
-  function sendMsg(){
-    var t=inp.value.trim(); if(!t) return;
-    msgs.innerHTML+='<div style="padding:9px 13px;border-radius:14px;background:#FDB913;color:#000;align-self:flex-end;font-weight:600;max-width:80%;font-size:13px">'+t+'</div>';
-    inp.value='';
-    var q=t.toLowerCase(); var r="";
-    if(q.includes('cac')) r="CAC: BN N30k LTD N80k - 5-7 days";
-    else if(q.includes('video')) r="AI Video 15min - Admin AI Studio me prompt paste karo - Generate dabao - Real video banega FREE!";
-    else if(q.includes('price')) r="10 Services: Consult N30k, Altra AI N55-150k-, GBP N35k, Branding N50k, SMEDAN N10k,google ads N70k-250k, CAC N60kBN,N120kltd,N220kNGO, SCUML/tin N15k,ai Video N15k, Website N120k-550k";
-    else r="Thanks: "+t+" - Zenova BN 9701468 RC 9810296 - Ruby +2349067862223";
-    setTimeout(function(){ msgs.innerHTML+='<div style="padding:9px 13px;border-radius:14px;background:#1e1e1e;color:#fff;align-self:flex-start;border:1px solid #2a2a2a;font-size:13px;white-space:pre-wrap">'+r+'</div>'; msgs.scrollTop=msgs.scrollHeight; },400);
+  // ===== CONFIG - PASTE YOUR KEYS =====
+  var GEMINI_API_KEY="PASTE_YOUR_GEMINI_API_KEY_HERE"; // from aistudio.google.com
+  var GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+GEMINI_API_KEY;
+  var SHEET_URL="PASTE_YOUR_GOOGLE_SHEET_URL_HERE";
+  var MY_WHATSAPP="2349067862223";
+
+  function addMsg(txt, who){
+    var d=document.createElement('div');
+    d.className= who==='user' ? 'msg-user' : 'msg-bot';
+    d.innerHTML=txt;
+    msgs.appendChild(d);
     msgs.scrollTop=msgs.scrollHeight;
   }
-  send.addEventListener('click', sendMsg);
-  inp.addEventListener('keydown', function(e){ if(e.key==='Enter') sendMsg(); });
 
-  // Force icon visible after 1 sec
-  setTimeout(function(){ btn.style.display='flex'; console.log('Bot ready ✅'); },500);
+  // ===== CRM + 【entity-WHATSAPP¦canonical_name=WhatsApp】 WIRE =====
+  function saveLead(business, service, fullMsg){
+    var leads=JSON.parse(localStorage.getItem('zenova_leads')||'[]');
+    leads.push({business:business, service:service, msg:fullMsg, time:new Date().toLocaleString()});
+    localStorage.setItem('zenova_leads', JSON.stringify(leads));
+
+    if(SHEET_URL && SHEET_URL.startsWith('https')){
+      fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({business_name:business,service:service,raw:fullMsg,time:new Date().toISOString()})});
+    }
+
+    var waMsg=encodeURIComponent("Hi Zenova! I am "+business+" I need "+service+". Msg: "+fullMsg);
+    var waLink="https://wa.me/"+MY_WHATSAPP+"?text="+waMsg;
+    addMsg('✅ Saved <b>'+business+'</b><br><a href="'+waLink+'" target="_blank" style="display:inline-block;margin-top:8px;background:#25D366;color:white;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">Continue on 【entity-WhatsApp¦canonical_name=WhatsApp】 🚀</a>','bot');
+  }
+
+  async function callGemini(userText){
+    addMsg(userText,'user');
+    inp.value='';
+
+    if(userText.length>8){
+      var parts=userText.split(',');
+      var bName=(parts[0]||'New Customer').trim().substring(0,50);
+      var serv=(parts[1]||userText).trim().substring(0,100);
+      saveLead(bName, serv, userText);
+    }
+
+    try{
+      addMsg('Typing...','bot');
+      var res=await fetch(GEMINI_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text:"You are Zenova AI for Krishnyansh Zenova Peaks Ltd RC-9810296, CEO Ruby Garg +2349067862223. Services: CAC BN 60K LTD 150K NGO 220K, SMEDAN 10K SCUML/TIN 15K, Branding from 50K, Website 120K-550K, AltraAI Starter 55K+10K/mo Premium 85K+15K/mo Pro 150K+20K/mo, GBP 35K, Google Ads 70K/mo, AI Video 15K/ad. Be short, friendly, Nigerian. Always ask business name + phone. User: "+userText}]]})
+      });
+      var data=await res.json();
+      msgs.lastChild.remove();
+      var aiText=(data.candidates && data.candidates[0].content.parts[0].text) || "Please WhatsApp us +2349067862223";
+      addMsg(aiText.replace(/\n/g,'<br>')+'<br><br><small>📞 +2349067862223 | RC-9810296</small>','bot');
+    }catch(e){
+      msgs.lastChild.remove();
+      addMsg('Network busy! Lead saved ✅ <br>WhatsApp us fast: <a href="https://wa.me/2349067862223" style="color:#FDB913">+2349067862223</a>','bot');
+    }
+  }
+
+  send.onclick=function(){ if(inp.value.trim()) callGemini(inp.value.trim()); };
+  inp.onkeypress=function(e){ if(e.key==='Enter' && inp.value.trim()) callGemini(inp.value.trim()); };
+
+  // ===== AUTO POPUP FOR VISITOR - AS YOU ASKED =====
+  function visitorPopup(){
+    toggleWin();
+    addMsg('Hi! I\'m Zenova AI Assistant 👋<br><br>I\'m your 24/7 business helper from <b>Krishnyansh Zenova Peaks Ltd</b> RC-9810296<br><br>🚀 I can help you with:<br>• CAC Registration<br>• Branding Pack<br>• Website Development<br>• AltraAI Automation<br>• GBP + Google Ads<br><br>Tell me your <b>business name + what service you need?</b><br>Ex: "Divine Stores, Need CAC + Logo"<br><br>CEO: Ruby Garg | 📞 +2349067862223','bot');
+  }
+
+  // Pop after 4 seconds for every new visitor
+  setTimeout(visitorPopup, 4000);
+
 })();
 </script>
-<!-- ===== BOT END ===== -->
-</body>
-</html>
+<!-- ===== END ===== -->
