@@ -288,78 +288,91 @@ app.get('/api/subscribers', async (req, res) => {
     res.json(data || []);
   } catch (err) { res.json([]); }
 });
-// === ZENOVA PATCH START - ALL SOCIAL APIS - RC 9810296 - PASTE BEFORE app.get('*') ===
-const META_WHATSAPP_TOKEN = process.env.META_WHATSAPP_TOKEN;
-const META_WHATSAPP_PHONE_ID = process.env.META_WHATSAPP_PHONE_ID;
-const 【entity-META_FB_PAGE_TOKEN¦canonical_name=META】 = process.env.【entity-META_FB_PAGE_TOKEN¦canonical_name=META】;
-const 【entity-META_IG_USER_ID¦canonical_name=META】 = process.env.【entity-META_IG_USER_ID¦canonical_name=META】;
-const META_VERIFY_TOKEN = process.env.META_VERIFY_TOKEN || 'ZENOVA_VERIFY_2026';
-const GEMINI_API_KEY_PATCH = process.env.GEMINI_API_KEY;
-const FLUTTERWAVE_SECRET_PATCH = process.env.FLUTTERWAVE_SECRET_KEY;
+
+// === ZENOVA PATCH - RENDER FIXED - PASTE BEFORE app.get('*') - RC 9810296 ===
+const META_WHATSAPP_TOKEN_FIX = process.env.META_WHATSAPP_TOKEN;
+const META_WHATSAPP_PHONE_ID_FIX = process.env.META_WHATSAPP_PHONE_ID;
+const META_FB_PAGE_TOKEN_FIX = process.env.META_FB_PAGE_TOKEN;
+const META_IG_USER_ID_FIX = process.env.META_IG_USER_ID;
+const META_VERIFY_TOKEN_FIX = process.env.META_VERIFY_TOKEN || 'ZENOVA_VERIFY_2026';
+const GEMINI_KEY_FIX = process.env.GEMINI_API_KEY;
+const FLW_SECRET_FIX = process.env.FLUTTERWAVE_SECRET_KEY;
 
 // Website Bot
-app.post('/api/chat', async (req,res)=>{
-  const {message,clientId}=req.body;
-  try{
-    if(GEMINI_API_KEY_PATCH){
-      const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
-      const g=await 【entity-axios¦canonical_name=axios】.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY_PATCH}`,{contents:[{parts:[{text:`Client ${clientId}: ${message}`}]}]});
-      return res.json({reply:g.data.candidates?.[0]?.content?.parts?.[0]?.text||'Hello!'});
+app.post('/api/chat', async (req, res) => {
+  const { message, clientId } = req.body;
+  try {
+    if (GEMINI_KEY_FIX) {
+      const r = await require('【entity-axios¦canonical_name=axios】').post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_KEY_FIX}`, { contents: [{ parts: [{ text: `Client ${clientId}: ${message}` }] }] });
+      return res.json({ reply: r.data.candidates?.[0]?.content?.parts?.[0]?.text || 'Hello!' });
     }
-    res.json({reply:`Bot for ${clientId}: ${message} (Add GEMINI_API_KEY for real AI)`});
-  }catch(e){ res.json({reply:'Bot thinking...'}); }
+    res.json({ reply: `Bot for ${clientId}: ${message}` });
+  } catch (e) { res.json({ reply: 'Bot thinking...' }); }
 });
 
-// 【entity-WhatsApp¦canonical_name=WHATSAPP】
-app.post('/api/【entity-whatsapp¦canonical_name=WHATSAPP】/send', async (req,res)=>{
-  const {to,message}=req.body;
-  if(!META_WHATSAPP_TOKEN) return res.json({success:false,error:'Add META_WHATSAPP_TOKEN in .env'});
-  try{
+// WhatsApp
+app.post('/api/whatsapp/send', async (req, res) => {
+  const { to, message } = req.body;
+  if (!META_WHATSAPP_TOKEN_FIX) return res.json({ success: false, error: 'Add META_WHATSAPP_TOKEN' });
+  try {
     const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
-    const r=await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/${META_WHATSAPP_PHONE_ID}/messages`,{messaging_product:'【entity-whatsapp¦canonical_name=WHATSAPP】',to,type:'text',text:{body:message}},{headers:{Authorization:`Bearer ${META_WHATSAPP_TOKEN}`}});
-    res.json({success:true,data:[STRIPPED]
-  }catch(e){ res.json({success:false,error:e.response?.data||e.message}); }
+    const r = await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/${META_WHATSAPP_PHONE_ID_FIX}/messages`, { messaging_product: 'whatsapp', to, type: 'text', text: { body: message } }, { headers: { Authorization: `Bearer ${META_WHATSAPP_TOKEN_FIX}` } });
+    res.json({ success: true, data: r.data });
+  } catch (e) { res.json({ success: false, error: e.response?.data || e.message }); }
 });
-app.get('/api/【entity-whatsapp¦canonical_name=WHATSAPP】/webhook',(req,res)=>{ if(req.query['hub.mode']==='subscribe' && req.query['hub.verify_token']===META_VERIFY_TOKEN) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403); });
-app.post('/api/【entity-whatsapp¦canonical_name=WHATSAPP】/webhook', async (req,res)=>{ res.sendStatus(200); });
+app.get('/api/whatsapp/webhook', (req, res) => {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === META_VERIFY_TOKEN_FIX) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403);
+});
+app.post('/api/whatsapp/webhook', (req, res) => { res.sendStatus(200); });
 
 // Facebook
-app.post('/api/facebook/send', async (req,res)=>{
-  const {recipientId,message}=req.body;
-  if(!【entity-META_FB_PAGE_TOKEN¦canonical_name=META】) return res.json({success:false,error:'Add 【entity-META_FB_PAGE_TOKEN¦canonical_name=META】'});
-  try{
-    const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
-    const r=await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/me/messages?access_token=${META_FB_PAGE_TOKEN}`,{recipient:{id:recipientId},message:{text:message}});
-    res.json({success:true,data:r.data});
-  }catch(e){ res.json({success:false,error:e.response?.data||e.message}); }
-});
-app.get('/api/facebook/webhook',(req,res)=>{ if(req.query['hub.mode']==='subscribe' && req.query['hub.verify_token']===META_VERIFY_TOKEN) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403); });
-app.post('/api/facebook/webhook',(req,res)=>{ res.status(200).send('EVENT_RECEIVED'); });
-
-// Instagram
-app.post('/api/instagram/send', async (req,res)=>{
-  const {recipientId,message}=req.body;
-  if(!【entity-META_FB_PAGE_TOKEN¦canonical_name=META】) return res.json({success:false,error:'Add 【entity-META_FB_PAGE_TOKEN¦canonical_name=META】'});
-  try{
+app.post('/api/facebook/send', async (req, res) => {
+  const { recipientId, message } = req.body;
+  if (!META_FB_PAGE_TOKEN_FIX) return res.json({ success: false, error: 'Add META_FB_PAGE_TOKEN' });
+  try {
     const axios = require('axios');
-    const r=await axios.post(`https://graph.facebook.com/v18.0/${META_IG_USER_ID}/messages?access_token=${META_FB_PAGE_TOKEN}`,{recipient:{id:recipientId},message:{text:message}});
-    res.json({success:true,data:[STRIPPED]
-  }catch(e){ res.json({success:false,error:e.response?.data||e.message}); }
+    const r = await axios.post(`https://graph.facebook.com/v18.0/me/messages?access_token=${META_FB_PAGE_TOKEN_FIX}`, { recipient: { id: recipientId }, message: { text: message } });
+    res.json({ success: true, data: r.data });
+  } catch (e) { res.json({ success: false, error: e.response?.data || e.message }); }
+});
+app.get('/api/facebook/webhook', (req, res) => {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === META_VERIFY_TOKEN_FIX) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403);
+});
+app.post('/api/facebook/webhook', (req, res) => { res.status(200).send('EVENT_RECEIVED'); });
+
+// 【entity-Instagram¦canonical_name=Instagram】
+app.post('/api/【entity-instagram¦canonical_name=Instagram】/send', async (req, res) => {
+  const { recipientId, message } = req.body;
+  if (!META_FB_PAGE_TOKEN_FIX) return res.json({ success: false, error: 'Add META_FB_PAGE_TOKEN' });
+  try {
+    const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
+    const r = await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/${META_IG_USER_ID_FIX}/messages?access_token=${META_FB_PAGE_TOKEN_FIX}`, { recipient: { id: recipientId }, message: { text: message } });
+    res.json({ success: true, data: r.data });
+  } catch (e) { res.json({ success: false, error: e.response?.data || e.message }); }
 });
 
-// Deploy ALL + Toggle Manual as Subscription
-app.post('/api/deploy-bot', async (req,res)=>{
-  const {clientId,channels}=req.body; const fs = require('fs');
-  for(let ch of channels){ const dir=`./public/bot/${clientId}`; if(!fs.existsSync(dir)) fs.mkdirSync(dir,{recursive:true}); fs.writeFileSync(`${dir}/${ch}.js`,`// Bot ${clientId} ${ch}`); }
-  res.json({success:true,deployed:channels,embed_code:`https://www.krishnyanshzenovapeaks.com/bot/${clientId}.js`});
+// Deploy ALL Channels
+app.post('/api/deploy-bot', async (req, res) => {
+  const { clientId, channels } = req.body;
+  try {
+    for (let ch of channels) {
+      const dir = `./public/bot/${clientId}`;
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(`${dir}/${ch}.js`, `// Bot ${clientId} ${ch}`);
+    }
+    res.json({ success: true, deployed: channels, embed_code: `https://www.krishnyanshzenovapeaks.com/bot/${clientId}.js` });
+  } catch (e) { res.json({ success: false, error: e.message }); }
 });
-app.post('/api/toggle-channel', async (req,res)=>{
-  const {clientId,channel,on,type}=req.body;
-  res.json({success:true,status:on?'active':'paused',message:`${channel} ${clientId} ${on?'ON':'OFF'} ${type}`});
+
+// Toggle Manual as Subscription
+app.post('/api/toggle-channel', async (req, res) => {
+  const { clientId, channel, on, type } = req.body;
+  res.json({ success: true, status: on ? 'active' : 'paused', message: `${channel} ${clientId} ${on ? 'ON' : 'OFF'} ${type}` });
 });
-app.post('/api/form-submit', async (req,res)=>{ res.json({success:true,lead:req.body}); });
-app.get('/api/env-status',(req,res)=>{ res.json({supabase:!!process.env.SUPABASE_URL,whatsapp:!!META_WHATSAPP_TOKEN,facebook:!!【entity-META_FB_PAGE_TOKEN¦canonical_name=META】,instagram:!!【entity-META_IG_USER_ID¦canonical_name=META】,gemini:!!GEMINI_API_KEY_PATCH,flutterwave:!!FLUTTERWAVE_SECRET_PATCH}); });
-// === ZENOVA PATCH END ===
+
+app.post('/api/form-submit', async (req, res) => { res.json({ success: true, lead: req.body }); });
+app.get('/api/env-status', (req, res) => { res.json({ whatsapp: !!META_WHATSAPP_TOKEN_FIX, facebook: !!META_FB_PAGE_TOKEN_FIX, instagram: !!META_IG_USER_ID_FIX, gemini: !!GEMINI_KEY_FIX, flutterwave: !!FLW_SECRET_FIX }); });
+// === ZENOVA PATCH END - RENDER FIXED ===
 
 app.get('*', (req, res) => {
   if (frontendIndex && fs.existsSync(frontendIndex)) {
