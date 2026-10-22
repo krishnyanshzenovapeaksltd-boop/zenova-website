@@ -289,21 +289,21 @@ app.get('/api/subscribers', async (req, res) => {
   } catch (err) { res.json([]); }
 });
 
-// === ZENOVA PATCH - RENDER FIXED - PASTE BEFORE app.get('*') - RC 9810296 ===
-const META_WHATSAPP_TOKEN_FIX = process.env.META_WHATSAPP_TOKEN;
-const META_WHATSAPP_PHONE_ID_FIX = process.env.META_WHATSAPP_PHONE_ID;
-const META_FB_PAGE_TOKEN_FIX = process.env.META_FB_PAGE_TOKEN;
-const META_IG_USER_ID_FIX = process.env.META_IG_USER_ID;
-const META_VERIFY_TOKEN_FIX = process.env.META_VERIFY_TOKEN || 'ZENOVA_VERIFY_2026';
-const GEMINI_KEY_FIX = process.env.GEMINI_API_KEY;
-const FLW_SECRET_FIX = process.env.FLUTTERWAVE_SECRET_KEY;
+// === ZENOVA CLEAN PATCH - RENDER FIX - PASTE BEFORE app.get('*') ===
+const WA_TOKEN = process.env.WHATSAPP_TOKEN;
+const WA_PHONE_ID = process.env.WHATSAPP_PHONE_ID;
+const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
+const IG_USER_ID = process.env.IG_USER_ID;
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN || 'ZENOVA_VERIFY_2026';
+const GEMINI_KEY = process.env.GEMINI_API_KEY;
+const FLW_SECRET = process.env.FLUTTERWAVE_SECRET_KEY;
 
 // Website Bot
 app.post('/api/chat', async (req, res) => {
   const { message, clientId } = req.body;
   try {
-    if (GEMINI_KEY_FIX) {
-      const r = await require('【entity-axios¦canonical_name=axios】').post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_KEY_FIX}`, { contents: [{ parts: [{ text: `Client ${clientId}: ${message}` }] }] });
+    if (GEMINI_KEY) {
+      const r = await axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_KEY}`, { contents: [{ parts: [{ text: `Client ${clientId}: ${message}` }] }] });
       return res.json({ reply: r.data.candidates?.[0]?.content?.parts?.[0]?.text || 'Hello!' });
     }
     res.json({ reply: `Bot for ${clientId}: ${message}` });
@@ -313,45 +313,42 @@ app.post('/api/chat', async (req, res) => {
 // WhatsApp
 app.post('/api/whatsapp/send', async (req, res) => {
   const { to, message } = req.body;
-  if (!META_WHATSAPP_TOKEN_FIX) return res.json({ success: false, error: 'Add META_WHATSAPP_TOKEN' });
+  if (!WA_TOKEN) return res.json({ success: false, error: 'Add WHATSAPP_TOKEN' });
   try {
-    const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
-    const r = await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/${META_WHATSAPP_PHONE_ID_FIX}/messages`, { messaging_product: 'whatsapp', to, type: 'text', text: { body: message } }, { headers: { Authorization: `Bearer ${META_WHATSAPP_TOKEN_FIX}` } });
+    const r = await axios.post(`https://graph.facebook.com/v18.0/${WA_PHONE_ID}/messages`, { messaging_product: 'whatsapp', to, type: 'text', text: { body: message } }, { headers: { Authorization: `Bearer ${WA_TOKEN}` } });
     res.json({ success: true, data: r.data });
   } catch (e) { res.json({ success: false, error: e.response?.data || e.message }); }
 });
 app.get('/api/whatsapp/webhook', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === META_VERIFY_TOKEN_FIX) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403);
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VERIFY_TOKEN) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403);
 });
 app.post('/api/whatsapp/webhook', (req, res) => { res.sendStatus(200); });
 
 // Facebook
 app.post('/api/facebook/send', async (req, res) => {
   const { recipientId, message } = req.body;
-  if (!META_FB_PAGE_TOKEN_FIX) return res.json({ success: false, error: 'Add META_FB_PAGE_TOKEN' });
+  if (!FB_PAGE_TOKEN) return res.json({ success: false, error: 'Add FB_PAGE_TOKEN' });
   try {
-    const axios = require('axios');
-    const r = await axios.post(`https://graph.facebook.com/v18.0/me/messages?access_token=${META_FB_PAGE_TOKEN_FIX}`, { recipient: { id: recipientId }, message: { text: message } });
+    const r = await axios.post(`https://graph.facebook.com/v18.0/me/messages?access_token=${FB_PAGE_TOKEN}`, { recipient: { id: recipientId }, message: { text: message } });
     res.json({ success: true, data: r.data });
   } catch (e) { res.json({ success: false, error: e.response?.data || e.message }); }
 });
 app.get('/api/facebook/webhook', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === META_VERIFY_TOKEN_FIX) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403);
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VERIFY_TOKEN) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403);
 });
 app.post('/api/facebook/webhook', (req, res) => { res.status(200).send('EVENT_RECEIVED'); });
 
-// 【entity-Instagram¦canonical_name=Instagram】
-app.post('/api/【entity-instagram¦canonical_name=Instagram】/send', async (req, res) => {
+// Instagram
+app.post('/api/instagram/send', async (req, res) => {
   const { recipientId, message } = req.body;
-  if (!META_FB_PAGE_TOKEN_FIX) return res.json({ success: false, error: 'Add META_FB_PAGE_TOKEN' });
+  if (!FB_PAGE_TOKEN) return res.json({ success: false, error: 'Add FB_PAGE_TOKEN' });
   try {
-    const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
-    const r = await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/${META_IG_USER_ID_FIX}/messages?access_token=${META_FB_PAGE_TOKEN_FIX}`, { recipient: { id: recipientId }, message: { text: message } });
+    const r = await axios.post(`https://graph.facebook.com/v18.0/${IG_USER_ID}/messages?access_token=${FB_PAGE_TOKEN}`, { recipient: { id: recipientId }, message: { text: message } });
     res.json({ success: true, data: r.data });
   } catch (e) { res.json({ success: false, error: e.response?.data || e.message }); }
 });
 
-// Deploy ALL Channels
+// Deploy ALL
 app.post('/api/deploy-bot', async (req, res) => {
   const { clientId, channels } = req.body;
   try {
@@ -364,15 +361,15 @@ app.post('/api/deploy-bot', async (req, res) => {
   } catch (e) { res.json({ success: false, error: e.message }); }
 });
 
-// Toggle Manual as Subscription
+// Toggle Manual as Subscription Type
 app.post('/api/toggle-channel', async (req, res) => {
   const { clientId, channel, on, type } = req.body;
   res.json({ success: true, status: on ? 'active' : 'paused', message: `${channel} ${clientId} ${on ? 'ON' : 'OFF'} ${type}` });
 });
 
 app.post('/api/form-submit', async (req, res) => { res.json({ success: true, lead: req.body }); });
-app.get('/api/env-status', (req, res) => { res.json({ whatsapp: !!META_WHATSAPP_TOKEN_FIX, facebook: !!META_FB_PAGE_TOKEN_FIX, instagram: !!META_IG_USER_ID_FIX, gemini: !!GEMINI_KEY_FIX, flutterwave: !!FLW_SECRET_FIX }); });
-// === ZENOVA PATCH END - RENDER FIXED ===
+app.get('/api/env-status', (req, res) => { res.json({ whatsapp: !!WA_TOKEN, facebook: !!FB_PAGE_TOKEN, instagram: !!IG_USER_ID, gemini: !!GEMINI_KEY, flutterwave: !!FLW_SECRET }); });
+// === ZENOVA CLEAN PATCH END ===
 
 app.get('*', (req, res) => {
   if (frontendIndex && fs.existsSync(frontendIndex)) {
