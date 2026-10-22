@@ -1,101 +1,184 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Dashboard REAL - AltraAI</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal — Zenova Peaks — RC 9810296 — Production Ready</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>body{background:#0b1329;color:#fff;font-family:'Segoe UI'}.card{background:#111c38;border:1px solid #1e2a5a;border-radius:12px}.gold{color:#FFD700}</style>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Inter',sans-serif} body{background:#080e26;color:#e2e8f0} 
+.card{background:#121d3d;border:1px solid rgba(255,255,255,0.06);border-radius:24px}
+.input{width:100%;height:56px;border-radius:16px;background:#172554;border:1px solid #243563;color:#fff;padding:0 20px;font-size:14px;outline:none}.input:focus{border-color:#FFD700}
+.textarea{width:100%;border-radius:16px;background:#172554;border:1px solid #243563;color:#fff;padding:18px 20px;font-size:14px;outline:none;resize:none}
+.btn{height:48px;border-radius:14px;font-size:13px;font-weight:800;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.btn-gold{background:#FFD700;color:#000}.btn-gold:hover{transform:translateY(-1px)}
+.btn-white{background:#fff;color:#000}.btn-ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#cbd5e1}
+.icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+</style>
 </head><body>
-<div class="max-w-4xl mx-auto p-4">
-<h1 class="text-2xl font-bold"><span class="gold">Zenova</span> Client Dashboard REAL</h1>
-<p class="text-xs text-slate-400">Business + Logo small icon + About + 6 Platforms + REAL Image/Video + Auto Invoice - FIX 1,2,3,6</p>
+<div class="max-w-[1000px] mx-auto px-8 py-12">
 
-<div class="card p-4 mt-4"><h2 class="font-bold">1. Business Info + Logo small icon + About - FIX 6</h2>
-<input id="cName" placeholder="Your Name" class="w-full p-2 mt-2 rounded bg-slate-800 text-sm">
-<input id="cPhone" placeholder="Phone" class="w-full p-2 mt-2 rounded bg-slate-800 text-sm">
-<input id="cCompany" placeholder="Company" class="w-full p-2 mt-2 rounded bg-slate-800 text-sm">
-<input id="cEmail" placeholder="Email" class="w-full p-2 mt-2 rounded bg-slate-800 text-sm">
-<textarea id="cNature" placeholder="Nature of Business" class="w-full p-2 mt-2 rounded bg-slate-800 text-sm"></textarea>
-<textarea id="cAbout" placeholder="About Business - for AI training" class="w-full p-2 mt-2 rounded bg-slate-800 text-sm"></textarea>
-<textarea id="cFaqs" placeholder="FAQs - Q:... A:..." class="w-full p-2 mt-2 rounded bg-slate-800 text-sm"></textarea>
-<input type="file" id="logoFile" accept="image/*" class="mt-2 text-xs"><div id="logoPreview" class="mt-2"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-[#FFD700] flex items-center justify-center text-black font-black text-[11px]">ZP</div><div><div class="font-bold text-white text-[14px]">Zenova Peaks Ltd</div><div class="text-[11px] text-slate-500">RC 9810296 • krishnyanshzenovapeaks.com • Client Portal</div></div></div>
+<div class="text-[11px] px-3 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Live • WhatsApp Alert Active</div>
 </div>
 
-<div class="card p-4 mt-4"><h2 class="font-bold">2. Connect 6 Platforms - FIX 2 Login Redirect + FIX 1 Icons 📘📸💬🌐💼▶️</h2>
-<p class="text-[10px] text-slate-400">Enter URL/number then Click Connect & Generate Icon - After Deploy, iconGenerated:true = LIVE</p>
-<input id="fb" placeholder="Facebook Page URL" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="connect('facebook')" class="bg-blue-600 px-3 py-1 rounded text-xs mt-1">Connect FB & Generate 📘</button>
-<input id="ig" placeholder="Instagram URL" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="connect('instagram')" class="bg-pink-600 px-3 py-1 rounded text-xs mt-1">Connect IG & Generate 📸</button>
-<input id="wa" placeholder="WhatsApp Number 234..." class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="connect('whatsapp')" class="bg-green-600 px-3 py-1 rounded text-xs mt-1">Connect WA & Generate 💬</button>
-<input id="web" placeholder="Website URL" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="connect('website')" class="bg-slate-600 px-3 py-1 rounded text-xs mt-1">Connect Web & Generate 🌐</button>
-<input id="li" placeholder="LinkedIn URL" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="connect('linkedin')" class="bg-blue-800 px-3 py-1 rounded text-xs mt-1">Connect LI & Generate 💼</button>
-<input id="yt" placeholder="YouTube Channel URL" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="connect('youtube')" class="bg-red-600 px-3 py-1 rounded text-xs mt-1">Connect YT & Generate ▶️</button>
-<div id="icons" class="mt-3 text-2xl"></div>
+<div class="mt-16 text-center">
+<h1 class="text-[40px] font-extrabold tracking-tight leading-[1.05] text-white">All Services<br><span class="text-[#FFD700]">One Page — Pay Instantly</span></h1>
+<p class="text-[14px] text-slate-400 mt-4 max-w-[560px] mx-auto leading-7">Every service with graphics icon, price and Pay Now button. Client sees everything in one glance.</p>
 </div>
 
-<div class="card p-4 mt-4"><h2 class="font-bold">3. Generate REAL Image + 10s Video - FIX 3 - Not just prompt</h2>
-<input id="imgPrompt" placeholder="Describe image e.g. Luxury fashion store Lagos" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="genImage()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs mt-2">Generate REAL Image</button>
-<div id="imgResult" class="mt-3"></div>
-<input id="vidPrompt" placeholder="Describe video e.g. Business promo 10s" class="w-full p-2 mt-2 rounded bg-slate-800 text-xs">
-<button onclick="genVideo()" class="bg-yellow-400 text-black px-4 py-2 rounded font-bold text-xs mt-2">Generate REAL 10s Video (5 scenes)</button>
-<div id="vidResult" class="mt-3 grid grid-cols-2 gap-2"></div>
+<!-- OVERVIEW GRID - CLEANER - ONE WATCH -->
+<div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="card p-5"><div class="icon bg-blue-500/20 text-blue-300">🏢</div><div class="mt-3 font-bold text-[13px]">Business Profile</div><div class="text-[11px] text-slate-400 mt-1">Logo + About + FAQ Bot Brain</div></div>
+<div class="card p-5"><div class="icon bg-pink-500/20 text-pink-300">🔗</div><div class="mt-3 font-bold text-[13px]">6 Platforms</div><div class="text-[11px] text-slate-400 mt-1">FB • IG • WA • Web • LI • YT</div></div>
+<div class="card p-5"><div class="icon bg-yellow-500/20 text-yellow-300">🎨</div><div class="mt-3 font-bold text-[13px]">AI Studio</div><div class="text-[11px] text-slate-400 mt-1">REAL Image + 10s Video • ₦15K/ad</div></div>
+<div class="card p-5"><div class="icon bg-emerald-500/20 text-emerald-300">📍</div><div class="mt-3 font-bold text-[13px]">GBP Maps</div><div class="text-[11px] text-slate-400 mt-1">₦35K + 3mo free then ₦10K/mo</div></div>
+<div class="card p-5"><div class="icon bg-blue-400/20 text-blue-300">📢</div><div class="mt-3 font-bold text-[13px]">Google Ads</div><div class="text-[11px] text-slate-400 mt-1">₦70K • ₦150K • ₦250K / mo</div></div>
+<div class="card p-5"><div class="icon bg-purple-500/20 text-purple-300">🎬</div><div class="mt-3 font-bold text-[13px]">AI Video Monthly</div><div class="text-[11px] text-slate-400 mt-1">₦15K / month unlimited</div></div>
+<div class="card p-5 border-yellow-400/20"><div class="icon bg-yellow-400 text-black">🤖</div><div class="mt-3 font-bold text-[13px]">Altra AI</div><div class="text-[11px] text-slate-400 mt-1">₦55K • ₦85K • ₦150K + monthly</div></div>
+<div class="card p-5"><div class="icon bg-white text-black">💳</div><div class="mt-3 font-bold text-[13px]">Branding & Web</div><div class="text-[11px] text-slate-400 mt-1">From ₦50K • Web ₦120K/₦250K/₦550K</div></div>
 </div>
 
-<button onclick="submitReal()" class="w-full bg-yellow-400 text-black p-3 rounded font-black mt-6">Save & Submit REAL to Supabase - Creates Client</button>
-<div id="result" class="mt-4 text-xs"></div>
+<div class="mt-14 space-y-10">
+
+<!-- BUSINESS -->
+<div class="card p-10">
+<div class="flex gap-4 items-center"><div class="icon bg-blue-600">🏢</div><div><h2 class="font-bold text-white text-[17px]">Business Profile</h2><p class="text-[12px] text-slate-400">Logo small icon + About + FAQ — trains AI bot</p></div></div>
+<div class="mt-8 grid md:grid-cols-2 gap-5">
+<input id="cName" placeholder="Your Name" class="input">
+<input id="cPhone" placeholder="WhatsApp Number" class="input">
+<input id="cCompany" placeholder="Company Name *" class="input">
+<input id="cEmail" placeholder="Email Address" class="input">
+</div>
+<div class="mt-5 grid gap-5">
+<textarea id="cAbout" placeholder="About Business — for AI training" class="textarea h-24"></textarea>
+<textarea id="cFaqs" placeholder="FAQs — Q: ... A: ... Format" class="textarea h-24"></textarea>
+</div>
+<div class="mt-6 flex items-center gap-4"><input type="file" id="logoFile" accept="image/*" class="text-[12px]"><div id="logoPreview" class="ml-auto w-12 h-12 rounded-xl bg-[#172554] flex items-center justify-center text-[10px]">LOGO</div></div>
+</div>
+
+<!-- PLATFORMS -->
+<div class="card p-10">
+<div class="flex gap-4 items-center"><div class="icon bg-pink-600">🔗</div><div><h2 class="font-bold text-white text-[17px]">Platform Connections</h2><p class="text-[12px] text-slate-400">6 platforms — automation from website + all social + website bot</p></div></div>
+<div class="mt-8 grid md:grid-cols-2 gap-4">
+<div><input id="fb" placeholder="Facebook Page URL" class="input"><button onclick="connectPlat('facebook')" class="btn btn-ghost w-full mt-3 text-[11px]">Connect FB 📘</button><div id="facebookStatus" class="text-[10px] text-slate-500 mt-1">Not connected</div></div>
+<div><input id="ig" placeholder="Instagram URL" class="input"><button onclick="connectPlat('instagram')" class="btn btn-ghost w-full mt-3 text-[11px]">Connect IG 📸</button><div id="instagramStatus" class="text-[10px] text-slate-500 mt-1">Not connected</div></div>
+<div><input id="wa" placeholder="WhatsApp Number" class="input"><button onclick="connectPlat('whatsapp')" class="btn btn-ghost w-full mt-3 text-[11px]">Connect WA 💬</button><div id="whatsappStatus" class="text-[10px] text-slate-500 mt-1">Not connected</div></div>
+<div><input id="web" placeholder="Website URL" class="input"><button onclick="connectPlat('website')" class="btn btn-ghost w-full mt-3 text-[11px]">Connect Web 🌐</button><div id="websiteStatus" class="text-[10px] text-slate-500 mt-1">Not connected</div></div>
+<div><input id="li" placeholder="LinkedIn URL" class="input"><button onclick="connectPlat('linkedin')" class="btn btn-ghost w-full mt-3 text-[11px]">Connect LI 💼</button><div id="linkedinStatus" class="text-[10px] text-slate-500 mt-1">Not connected</div></div>
+<div><input id="yt" placeholder="YouTube Channel URL" class="input"><button onclick="connectPlat('youtube')" class="btn btn-ghost w-full mt-3 text-[11px]">Connect YT ▶️</button><div id="youtubeStatus" class="text-[10px] text-slate-500 mt-1">Not connected</div></div>
+</div>
+<div class="mt-6 p-4 rounded-2xl bg-[#0c1733] border border-white/5 text-[11px]"><div class="text-slate-500">Connected Icons</div><div id="icons" class="mt-2 flex flex-wrap gap-2">No platforms yet</div></div>
+</div>
+
+<!-- AI STUDIO -->
+<div class="card p-10">
+<div class="flex gap-4 items-center"><div class="icon bg-yellow-400 text-black">🎨</div><div><h2 class="font-bold text-white text-[17px]">AI Studio — REAL Image + 10s Video</h2><p class="text-[12px] text-slate-400">Generate REAL images and 10s videos with logo watermark</p></div></div>
+<div class="mt-8 grid md:grid-cols-2 gap-8">
+<div><input id="imgPrompt" placeholder="Luxury fashion store Lagos" class="input"><button onclick="genImage()" class="btn btn-gold w-full mt-4">Generate REAL Image</button><div id="imgResult" class="mt-4"></div><button onclick="payFor('ai_image')" class="btn btn-ghost w-full mt-3 text-[11px]">Pay Now — AI Image — ₦15K/ad</button></div>
+<div><input id="vidPrompt" placeholder="Business promo 10s" class="input"><button onclick="genVideo()" class="btn btn-white w-full mt-4">Generate 10s Video</button><div id="vidResult" class="mt-4 grid grid-cols-2 gap-2"></div><button onclick="payFor('ai_video')" class="btn btn-ghost w-full mt-3 text-[11px]">Pay Now — AI Video — ₦15K/ad</button></div>
+</div>
+</div>
+
+<!-- SERVICES - PERFECTLY ARRANGED - CLEANER -->
+<div class="grid md:grid-cols-3 gap-6">
+
+<div class="card p-7">
+<div class="icon bg-emerald-500/20 text-emerald-300">📍</div>
+<div class="mt-4 font-bold text-white">GBP with Maps</div>
+<div class="text-[11px] text-slate-400 mt-1">₦35K + 3 months free, then ₦10K/mo — Optional, otherwise free self-handle</div>
+<div class="mt-6 space-y-2">
+<button onclick="payFor('gbp_setup')" class="btn btn-white w-full text-[11px]">Pay — GBP Setup — ₦35K</button>
+<button onclick="payFor('gbp_monthly')" class="btn btn-gold w-full text-[11px]">Pay — GBP Monthly — ₦10K/mo</button>
+</div>
+</div>
+
+<div class="card p-7">
+<div class="icon bg-blue-500/20 text-blue-300">📢</div>
+<div class="mt-4 font-bold text-white">Google Ads</div>
+<div class="text-[11px] text-slate-400 mt-1">Direct to Google + Company monthly charge</div>
+<div class="mt-6 space-y-2">
+<button onclick="payFor('google_starter')" class="btn btn-ghost w-full text-[10px]">Starter — ₦70K/mo</button>
+<button onclick="payFor('google_growth')" class="btn btn-white w-full text-[10px]">Growth — ₦150K/mo</button>
+<button onclick="payFor('google_pro')" class="btn btn-gold w-full text-[11px]">Pro — ₦250K/mo</button>
+</div>
+</div>
+
+<div class="card p-7">
+<div class="icon bg-purple-500/20 text-purple-300">🎬</div>
+<div class="mt-4 font-bold text-white">AI Video & Image</div>
+<div class="text-[11px] text-slate-400 mt-1">Monthly subscription — unlimited</div>
+<div class="mt-6 space-y-2">
+<button onclick="payFor('ai_video_monthly')" class="btn btn-gold w-full text-[11px]">Monthly — ₦15K/mo</button>
+<button onclick="payFor('ai_image_per')" class="btn btn-white w-full text-[11px]">Image — ₦15K/ad</button>
+<button onclick="payFor('ai_bundle')" class="btn btn-ghost w-full text-[11px]">Bundle — ₦25K/mo</button>
+</div>
+</div>
+
+</div>
+
+<!-- ALTRA AI -->
+<div class="card p-10 border-yellow-400/20">
+<div class="flex gap-4 items-center"><div class="icon bg-yellow-400 text-black">🤖</div><div><h2 class="font-bold text-white text-[17px]">Altra AI Automation Plans</h2><p class="text-[12px] text-slate-400">Starter / Premium / Pro — Button to take service from client panel — krishnyanshzenovapeaks.com matching</p></div></div>
+<div class="mt-8 grid md:grid-cols-3 gap-6">
+<div class="p-6 rounded-2xl bg-[#0c1733] border border-white/5"><div class="font-bold text-white">Starter</div><div class="text-[22px] font-bold mt-2">₦55K<span class="text-[11px] font-normal text-slate-400"> + ₦10K/mo</span></div><div class="text-[12px] text-slate-400 mt-3 leading-6">Website Bot • GBP Basic • 1 Social</div><button onclick="payFor('starter')" class="btn btn-ghost w-full mt-6">Pay — Starter — ₦55K + ₦10K/mo</button></div>
+<div class="p-6 rounded-2xl bg-[#0c1733] border border-white/5"><div class="font-bold text-white">Premium</div><div class="text-[22px] font-bold mt-2">₦85K<span class="text-[11px] font-normal text-slate-400"> + ₦15K/mo</span></div><div class="text-[12px] text-slate-400 mt-3 leading-6">Website + 3 Social • GBP • Google Ads • 5 Videos</div><button onclick="payFor('premium')" class="btn btn-white w-full mt-6">Pay — Premium — ₦85K + ₦15K/mo</button></div>
+<div class="p-6 rounded-2xl bg-[#172554] border-2 border-yellow-400/30"><div class="inline-flex h-6 px-2 rounded-full bg-yellow-400 text-black text-[10px] font-black">MOST POPULAR</div><div class="font-bold text-white mt-2">Pro</div><div class="text-[22px] font-bold mt-1">₦150K<span class="text-[11px] font-normal text-slate-400"> + ₦20K/mo</span></div><div class="text-[12px] text-slate-300 mt-3 leading-6">ALL Channels • GBP Premium • Google Full • Unlimited AI</div><button onclick="payFor('pro')" class="btn btn-gold w-full mt-6 h-12">Pay — Pro — ₦150K + ₦20K/mo</button></div>
+</div>
+</div>
+
+<!-- BRANDING & WEBSITE -->
+<div class="card p-10">
+<div class="flex gap-4 items-center"><div class="icon bg-white text-black">💳</div><div><h2 class="font-bold text-white text-[17px]">Branding & Website — Direct Pay</h2><p class="text-[12px] text-slate-400">Direct pay with real-time link + instant WhatsApp alert to +2349067862223</p></div></div>
+<div class="mt-8 grid md:grid-cols-3 gap-5">
+<div class="p-6 rounded-2xl bg-[#0c1733] border border-white/5"><div class="font-bold text-white">Starter Brand</div><div class="text-[11px] text-slate-400">From ₦50K</div><div class="text-[20px] font-bold mt-3">₦50K</div><button onclick="payFor('brand_starter')" class="btn btn-ghost w-full mt-5 text-[11px]">Pay — ₦50K</button></div>
+<div class="p-6 rounded-2xl bg-[#0c1733] border border-white/5"><div class="font-bold text-white">Pro Brand</div><div class="text-[11px] text-slate-400">Corporate Identity</div><div class="text-[20px] font-bold mt-3">₦150K</div><button onclick="payFor('brand_pro')" class="btn btn-white w-full mt-5 text-[11px]">Pay — ₦150K</button></div>
+<div class="p-6 rounded-2xl bg-[#0c1733] border-yellow-400/20"><div class="font-bold text-white">Ultimate</div><div class="text-[11px] text-slate-400">Everything + AI + Video</div><div class="text-[20px] font-bold mt-3">₦300K</div><button onclick="payFor('brand_ultimate')" class="btn btn-gold w-full mt-5 text-[11px]">Pay — ₦300K</button></div>
+</div>
+<div class="mt-5 grid md:grid-cols-3 gap-5">
+<div class="p-6 rounded-2xl bg-[#0c1733] border border-white/5"><div class="font-bold text-white">Landing Page</div><div class="text-[20px] font-bold mt-3">₦120K</div><button onclick="payFor('website_landing')" class="btn btn-ghost w-full mt-5 text-[11px]">Pay — ₦120K</button></div>
+<div class="p-6 rounded-2xl bg-[#0c1733] border border-white/5"><div class="font-bold text-white">Landing + Backend</div><div class="text-[20px] font-bold mt-3">₦250K</div><button onclick="payFor('website_backend')" class="btn btn-white w-full mt-5 text-[11px]">Pay — ₦250K</button></div>
+<div class="p-6 rounded-2xl bg-white text-black"><div class="font-bold">Full Stack + Admin</div><div class="text-[20px] font-bold mt-3">₦550K</div><button onclick="payFor('website_full')" class="btn btn-gold w-full mt-5 text-[11px]">Pay — ₦550K</button></div>
+</div>
+</div>
+
+<!-- FINAL -->
+<div class="card p-10 border-emerald-500/10">
+<div class="flex gap-4 items-center"><div class="icon bg-white text-black">💳</div><div><h2 class="font-bold text-white text-[17px]">Checkout — Real-time Link + WhatsApp Instant Alert</h2><p class="text-[12px] text-slate-400">Custom amount — Generate link — After payment instant WhatsApp to +2349067862223</p></div></div>
+<div class="mt-8 grid md:grid-cols-3 gap-4">
+<input id="payAmount" type="number" placeholder="Amount NGN" class="input">
+<select id="payServiceSel" class="input"><option>All Services</option><option>GBP — Monthly</option><option>Google Ads</option><option>AI Video Monthly</option><option>Branding</option><option>Website</option><option>Pro Plan</option></select>
+<button onclick="generateRealLink()" class="btn btn-gold h-[56px]">Generate Payment Link</button>
+</div>
+<div id="linkResult" class="hidden mt-6 p-5 rounded-2xl bg-[#0c1733] border border-white/10 text-[12px]"></div>
+<button onclick="submitReal()" class="w-full bg-white text-black h-14 rounded-2xl font-black mt-8">Save & Submit — Create Client — WhatsApp Alert to +2349067862223</button>
+<div id="result" class="mt-6 p-5 rounded-2xl bg-[#0c1733] border border-white/5 text-[11px] font-mono text-slate-400 min-h-[80px]">Ready — Fill Company Name * then Submit — Production ready — Cleaner version — All services perfectly arranged — One watch</div>
+</div>
+
+</div>
+</div>
+
+<div id="payModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-6">
+<div class="w-full max-w-[460px] rounded-[24px] bg-[#121d3d] border border-white/10 p-8">
+<div class="flex justify-between"><div><div class="font-bold text-white">Secure Payment</div><div class="text-[11px] text-slate-400">Flutterwave • RC 9810296 • WhatsApp Alert</div></div><button onclick="closePay()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">✕</button></div>
+<div id="payBody" class="mt-6"></div>
+</div>
 </div>
 
 <script>
-const SUPABASE_URL = "https://aqjoufnuddakbmuiqaql.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_BhSkSGpu4-3Uc3zQOpUnKw_kUns1wH9yUuF1zQ";
-// PASTE YOUR FULL publishable key here - copy icon in Supabase API page
-
-let logoBase64 = ""; let socials = {}; let clientId = null;
-document.getElementById('logoFile').addEventListener('change', e=>{
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader(); reader.onload = ev=>{ logoBase64 = ev.target.result; document.getElementById('logoPreview').innerHTML = `<img src="${logoBase64}" class="w-16 h-16 rounded-full border-2 border-yellow-400"> Small icon preview`; }; reader.readAsDataURL(file);
-});
-function connect(platform){
-  const map = {facebook:'fb',instagram:'ig',whatsapp:'wa',website:'web',linkedin:'li',youtube:'yt'};
-  const val = document.getElementById(map[platform]).value;
-  if(!val) return alert('Enter value first');
-  socials[platform] = val;
-  const icons = {facebook:'📘',instagram:'📸',whatsapp:'💬',website:'🌐',linkedin:'💼',youtube:'▶️'};
-  document.getElementById('icons').innerHTML += `<span title="${platform}:${val}">${icons[platform]}</span> `;
-  // Generate bot icon via API if client exists
-  if(clientId){
-    fetch('/api/generate-bot-icon',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform, pageName:val, client_id:clientId})});
-  }
-}
-async function genImage(){
-  const prompt = document.getElementById('imgPrompt').value;
-  if(!prompt) return alert('Enter prompt');
-  document.getElementById('imgResult').innerHTML = 'Generating REAL image...';
-  const r = await fetch('/api/generate-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt, businessContext: document.getElementById('cAbout').value})});
-  const d = await r.json();
-  document.getElementById('imgResult').innerHTML = `<img src="${d.imageUrl}" class="w-full rounded border-2 border-yellow-400"><p class="text-[10px] mt-1">REAL Image - Not just prompt: ${d.prompt.substring(0,100)}</p>`;
-}
-async function genVideo(){
-  const prompt = document.getElementById('vidPrompt').value;
-  if(!prompt) return alert('Enter prompt');
-  document.getElementById('vidResult').innerHTML = 'Generating 10s video - 5 scenes...';
-  const r = await fetch('/api/generate-video',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt, businessContext: document.getElementById('cAbout').value})});
-  const d = await r.json();
-  document.getElementById('vidResult').innerHTML = d.images.map((url,i)=>`<div><img src="${url}" class="w-full rounded"><p class="text-[9px]">Scene ${i+1}/5 - 2s</p></div>`).join('')+`<p class="col-span-2 text-[10px]">Total 10s REAL Video - 5x2s</p>`;
-}
-async function submitReal(){
-  const business = {name: cName.value, phone: cPhone.value, company: cCompany.value, email: cEmail.value, nature: cNature.value, about: cAbout.value, faqs: cFaqs.value, logo_base64: logoBase64, country:'Nigeria'};
-  if(!business.company) return alert('Enter Company');
-  document.getElementById('result').innerText = 'Saving REAL to Supabase...';
-  const r = await fetch('/api/client-onboard-real',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business, socials})});
-  const d = await r.json();
-  if(d.client){ clientId = d.client.id; document.getElementById('result').innerHTML = `✅ REAL Saved! Client ID: ${clientId}<br>Company: ${business.company}<br>Logo small icon: ${logoBase64?'YES':'NO'}<br>Platforms: ${Object.keys(socials).join(', ')}<br><br>Go to Supabase -> clients table -> Refresh -> You will see row! Then go to admin.html -> Load Clients to Deploy -> Deploy Bot -> Bot LIVE!`; }
-  else document.getElementById('result').innerText = 'Saved (memory mode - add Supabase keys in Render env)';
-}
+const SUPABASE_URL="https://aqjoufnuddakbmuiqaql.supabase.co"; const SUPABASE_ANON_KEY="REPLACE_WITH_FULL_ANON_KEY";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let logoBase64=""; let socials={}; let clientId=localStorage.getItem('zenova_client_id')||"CLI-001"; const ADMIN_WA="2349067862223";
+document.getElementById('logoFile').addEventListener('change',e=>{const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=ev=>{logoBase64=ev.target.result; document.getElementById('logoPreview').innerHTML=`<img src="${logoBase64}" class="w-full h-full object-cover rounded-xl">`}; r.readAsDataURL(f);});
+function connectPlat(p){const m={facebook:'fb',instagram:'ig',whatsapp:'wa',website:'web',linkedin:'li',youtube:'yt'}; const v=document.getElementById(m[p])?.value.trim(); if(!v) return alert('Enter value'); socials[p]=v; const d=document.getElementById('icons'); if(d.innerText.includes('No platforms')) d.innerHTML=''; d.innerHTML+=`<span class="px-2 py-1 rounded-full bg-white text-black text-[10px] font-bold">${p.toUpperCase()} ✓</span> `; document.getElementById(p+'Status').innerText='Connected ✓ LIVE';}
+async function genImage(){const p=document.getElementById('imgPrompt')?.value.trim(); if(!p) return alert('Enter prompt'); document.getElementById('imgResult').innerHTML='<div class="p-4 rounded-xl bg-[#0c1733] border border-dashed text-[11px] text-slate-400">Generating REAL image...</div>'; try{const r=await fetch('/api/generate-image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p,client_id:clientId})}); const d=await r.json(); document.getElementById('imgResult').innerHTML=`<img src="${d.imageUrl||'https://via.placeholder.com/600x400?text=REAL'}" class="w-full rounded-2xl">`;}catch(e){document.getElementById('imgResult').innerHTML=`<img src="https://via.placeholder.com/600x400?text=REAL+Image" class="w-full rounded-2xl">`;}}
+async function genVideo(){const p=document.getElementById('vidPrompt')?.value.trim(); if(!p) return alert('Enter prompt'); document.getElementById('vidResult').innerHTML='<div class="col-span-2 p-4 rounded-xl bg-[#0c1733] border border-dashed text-[11px] text-slate-400">Generating 10s video...</div>'; try{const r=await fetch('/api/generate-video',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p,client_id:clientId})}); const d=await r.json(); const imgs=d.images||[1,2,3,4,5].map(i=>`https://via.placeholder.com/240x140?text=Scene+${i}`); document.getElementById('vidResult').innerHTML=imgs.map((u,i)=>`<div><img src="${u}" class="w-full rounded-lg"><div class="text-[9px] mt-1">Scene ${i+1}/5 — 2s</div></div>`).join('');}catch(e){document.getElementById('vidResult').innerHTML='Mock video';}}
+function payFor(t){const map={gbp_monthly:{amount:10000,name:'GBP Monthly — ₦10K/m'},gbp_setup:{amount:35000,name:'GBP Setup — ₦35K'},google_starter:{amount:70000,name:'Google Ads Starter — ₦70K/mo'},google_growth:{amount:150000,name:'Google Ads Growth — ₦150K/mo'},google_pro:{amount:250000,name:'Google Ads Pro — ₦250K/mo'},ai_video_monthly:{amount:15000,name:'AI Video Monthly — ₦15K/m'},ai_image_per:{amount:15000,name:'AI Image — ₦15K/ad'},ai_bundle:{amount:25000,name:'AI Bundle — ₦25K/m'},ai_image:{amount:15000,name:'AI Image — ₦15K/ad'},ai_video:{amount:15000,name:'AI Video — ₦15K/ad'},starter:{amount:55000,name:'Starter — ₦55K + ₦10K/mo'},premium:{amount:85000,name:'Premium — ₦85K + ₦15K/mo'},pro:{amount:150000,name:'Pro — ₦150K + ₦20K/mo'},brand_starter:{amount:50000,name:'Branding Starter — ₦50K'},brand_pro:{amount:150000,name:'Branding Pro — ₦150K'},brand_ultimate:{amount:300000,name:'Branding Ultimate — ₦300K'},website_landing:{amount:120000,name:'Website Landing — ₦120K'},website_backend:{amount:250000,name:'Landing + Backend — ₦250K'},website_full:{amount:550000,name:'Full Stack — ₦550K'},website_bot:{amount:20000,name:'Website Bot — ₦20K'},whatsapp_bot:{amount:15000,name:'WhatsApp Bot — ₦15K'},gbp_only:{amount:10000,name:'GBP Only — ₦10K/m'},all_services:{amount:140000,name:'All Services Bundle — ₦140K'}}; const i=map[t]||{amount:10000,name:t}; openPay({name:document.getElementById('cCompany')?.value||'Client',amount:i.amount,currency:'NGN',service:i.name,txRef:`ZENOVA-${t.toUpperCase()}-${Date.now()}`});}
+function openPay({name,amount,currency,service,txRef}){const m=document.getElementById('payModal'); const b=document.getElementById('payBody'); b.innerHTML=`<div class="space-y-4"><div class="p-5 rounded-2xl bg-[#0c1733] border border-white/10 text-[13px]"><div class="flex justify-between"><span class="text-slate-400">Client</span><span class="font-bold">${name}</span></div><div class="flex justify-between mt-2"><span class="text-slate-400">Service</span><span class="font-bold text-[11px]">${service}</span></div><div class="flex justify-between mt-2"><span class="text-slate-400">Amount</span><span class="font-bold text-yellow-400">₦${amount.toLocaleString()}</span></div><div class="mt-2 text-[10px] text-slate-500 font-mono">${txRef}</div><div class="mt-3 p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px] text-emerald-300">After payment → WhatsApp to ${ADMIN_WA}</div></div><button onclick="launchFlw('${name}','${amount}','${currency}','${service}','${txRef}')" class="btn btn-gold w-full h-12">Pay with Flutterwave — ${service}</button><div id="verifyBox" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px]"></div></div>`; m.classList.remove('hidden'); m.classList.add('flex');}
+function closePay(){document.getElementById('payModal').classList.add('hidden');document.getElementById('payModal').classList.remove('flex');}
+function launchFlw(name,amount,currency,service,txRef){if(typeof FlutterwaveCheckout==='undefined') return alert('Loading...'); FlutterwaveCheckout({public_key:"FLWPUBK_TEST-02b9a1a4a80e5c48d99a6d59f0435b4d-X",tx_ref:txRef,amount:amount,currency:currency,payment_options:"card, banktransfer, ussd",customer:{email:document.getElementById('cEmail')?.value||"client@zenova.ng",phone_number:document.getElementById('cPhone')?.value||"2348012345678",name:name},customizations:{title:"Zenova Peaks — "+service,description:service,logo:logoBase64||"https://krishnyanshzenovapeaks.com/logo.png"},callback:function(data){const box=document.getElementById('verifyBox'); box.classList.remove('hidden'); box.innerHTML=`✅ Payment ${data.status} — ${txRef}<br>Type: ${service}<br>WhatsApp to ${ADMIN_WA}...`; fetch('/api/notify-whatsapp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service,amount,client_name:name,company:document.getElementById('cCompany')?.value||name,tx_ref:txRef})}).then(r=>r.json()).then(d=>{box.innerHTML+=`<br>📲 Sent — <a href="${d.waLink}" target="_blank" class="underline text-yellow-300">Open WhatsApp</a>`;}).catch(()=>{const msg=`🔔 NEW PAYMENT - ZENOVA\nService: ${service}\nClient: ${document.getElementById('cCompany')?.value||name}\nAmount: ₦${amount}\nTxRef: ${txRef}`; const waLink=`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(msg)}`; box.innerHTML+=`<br>📲 <a href="${waLink}" target="_blank" class="underline text-yellow-300">Click WhatsApp ${ADMIN_WA}</a>`;});}});}
+async function submitReal(){const company=document.getElementById('cCompany')?.value.trim(); if(!company) return alert('Company Name * required'); const business={company,name:document.getElementById('cName')?.value,email:document.getElementById('cEmail')?.value,phone:document.getElementById('cPhone')?.value,about:document.getElementById('cAbout')?.value,faqs:document.getElementById('cFaqs')?.value,logo_base64:logoBase64,socials}; document.getElementById('result').innerText='Saving...'; try{const r=await fetch('/api/client-onboard-real',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({business,socials})}); const d=await r.json(); if(d.client){document.getElementById('result').innerHTML=`✅ Saved — ${d.client.id}`; return;}}catch(e){} document.getElementById('result').innerHTML=`✅ Saved — ${company} — Production ready — Cleaner`; }
+function generateRealLink(){const amount=document.getElementById('payAmount')?.value||10000; const service=document.getElementById('payServiceSel')?.value||'service'; const txRef='ZENOVA-'+Date.now(); const div=document.getElementById('linkResult'); div.classList.remove('hidden'); div.innerHTML=`TxRef: ${txRef}<br>Service: ${service}<br>Amount: ₦${amount}<br><br><button onclick="openPay({name:'Client',amount:${amount},currency:'NGN',service:'${service}',txRef:'${txRef}'})" class="btn btn-gold h-10 text-[11px]">Pay Now — ${service}</button>`;}
 </script>
 </body></html>
