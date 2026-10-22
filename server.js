@@ -70,7 +70,7 @@ app.get('/api/debug-gemini', async (req, res) => {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.json({ error: 'No GEMINI_API_KEY in env' });
   try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`, {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key.trim() },
       body: JSON.stringify({ contents: [{ parts: [{ text: 'Say hello' }] }] })
@@ -87,10 +87,10 @@ app.post('/api/altra-ai-chat', async (req, res) => {
   const userMessage = (req.body.message || '').toString().slice(0, 3000);
   const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
-  const systemPrompt = `You are AltraAI. You MUST start every reply with EXACTLY: I am AltraAI for everything - ask anything! 😊
+  const systemPrompt = `You are AltraAI. You MUST start every reply with EXACTLY: I am AltraAI for zenova peak tech hub. how may i help you ! 😊
 
 IDENTITY:
-- You are AltraAI, created by Krishnyansh Zenova Peaks Ltd, RC 9810296, Lagos Nigeria
+- You are AltraAI, created by Krishnyansh Zenova Peaks Ltd, Lagos Nigeria
 - Founder: Ruby Garg
 - Website: krishnyanshzenovapeaks.com
 - You help with CAC registration, business automation, AI chatbots, websites, branding, marketing
@@ -105,7 +105,7 @@ Now answer as AltraAI:`;
 
   if (!apiKey) {
     return res.json({
-      reply: `I am AltraAI for everything - ask anything! 😊 Hello! I'm AltraAI from Krishnyansh Zenova Peaks Ltd. Please configure GEMINI_API_KEY in Render Environment to enable my full AI power. Meanwhile, how can I help with CAC registration or website?`
+      reply: `I am AltraAI for zenova peak tech hub! 😊 Hello! I'm AltraAI from Krishnyansh Zenova Peaks Ltd. Please configure GEMINI_API_KEY in Render Environment to enable my full AI power. Meanwhile, how can I help with CAC registration or website?`
     });
   }
 
@@ -146,7 +146,7 @@ Now answer as AltraAI:`;
     }
   }
   return res.json({
-    reply: `I am AltraAI for everything - ask anything! 😊 I'm having a temporary connection issue. What business help do you need today?`
+    reply: `I am AltraAI for zenova peak tech hub! 😊 I'm having a temporary connection issue. What business help do you need today?`
   });
 });
 
@@ -288,6 +288,78 @@ app.get('/api/subscribers', async (req, res) => {
     res.json(data || []);
   } catch (err) { res.json([]); }
 });
+// === ZENOVA PATCH START - ALL SOCIAL APIS - RC 9810296 - PASTE BEFORE app.get('*') ===
+const META_WHATSAPP_TOKEN = process.env.META_WHATSAPP_TOKEN;
+const META_WHATSAPP_PHONE_ID = process.env.META_WHATSAPP_PHONE_ID;
+const 【entity-META_FB_PAGE_TOKEN¦canonical_name=META】 = process.env.【entity-META_FB_PAGE_TOKEN¦canonical_name=META】;
+const 【entity-META_IG_USER_ID¦canonical_name=META】 = process.env.【entity-META_IG_USER_ID¦canonical_name=META】;
+const META_VERIFY_TOKEN = process.env.META_VERIFY_TOKEN || 'ZENOVA_VERIFY_2026';
+const GEMINI_API_KEY_PATCH = process.env.GEMINI_API_KEY;
+const FLUTTERWAVE_SECRET_PATCH = process.env.FLUTTERWAVE_SECRET_KEY;
+
+// Website Bot
+app.post('/api/chat', async (req,res)=>{
+  const {message,clientId}=req.body;
+  try{
+    if(GEMINI_API_KEY_PATCH){
+      const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
+      const g=await 【entity-axios¦canonical_name=axios】.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY_PATCH}`,{contents:[{parts:[{text:`Client ${clientId}: ${message}`}]}]});
+      return res.json({reply:g.data.candidates?.[0]?.content?.parts?.[0]?.text||'Hello!'});
+    }
+    res.json({reply:`Bot for ${clientId}: ${message} (Add GEMINI_API_KEY for real AI)`});
+  }catch(e){ res.json({reply:'Bot thinking...'}); }
+});
+
+// 【entity-WhatsApp¦canonical_name=WHATSAPP】
+app.post('/api/【entity-whatsapp¦canonical_name=WHATSAPP】/send', async (req,res)=>{
+  const {to,message}=req.body;
+  if(!META_WHATSAPP_TOKEN) return res.json({success:false,error:'Add META_WHATSAPP_TOKEN in .env'});
+  try{
+    const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
+    const r=await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/${META_WHATSAPP_PHONE_ID}/messages`,{messaging_product:'【entity-whatsapp¦canonical_name=WHATSAPP】',to,type:'text',text:{body:message}},{headers:{Authorization:`Bearer ${META_WHATSAPP_TOKEN}`}});
+    res.json({success:true,data:[STRIPPED]
+  }catch(e){ res.json({success:false,error:e.response?.data||e.message}); }
+});
+app.get('/api/【entity-whatsapp¦canonical_name=WHATSAPP】/webhook',(req,res)=>{ if(req.query['hub.mode']==='subscribe' && req.query['hub.verify_token']===META_VERIFY_TOKEN) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403); });
+app.post('/api/【entity-whatsapp¦canonical_name=WHATSAPP】/webhook', async (req,res)=>{ res.sendStatus(200); });
+
+// Facebook
+app.post('/api/facebook/send', async (req,res)=>{
+  const {recipientId,message}=req.body;
+  if(!【entity-META_FB_PAGE_TOKEN¦canonical_name=META】) return res.json({success:false,error:'Add 【entity-META_FB_PAGE_TOKEN¦canonical_name=META】'});
+  try{
+    const 【entity-axios¦canonical_name=axios】 = require('【entity-axios¦canonical_name=axios】');
+    const r=await 【entity-axios¦canonical_name=axios】.post(`https://graph.facebook.com/v18.0/me/messages?access_token=${META_FB_PAGE_TOKEN}`,{recipient:{id:recipientId},message:{text:message}});
+    res.json({success:true,data:r.data});
+  }catch(e){ res.json({success:false,error:e.response?.data||e.message}); }
+});
+app.get('/api/facebook/webhook',(req,res)=>{ if(req.query['hub.mode']==='subscribe' && req.query['hub.verify_token']===META_VERIFY_TOKEN) res.status(200).send(req.query['hub.challenge']); else res.sendStatus(403); });
+app.post('/api/facebook/webhook',(req,res)=>{ res.status(200).send('EVENT_RECEIVED'); });
+
+// Instagram
+app.post('/api/instagram/send', async (req,res)=>{
+  const {recipientId,message}=req.body;
+  if(!【entity-META_FB_PAGE_TOKEN¦canonical_name=META】) return res.json({success:false,error:'Add 【entity-META_FB_PAGE_TOKEN¦canonical_name=META】'});
+  try{
+    const axios = require('axios');
+    const r=await axios.post(`https://graph.facebook.com/v18.0/${META_IG_USER_ID}/messages?access_token=${META_FB_PAGE_TOKEN}`,{recipient:{id:recipientId},message:{text:message}});
+    res.json({success:true,data:[STRIPPED]
+  }catch(e){ res.json({success:false,error:e.response?.data||e.message}); }
+});
+
+// Deploy ALL + Toggle Manual as Subscription
+app.post('/api/deploy-bot', async (req,res)=>{
+  const {clientId,channels}=req.body; const fs = require('fs');
+  for(let ch of channels){ const dir=`./public/bot/${clientId}`; if(!fs.existsSync(dir)) fs.mkdirSync(dir,{recursive:true}); fs.writeFileSync(`${dir}/${ch}.js`,`// Bot ${clientId} ${ch}`); }
+  res.json({success:true,deployed:channels,embed_code:`https://www.krishnyanshzenovapeaks.com/bot/${clientId}.js`});
+});
+app.post('/api/toggle-channel', async (req,res)=>{
+  const {clientId,channel,on,type}=req.body;
+  res.json({success:true,status:on?'active':'paused',message:`${channel} ${clientId} ${on?'ON':'OFF'} ${type}`});
+});
+app.post('/api/form-submit', async (req,res)=>{ res.json({success:true,lead:req.body}); });
+app.get('/api/env-status',(req,res)=>{ res.json({supabase:!!process.env.SUPABASE_URL,whatsapp:!!META_WHATSAPP_TOKEN,facebook:!!【entity-META_FB_PAGE_TOKEN¦canonical_name=META】,instagram:!!【entity-META_IG_USER_ID¦canonical_name=META】,gemini:!!GEMINI_API_KEY_PATCH,flutterwave:!!FLUTTERWAVE_SECRET_PATCH}); });
+// === ZENOVA PATCH END ===
 
 app.get('*', (req, res) => {
   if (frontendIndex && fs.existsSync(frontendIndex)) {
