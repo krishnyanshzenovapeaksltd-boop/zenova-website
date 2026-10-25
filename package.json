@@ -10,7 +10,7 @@
     "dotenv": "^16.3.1",
     "openai": "^4.28.0",
     "node-fetch": "^2.6.7",
-    "【entity-axios¦canonical_name=axios】": "^1.6.7"
+    "axios": "^1.6.7"
   },
   "engines": { "node": "20.x" }
 }
