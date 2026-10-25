@@ -146,7 +146,7 @@ app.get('/api/debug-gemini', async (req, res) => {
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.json({ error: 'No GEMINI_API_KEY in env' });
   try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`, {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key.trim() },
       body: JSON.stringify({ contents: [{ parts: [{ text: 'Say hello' }] }] })
@@ -185,7 +185,7 @@ Now answer as AltraAI:`;
     });
   }
 
-  const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-1.5-flash-8b'];
+  const modelsToTry = ['gemini-3.5-flash', 'gemini-3.5-flash-latest', 'gemini-3.5-pro', 'gemini-3.5-flash-8b'];
 
   for (const model of modelsToTry) {
     try {
