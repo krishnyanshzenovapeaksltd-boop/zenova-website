@@ -6,6 +6,15 @@ const { createClient } = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
 dotenv.config();
 
+// FIXED: Node 20 WebSocket for Supabase Realtime - Fixes Render Error: Node.js 20 detected without native WebSocket support
+try {
+  const WebSocket = require('ws');
+  global.WebSocket = WebSocket;
+  console.log('✅ ws package loaded for Supabase Realtime - Node 20 fix');
+} catch(e) {
+  console.log('ws package not found - Run npm install ws');
+}
+
 // FIXED: node-fetch + axios - both required - Fixes axios is not defined
 let fetch;
 try { 
@@ -59,7 +68,19 @@ if (frontendPath) {
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_KEY;
-const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+let supabase = null;
+try {
+  if (supabaseUrl && supabaseKey) {
+    const WebSocket = global.WebSocket || require('ws');
+    supabase = createClient(supabaseUrl, supabaseKey, {
+      realtime: { transport: WebSocket },
+      auth: { persistSession: false }
+    });
+  }
+} catch(e) {
+  console.log('Supabase init with ws failed, trying without:', e.message);
+  try { if (supabaseUrl && supabaseKey) supabase = createClient(supabaseUrl, supabaseKey); } catch(e2) {}
+}
 if (supabase) console.log('✅ Supabase connected');
 else console.log('⚠️ Supabase not configured');
 
@@ -164,7 +185,7 @@ Now answer as AltraAI:`;
     });
   }
 
-  const modelsToTry = ['gemini-3.5-flash', 'gemini-3.5-flash-latest', 'gemini-3.5-pro', 'gemini-3.5-flash-8b'];
+  const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-1.5-flash-8b'];
 
   for (const model of modelsToTry) {
     try {
@@ -214,7 +235,7 @@ app.post('/api/gemini', async (req, res) => {
   }
   const systemPrompt = `You are Zenova AI Assistant for Krishnyansh Zenova Peaks Ltd RC-9810296 Lagos. CEO Ruby Garg +2349067862223. Services: CAC BN 60K LTD 150K NGO 220K, SMEDAN 10K SCUML/TIN 15K, Branding from 50K, Website 120K-550K, AltraAI Starter 55K+10K/mo Premium 85K+15K/mo Pro 150K+20K/mo, GBP 35K, Google Ads 70K/mo, AI Video 15K/ad. Be short, friendly Nigerian, ask business name + phone for lead. User: ${userMessage}`;
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
       body: JSON.stringify({
