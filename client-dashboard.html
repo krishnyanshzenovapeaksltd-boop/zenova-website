@@ -179,7 +179,37 @@ async function genVideo(){const p=document.getElementById('vidPrompt')?.value.tr
 function payFor(t){const m={gbp_monthly:{amount:10000,name:'GBP Monthly — ₦10K/m'},gbp_setup:{amount:35000,name:'GBP Setup — ₦35K'},google_starter:{amount:70000,name:'Google Ads Starter — ₦70K/m'},ai_studio:{amount:15000,name:'AI Studio — ₦15K/ad'},starter:{amount:55000,name:'Starter — ₦55K'}};const s=m[t]||m.starter;openPay({name:s.name,amount:s.amount,currency:'NGN',service:t,txRef:'ZENOVA-'+Date.now()});}
 function openPay({name,amount,currency,service,txRef}){const mo=document.getElementById('payModal');const bo=document.getElementById('payBody');bo.innerHTML=`<div class="p-5 rounded-2xl bg-[#0c1733] border border-white/10"><div class="font-bold">${name}</div><div class="text-[11px] text-slate-400 mt-1">₦${amount.toLocaleString()} — LIVE Key ${YOUR_VALID_LIVE_KEY.slice(0,20)}... — No PBFPubKey — server.js</div></div><button onclick="launchFlw('${name}',${amount},'${currency}','${service}','${txRef}')" class="w-full h-12 rounded-xl bg-[#FFD700] text-black font-bold mt-4">Pay ₦${amount.toLocaleString()} — LIVE</button>`;mo.classList.remove('hidden');mo.classList.add('flex');}
 function closePay(){document.getElementById('payModal').classList.add('hidden');document.getElementById('payModal').classList.remove('flex');}
-function launchFlw(name,amount,currency,service,txRef){if(!YOUR_VALID_LIVE_KEY)return alert('LIVE Key loading — Wait /api/env-status — Set FLUTTERWAVE_PUBLIC_KEY in server.js ENV');if(typeof FlutterwaveCheckout==='undefined')return alert('Use ONLY https://checkout.flutterwave.com/v3.js — Delete old ravepay — Ctrl+F5');FlutterwaveCheckout({public_key:YOUR_VALID_LIVE_KEY,tx_ref:txRef,amount:amount,currency:currency,payment_options:'card, banktransfer, ussd',customer:{email:document.getElementById('email')?.value||'client@zenova.ng',phone_number:'2349067862223',name:document.getElementById('cname')?.value||'Client'},customizations:{title:'Zenova Peaks Ltd RC 9810296',description:name,logo:logoBase64||'https://krishnyanshzenovapeaks.com/logo.png'},callback:function(data){closePay();document.getElementById('payResult').innerHTML=`✅ Success ${data.status} — ${data.tx_ref} — LIVE Valid — Verify via /api/verify-payment`;fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transaction_id:data.transaction_id,tx_ref:data.tx_ref})}).catch(()=>{});},onclose:function(){}});}
+function launchFlw(name,amount,currency,service,txRef){
+  if(!YOUR_VALID_LIVE_KEY) return alert('LIVE KEY NOT FOUND - Check /api/env-status');
+  
+  // YE NAYA CODE YAHI PASTE KARO - START
+  FlutterwaveCheckout({
+    public_key: YOUR_VALID_LIVE_KEY, // Aapka FLWPUBK-... LIVE key jo /api/env-status se aa raha hai
+    tx_ref: txRef || "ZENOVA-" + Date.now(),
+    amount: amount,
+    currency: currency || "NGN",
+    payment_options: "card, banktransfer, ussd",
+    customer: {
+      email: document.getElementById('email')?.value || "client@zenova.ng",
+      name: document.getElementById('cname')?.value || "Zenova Client"
+    },
+    customizations: {
+      title: name || "KRISHNYANSH ZENOVA PEAKS LTD",
+      description: service || "Automation Machine",
+      logo: "https://krishnyanshzenovapeaks.com/logo.png"
+    },
+    callback: function(data) {
+      console.log("FLW Success:", data);
+      // Yaha aapka Supabase save hoga
+      document.getElementById('payLinkResult').innerHTML = "Payment Success: " + data.tx_ref;
+      closePay();
+    },
+    onclose: function() {
+      console.log("Checkout closed");
+    }
+  });
+  // YE NAYA CODE YAHI PASTE KARO - END
+}
 async function submitReal(){const c=document.getElementById('cCompany')?.value.trim();if(!c)return alert('Company required');const p={company:c,name:document.getElementById('cname')?.value,email:document.getElementById('email')?.value,about:document.getElementById('about')?.value,logo:logoBase64,socials:socials,client_id:client_id};try{const{error}=await supabaseClient.from('clients').insert([p]);if(error)throw error;alert('✅ Saved — Supabase — Logo + Socials — '+client_id);}catch(e){alert('Save error: '+e.message);}}
 function generateRealLink(){const a=document.getElementById('payAmount')?.value||10000;const s=document.getElementById('payServiceSel')?.value||'service';const t='ZENOVA-'+Date.now();document.getElementById('payLinkResult').innerHTML=`Link: https://krishnyanshzenovapeaks.com/client-dashboard.html?pay=${a}&service=${s}&txRef=${t} — Key ${YOUR_VALID_LIVE_KEY.slice(0,22)}... LIVE`;}
 </script>
