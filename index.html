@@ -6,24 +6,23 @@
     <title>Krishnyansh Zenova Peaks ltd</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background:#04222B; color:#ffffff; font-family:sans-serif; overflow-x:hidden; }
-        /* TEAL BLUE + TEAL GREEN BLEND - ANIMATED */
-        .teal-bg{ background:linear-gradient(135deg,#04222B 0%,#0A4A5A 35%,#0E6B7A 55%,#00B894 100%); background-size:300% 300%; animation:tealMove 12s ease-in-out infinite alternate; }
-        @keyframes tealMove{ from{background-position:0% 0%} to{background-position:100% 100%} }
-        .hero-bg { background:linear-gradient(135deg, rgba(4,34,43,.9) 0%, rgba(10,74,90,.9) 50%, rgba(0,184,148,.75) 100%); }
-        .card-box { background:linear-gradient(145deg, rgba(255,255,255,.08), rgba(0,0,0,.25)); border:1px solid rgba(0,184,148,.35); backdrop-filter:blur(8px); transition:all .3s ease; }
-        .card-box:hover { border-color:#00E5B8; transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,184,148,.25); }
-        .gold-text { color:#00E5B8; }
-        .teal-text{ color:#00E5B8; }
-        .price-chip{ background:linear-gradient(135deg,#00B894,#0E6B7A); color:#fff; padding:6px 12px; border-radius:999px; font-weight:800; font-size:13px; display:inline-block; }
-        .service-icon{ width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg,#00B894,#0A4A5A); display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:10px; box-shadow:0 6px 18px rgba(0,184,148,.35); }
-        /* NEURAL NETWORK BACKGROUND - LIGHT CSS ONLY */
-        .neural{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.35; overflow:hidden; }
-        .neural i{ position:absolute; width:6px; height:6px; background:#00E5B8; border-radius:50%; box-shadow:0 0 12px #00E5B8; animation:floatN 9s ease-in-out infinite; }
-        .neural i:nth-child(1){ left:8%; top:20%; } .neural i:nth-child(2){ left:22%; top:65%; animation-delay:1s; } .neural i:nth-child(3){ left:45%; top:15%; animation-delay:2s; } .neural i:nth-child(4){ left:68%; top:70%; animation-delay:.5s; } .neural i:nth-child(5){ left:85%; top:25%; animation-delay:1.5s; } .neural i:nth-child(6){ left:55%; top:80%; animation-delay:2.5s; } .neural i:nth-child(7){ left:32%; top:40%; animation-delay:3s; } .neural i:nth-child(8){ left:75%; top:45%; animation-delay:.8s; }
-        @keyframes floatN{ 0%,100%{ transform:translateY(0) scale(1); opacity:.6 } 50%{ transform:translateY(-18px) scale(1.25); opacity:1 } }
-        .neural-line{ position:absolute; height:1px; background:linear-gradient(90deg,transparent,#00E5B8,transparent); opacity:.35; }
-        .content-wrap{ position:relative; z-index:2; }
+       
+ body { background:#04222B; color:#ffffff; font-family:sans-serif; overflow-x:hidden; }
+.teal-bg{ background:#04222B; }
+.hero-bg { background:#04222B; }
+.card-box { background:#06303D !important; border:1px solid #00B894 !important; backdrop-filter:blur(8px); transition:all .3s ease; }
+.card-box:hover { border-color:#00E5B8; transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,184,148,.25); }
+.card-box p, .card-box li { color:#FFFFFF !important; font-weight:500; }
+.gold-text { color:#00E5B8; }
+.teal-text{ color:#00E5B8; }
+.price-chip{ background:#00B894 !important; color:#000 !important; padding:6px 12px; border-radius:999px; font-weight:900; font-size:13px; display:inline-block; }
+.service-icon{ width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg,#00B894,#0A4A5A); display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:10px; box-shadow:0 6px 18px rgba(0,184,148,.35); }
+.neural{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.15; overflow:hidden; }
+.neural i{ position:absolute; width:6px; height:6px; background:#00E5B8; border-radius:50%; box-shadow:0 0 12px #00E5B8; animation:floatN 9s ease-in-out infinite; }
+.neural i:nth-child(1){ left:8%; top:20%; } .neural i:nth-child(2){ left:22%; top:65%; animation-delay:1s; } .neural i:nth-child(3){ left:45%; top:15%; animation-delay:2s; } .neural i:nth-child(4){ left:68%; top:70%; animation-delay:.5s; } .neural i:nth-child(5){ left:85%; top:25%; animation-delay:1.5s; } .neural i:nth-child(6){ left:55%; top:80%; animation-delay:2.5s; } .neural i:nth-child(7){ left:32%; top:40%; animation-delay:3s; } .neural i:nth-child(8){ left:75%; top:45%; animation-delay:.8s; }
+@keyframes floatN{ 0%,100%{ transform:translateY(0) scale(1); opacity:.6 } 50%{ transform:translateY(-18px) scale(1.25); opacity:1 } }
+.neural-line{ position:absolute; height:1px; background:linear-gradient(90deg,transparent,#00E5B8,transparent); opacity:.35; }
+.content-wrap{ position:relative; z-index:2; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between teal-bg">
