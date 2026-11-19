@@ -246,68 +246,200 @@ function handleAltra(t){
   fetch('/api/zenova-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:'AltraAI Chat',raw:t})}).catch(()=>{});
 }
 
-function speakReply(text){
-  const cleanText = text.replace(/<[^>]*>/g, '').replace(/https?:\/\/[^\s]+/g, '').substring(0, 400);
-  const utterance = new SpeechSynthesisUtterance(cleanText);
-  utterance.rate = 1.0;
-  utterance.pitch = 1.0;
-  window.speechSynthesis.speak(utterance);
+<!-- ===== FINAL VOICE AGENT - ALTRAAI CUSTOMER CARE - START ===== -->
+<style>
+#voiceAgentBtn{
+  position:fixed; bottom:22px; right:22px; width:68px; height:68px;
+  border-radius:50%; border:none; cursor:pointer; z-index:9999;
+  background:linear-gradient(135deg,#00d4a6,#0066ff);
+  font-size:30px; color:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center;
+}
+#voiceAgentBtn.listening{ animation:vaPulse 1.2s infinite; background:#ff3b30; }
+@keyframes vaPulse{ 0%{transform:scale(1)} 50%{transform:scale(1.12)} 100%{transform:scale(1)} }
+#voiceAgentBox{
+  display:none; position:fixed; bottom:105px; right:22px; width:320px; max-width:calc(100vw - 40px);
+  background:#ffffff; border-radius:18px; padding:16px; z-index:9999;
+  box-shadow:0 15px 40px rgba(0,0,0,.25); font-family:Arial, sans-serif; color:#111;
+}
+#voiceAgentBox h3{ margin:0 0 6px; font-size:16px; }
+#voiceAgentBox small{ color:#666; font-size:12px; }
+#voiceStatus{ font-size:13px; color:#555; min-height:20px; margin:10px 0 8px; }
+#voiceTranscript{ background:#f5f5f5; border-radius:10px; padding:10px; font-size:14px; line-height:1.5; max-height:180px; overflow-y:auto; }
+#voiceTranscript b{ color:#000; }
+#voiceEndBtn{ margin-top:12px; width:100%; padding:11px; border:none; border-radius:10px; background:#111; color:#fff; cursor:pointer; font-size:14px; }
+#voiceLangNote{ margin-top:8px; font-size:11px; color:#888; text-align:center; }
+</style>
+
+<button id="voiceAgentBtn" onclick="toggleVoiceAgent()" title="Talk to AltraAI Customer Care">🎙️</button>
+
+<div id="voiceAgentBox">
+  <h3>🎧 AltraAI Customer Care</h3>
+  <small>Krishnyansh Zenova Peaks Ltd • RC 9810296</small>
+  <div id="voiceStatus">Ready — Tap mic and speak</div>
+  <div id="voiceTranscript">AI will listen and reply in your language...</div>
+  <button id="voiceEndBtn" onclick="toggleVoiceAgent()">End Call ❌</button>
+  <div id="voiceLangNote">Speak in English • Hindi • Hinglish • Yoruba • Pidgin • French • Any Language</div>
+</div>
+
+<script>
+/* ========== FINAL VOICE AGENT - REAL TIME + FLEXIBLE LANGUAGE ========== */
+let vaRec = null;
+let vaListening = false;
+let vaSpeaking = false;
+let currentLang = 'en-NG';
+
+function vaSetStatus(t){ const el = document.getElementById('voiceStatus'); if(el) el.innerText = t; }
+function vaAddToTranscript(who, text){
+  const el = document.getElementById('voiceTranscript');
+  if(el) { el.innerHTML += '<br><b>' + who + ':</b> ' + text; el.scrollTop = el.scrollHeight; }
 }
 
-// --- OPTION 1 - TALK ON WEBSITE - ONE TIME - FREE ---
-let isListening = false;
-let recognition = null;
-function startVoice(){
-  const btn = document.getElementById('voiceBtn');
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){ alert('Please use Google Chrome for voice.'); return; }
-  if(isListening){ recognition.stop(); return; }
-  recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-  recognition.continuous = false;
-  recognition.onstart = ()=>{ isListening = true; btn.textContent = 'Listening... Tap to Stop'; btn.style.background = '#FF4444'; btn.style.color = '#fff'; };
-  recognition.onresult = (event)=>{ handleAltra(event.results[0][0].transcript); };
-  recognition.onend = ()=>{ isListening = false; btn.textContent = 'Option 1 - Talk on Website - FREE'; btn.style.background = '#fff'; btn.style.color = '#04222B'; };
-  recognition.onerror = ()=>{ isListening = false; btn.textContent = 'Option 1 - Talk on Website - FREE'; btn.style.background = '#fff'; };
-  recognition.start();
+// Detect language from text for voice selection
+function detectLangFromText(text){
+  if (/[\u0900-\u097F]/.test(text)) return 'hi-IN'; // Hindi Devanagari
+  // Common Hindi/Hinglish roman words
+  if (/\b(kya|kaise|kitna|chahiye|batao|price kya|kab|kahan)\b/i.test(text)) return 'hi-IN';
+  // French
+  if (/\b(bonjour|merci|combien|prix|s'il vous)\b/i.test(text)) return 'fr-FR';
+  // Yoruba common words
+  if (/\b(bawo|e nle|elo|owo|jowo)\b/i.test(text)) return 'en-NG';
+  return 'en-NG';
 }
 
-// --- OPTION 2 - LIVE PHONE TALK - CONTINUOUS - FREE ---
-let isLive = false;
-function startLiveVoice(){
-  const btn = document.getElementById('liveBtn');
-  if(isLive){ stopLiveVoice(); return; }
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){ alert('Please use Google Chrome for Live Voice.'); return; }
-  isLive = true;
-  btn.textContent = 'Live - Talking... Tap to End Call';
-  btn.style.background = '#FF4444';
-  btn.style.color = '#fff';
-  altraAdd('Live Voice connected. Talk like on a phone call. I am listening...', 'bot');
-  speakReply('Hello, this is AltraAI from Zenova Peaks. How can I help you today?');
-  const rec = new SpeechRecognition();
-  rec.lang = 'en-US';
-  rec.continuous = true;
-  rec.interimResults = false;
-  rec.onresult = (event)=>{
-    const text = event.results[event.results.length-1][0].transcript;
-    if(text.trim().length > 2) handleAltra(text);
-  };
-  rec.onend = ()=>{ if(isLive) rec.start(); };
-  rec.start();
-  window._liveRec = rec;
-}
-function stopLiveVoice(){
-  isLive = false;
-  if(window._liveRec) window._liveRec.stop();
+function speakAI(text){
   window.speechSynthesis.cancel();
-  const btn = document.getElementById('liveBtn');
-  btn.textContent = 'Option 2 - Live Phone Talk - FREE';
-  btn.style.background = '#00B894';
-  btn.style.color = '#000';
-  altraAdd('Live call ended. Thank you for talking to AltraAI!', 'bot');
+  const detected = detectLangFromText(text);
+  currentLang = detected;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = currentLang;
+  u.rate = 1;
+  u.pitch = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length){
+    const match = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(currentLang.split('-')[0].toLowerCase()));
+    if (match) u.voice = match;
+  }
+
+  u.onstart = ()=>{
+    vaSpeaking = true;
+    vaSetStatus('🔊 AI Speaking...');
+  };
+  u.onend = ()=>{
+    vaSpeaking = false;
+    vaSetStatus('🎙️ Listening... Please speak');
+    if (vaListening && vaRec){
+      try{ vaRec.start(); }catch(e){}
+    }
+  };
+  u.onerror = ()=>{
+    vaSpeaking = false;
+    if (vaListening && vaRec){ try{ vaRec.start(); }catch(e){} }
+  };
+  window.speechSynthesis.speak(u);
 }
+
+async function askAltraAIReal(text){
+  vaSetStatus('🤔 AI Thinking...');
+  vaAddToTranscript('You', text);
+  try{
+    const res = await fetch('/api/altra-ai-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        lang: 'auto',
+        instruction: 'You are AltraAI Customer Care for Krishnyansh Zenova Peaks Ltd. Detect the language the customer is speaking in. Reply in the EXACT same language. If customer speaks English, reply in English. If Hindi, reply in Hindi. If Hinglish, reply in Hinglish. If Yoruba, Pidgin, French, Igbo, Hausa, reply in same language. Be polite, short, helpful like a real customer care agent. Services: CAC Business Name, Ltd Registration, NGO, Branding, Website, AltraAI. If you do not know price, say you will connect to Ruby Garg on WhatsApp +2349067862223.'
+      })
+    });
+    const data = await res.json();
+    const reply = data.reply || data.response || data.answer || "Sorry, please say again.";
+    vaAddToTranscript('AI', reply);
+    return reply;
+  }catch(e){
+    const fallback = "Sorry, network problem. Please speak again.";
+    vaAddToTranscript('AI', fallback);
+    return fallback;
+  }
+}
+
+function toggleVoiceAgent(){
+  const box = document.getElementById('voiceAgentBox');
+  const btn = document.getElementById('voiceAgentBtn');
+  if (vaListening){
+    stopVoiceAgent();
+    if(box) box.style.display = 'none';
+    if(btn){ btn.classList.remove('listening'); btn.innerText = '🎙️'; }
+    return;
+  }
+  if(box) box.style.display = 'block';
+  startVoiceAgent();
+}
+
+function startVoiceAgent(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR){ alert('Please use Google Chrome for Voice Agent'); return; }
+
+  vaRec = new SR();
+  vaRec.lang = ''; // Auto-detect any language
+  vaRec.continuous = false;
+  vaRec.interimResults = false;
+  vaRec.maxAlternatives = 1;
+
+  vaRec.onstart = ()=>{
+    vaListening = true;
+    const btn = document.getElementById('voiceAgentBtn');
+    if(btn){ btn.classList.add('listening'); btn.innerText = '🔴'; }
+    vaSetStatus('🎙️ Listening... Please speak');
+  };
+
+  vaRec.onresult = async (event)=>{
+    const text = event.results[0][0].transcript;
+    try{ vaRec.stop(); }catch(err){}
+    const reply = await askAltraAIReal(text);
+    speakAI(reply);
+  };
+
+  vaRec.onerror = (event)=>{
+    if (event.error === 'not-allowed' || event.error === 'service-not-allowed'){
+      alert('Mic is Blocked! Click Lock icon in address bar > Microphone > Allow, then Refresh page and try again.');
+      stopVoiceAgent();
+      const box = document.getElementById('voiceAgentBox'); if(box) box.style.display='none';
+      const btn = document.getElementById('voiceAgentBtn'); if(btn){ btn.classList.remove('listening'); btn.innerText='🎙️'; }
+    }
+  };
+
+  vaRec.onend = ()=>{
+    // Auto restart listening if call is still on and AI is not speaking
+    if (vaListening && !vaSpeaking){
+      setTimeout(()=>{ try{ vaRec.start(); }catch(e){} }, 300);
+    }
+  };
+
+  try{ vaRec.start(); }catch(e){}
+  // First greeting in English, then AI will follow customer's language
+  setTimeout(()=>{
+    speakAI('Hello, welcome to Krishnyansh Zenova Peaks Customer Care. I am AltraAI. How can I help you? Aap Hindi, English, Yoruba, Pidgin kisi bhi bhasha me baat kar sakte hain.');
+  }, 600);
+}
+
+function stopVoiceAgent(){
+  vaListening = false;
+  vaSpeaking = false;
+  if (vaRec) try{ vaRec.stop(); }catch(e){}
+  window.speechSynthesis.cancel();
+  vaSetStatus('Call Ended. Tap mic to start again.');
+}
+
+// Load voices for better language support
+if ('speechSynthesis' in window){
+  window.speechSynthesis.onvoiceschanged = ()=>{ window.speechSynthesis.getVoices(); };
+}
+</script>
+<!-- ===== FINAL VOICE AGENT - END ===== -->  
+
 </script>
 </body>
 </html>
