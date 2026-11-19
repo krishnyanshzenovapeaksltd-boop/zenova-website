@@ -191,24 +191,26 @@ function altraAdd(txt,who){const m=document.getElementById('altraMsgs');const d=
 function askAltra(q){toggleAltra();if(document.getElementById('altraWin').style.display!=='flex')document.getElementById('altraWin').style.display='flex';handleAltra(q)}
 function sendAltra(){const i=document.getElementById('altraInp');if(i.value.trim()){handleAltra(i.value.trim());i.value=''}}
 document.getElementById('altraInp').addEventListener('keypress',e=>{if(e.key==='Enter')sendAltra()});
-function handleAltra(t){
+
+ function handleAltra(t){
   altraAdd(t,'user');
-  altraAdd('AltraAI soch rahi hai...','bot');
+  altraAdd('AltraAI is thinking...','bot');
   fetch('/api/altra-ai-chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})})
   .then(r=>r.json())
   .then(d=>{
     const msgs=document.getElementById('altraMsgs');
     msgs.lastChild.remove();
-    const reply=d.reply||d.text||d.answer||'Sorry, phir se bolo?';
-    altraAdd(reply+'<br><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">WhatsApp Us</a>','bot');
+    const reply=d.reply||d.text||d.answer||'Sorry, can you please say that again?';
+    altraAdd(reply+'<br><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">Chat on WhatsApp</a>','bot');
   })
   .catch(e=>{
     const msgs=document.getElementById('altraMsgs');
     msgs.lastChild.remove();
-    altraAdd('Connection issue hai. WhatsApp karo: +2349067862223','bot');
+    altraAdd('Connection issue. Please WhatsApp us: +2349067862223','bot');
   });
   fetch('/api/zenova-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:'AltraAI Chat',raw:t})}).catch(()=>{});
-}
+} 
+
 </script>
 </body>
 </html>
