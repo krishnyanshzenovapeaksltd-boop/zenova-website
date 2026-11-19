@@ -212,39 +212,10 @@ document.getElementById('altraInp').addEventListener('keypress',e=>{if(e.key==='
 } 
 
 </script>
-<!-- ===== BLOCK 1 - FOR index.html ONLY - VOICE AGENT - ALL FREE ===== -->
 
-<!-- VOICE BUTTONS - Paste inside AltraAI chat window, next to Send button -->
-<div style="display:flex;gap:8px;padding:8px;flex-wrap:wrap">
-  <button onclick="startVoice()" id="voiceBtn" style="background:#fff;color:#04222B;border:none;padding:10px 14px;border-radius:20px;font-weight:900;cursor:pointer;flex:1">Option 1 - Talk on Website - FREE</button>
-  <button onclick="startLiveVoice()" id="liveBtn" style="background:#00B894;color:#000;border:none;padding:10px 14px;border-radius:20px;font-weight:900;cursor:pointer;flex:1">Option 2 - Live Phone Talk - FREE</button>
-</div>
-<div style="display:flex;gap:8px;padding:0 8px 8px;flex-wrap:wrap">
-  <a href="tel:+2349067862223" style="background:#0A66C2;color:#fff;padding:10px 14px;border-radius:20px;font-weight:900;text-decoration:none;text-align:center;flex:1">Call Us - +2349067862223</a>
-  <a href="https://wa.me/2349067862223?text=Hi%20AltraAI,%20I%20want%20a%20voice%20call" target="_blank" style="background:#25D366;color:#fff;padding:10px 14px;border-radius:20px;font-weight:900;text-decoration:none;text-align:center;flex:1">WhatsApp Call - FREE</a>
-</div>
 
 <script>
-// =====  - ALTRAAI + VOICE - FREE =====
-function handleAltra(t){
-  altraAdd(t,'user');
-  altraAdd('AltraAI is thinking...','bot');
-  fetch('/api/altra-ai-chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})})
-  .then(r=>r.json())
-  .then(d=>{
-    const msgs=document.getElementById('altraMsgs');
-    msgs.lastChild.remove();
-    const reply=d.reply||d.text||d.answer||'Sorry, can you say that again?';
-    altraAdd(reply+'<br><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">WhatsApp Us</a>','bot');
-    speakReply(reply);
-  })
-  .catch(e=>{
-    const msgs=document.getElementById('altraMsgs');
-    msgs.lastChild.remove();
-    altraAdd('Connection issue. Please WhatsApp us: +2349067862223','bot');
-  });
-  fetch('/api/zenova-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:'AltraAI Chat',raw:t})}).catch(()=>{});
-}
+
 
 <!-- ===== FINAL VOICE AGENT - ALTRAAI CUSTOMER CARE - START ===== -->
 <style>
