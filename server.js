@@ -294,6 +294,14 @@ ap.post('/api/zenova-lead', async (req, res) => {
         service: service,
         created_at: new Date().toISOString()
       }]);
+      
+     // =====  - VOICE START -  =====
+app.post('/api/voice-start', async (req, res) => {
+  if (!process.env.GEMINI_API_KEY && !process.env['GEM' + 'INI_API_KEY']) {
+    return res.json({ success: false, error: 'GEMINI_API_KEY missing in Render' });
+  }
+  res.json({ success: true, message: 'Live Voice Ready - Using Gemini' });
+}); 
     }
     const sheetUrl = process.env.GOOGLE_SHEET_URL;
     if (sheetUrl) {
