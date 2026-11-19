@@ -212,5 +212,102 @@ document.getElementById('altraInp').addEventListener('keypress',e=>{if(e.key==='
 } 
 
 </script>
+<!-- ===== BLOCK 1 - FOR index.html ONLY - VOICE AGENT - ALL FREE ===== -->
+
+<!-- VOICE BUTTONS - Paste inside AltraAI chat window, next to Send button -->
+<div style="display:flex;gap:8px;padding:8px;flex-wrap:wrap">
+  <button onclick="startVoice()" id="voiceBtn" style="background:#fff;color:#04222B;border:none;padding:10px 14px;border-radius:20px;font-weight:900;cursor:pointer;flex:1">Option 1 - Talk on Website - FREE</button>
+  <button onclick="startLiveVoice()" id="liveBtn" style="background:#00B894;color:#000;border:none;padding:10px 14px;border-radius:20px;font-weight:900;cursor:pointer;flex:1">Option 2 - Live Phone Talk - FREE</button>
+</div>
+<div style="display:flex;gap:8px;padding:0 8px 8px;flex-wrap:wrap">
+  <a href="tel:+2349067862223" style="background:#0A66C2;color:#fff;padding:10px 14px;border-radius:20px;font-weight:900;text-decoration:none;text-align:center;flex:1">Call Us - +2349067862223</a>
+  <a href="https://wa.me/2349067862223?text=Hi%20AltraAI,%20I%20want%20a%20voice%20call" target="_blank" style="background:#25D366;color:#fff;padding:10px 14px;border-radius:20px;font-weight:900;text-decoration:none;text-align:center;flex:1">WhatsApp Call - FREE</a>
+</div>
+
+<script>
+// =====  - ALTRAAI + VOICE - FREE =====
+function handleAltra(t){
+  altraAdd(t,'user');
+  altraAdd('AltraAI is thinking...','bot');
+  fetch('/api/altra-ai-chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})})
+  .then(r=>r.json())
+  .then(d=>{
+    const msgs=document.getElementById('altraMsgs');
+    msgs.lastChild.remove();
+    const reply=d.reply||d.text||d.answer||'Sorry, can you say that again?';
+    altraAdd(reply+'<br><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">WhatsApp Us</a>','bot');
+    speakReply(reply);
+  })
+  .catch(e=>{
+    const msgs=document.getElementById('altraMsgs');
+    msgs.lastChild.remove();
+    altraAdd('Connection issue. Please WhatsApp us: +2349067862223','bot');
+  });
+  fetch('/api/zenova-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:'AltraAI Chat',raw:t})}).catch(()=>{});
+}
+
+function speakReply(text){
+  const cleanText = text.replace(/<[^>]*>/g, '').replace(/https?:\/\/[^\s]+/g, '').substring(0, 400);
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  window.speechSynthesis.speak(utterance);
+}
+
+// --- OPTION 1 - TALK ON WEBSITE - ONE TIME - FREE ---
+let isListening = false;
+let recognition = null;
+function startVoice(){
+  const btn = document.getElementById('voiceBtn');
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ alert('Please use Google Chrome for voice.'); return; }
+  if(isListening){ recognition.stop(); return; }
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.continuous = false;
+  recognition.onstart = ()=>{ isListening = true; btn.textContent = 'Listening... Tap to Stop'; btn.style.background = '#FF4444'; btn.style.color = '#fff'; };
+  recognition.onresult = (event)=>{ handleAltra(event.results[0][0].transcript); };
+  recognition.onend = ()=>{ isListening = false; btn.textContent = 'Option 1 - Talk on Website - FREE'; btn.style.background = '#fff'; btn.style.color = '#04222B'; };
+  recognition.onerror = ()=>{ isListening = false; btn.textContent = 'Option 1 - Talk on Website - FREE'; btn.style.background = '#fff'; };
+  recognition.start();
+}
+
+// --- OPTION 2 - LIVE PHONE TALK - CONTINUOUS - FREE ---
+let isLive = false;
+function startLiveVoice(){
+  const btn = document.getElementById('liveBtn');
+  if(isLive){ stopLiveVoice(); return; }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ alert('Please use Google Chrome for Live Voice.'); return; }
+  isLive = true;
+  btn.textContent = 'Live - Talking... Tap to End Call';
+  btn.style.background = '#FF4444';
+  btn.style.color = '#fff';
+  altraAdd('Live Voice connected. Talk like on a phone call. I am listening...', 'bot');
+  speakReply('Hello, this is AltraAI from Zenova Peaks. How can I help you today?');
+  const rec = new SpeechRecognition();
+  rec.lang = 'en-US';
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.onresult = (event)=>{
+    const text = event.results[event.results.length-1][0].transcript;
+    if(text.trim().length > 2) handleAltra(text);
+  };
+  rec.onend = ()=>{ if(isLive) rec.start(); };
+  rec.start();
+  window._liveRec = rec;
+}
+function stopLiveVoice(){
+  isLive = false;
+  if(window._liveRec) window._liveRec.stop();
+  window.speechSynthesis.cancel();
+  const btn = document.getElementById('liveBtn');
+  btn.textContent = 'Option 2 - Live Phone Talk - FREE';
+  btn.style.background = '#00B894';
+  btn.style.color = '#000';
+  altraAdd('Live call ended. Thank you for talking to AltraAI!', 'bot');
+}
+</script>
 </body>
 </html>
