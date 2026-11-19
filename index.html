@@ -191,7 +191,24 @@ function altraAdd(txt,who){const m=document.getElementById('altraMsgs');const d=
 function askAltra(q){toggleAltra();if(document.getElementById('altraWin').style.display!=='flex')document.getElementById('altraWin').style.display='flex';handleAltra(q)}
 function sendAltra(){const i=document.getElementById('altraInp');if(i.value.trim()){handleAltra(i.value.trim());i.value=''}}
 document.getElementById('altraInp').addEventListener('keypress',e=>{if(e.key==='Enter')sendAltra()});
-function handleAltra(t){altraAdd(t,'user');const low=t.toLowerCase();let reply='';if(low.includes('price')||low.includes('cost')||low.includes('pricing'))reply='Here are all prices — USD &amp; Naira:<br><br>• Consultancy (30-min Audit): $32 / ₦49,000<br>• AltraAI: $43 / ₦65K • $80 / ₦120K • $133 / ₦200K<br>• GBP &amp; Map: $36 / ₦55,000<br>• Google Ads: $50 / ₦75K • $83 / ₦125K • $166 / ₦250K/mo<br>• Branding: $43 / ₦65K • $83 / ₦125K • $166 / ₦250K<br>• Website: $80 / ₦120K • $166 / ₦250K • $366 / ₦550K<br>• AI Video: $33 / ₦50K • $50 / ₦75K • $80 / ₦120K/mo<br>• CAC: BN $40 / ₦60K • Ltd $100 / ₦150K • NGO $146 / ₦220K<br>• SCUML $33 / ₦50K, SMEDAN $23 / ₦35K<br><br>Which service do you want details for?';else if(low.includes('cac'))reply='CAC — great choice!<br><br>• BN: $40 / ₦60,000<br>• Ltd: $100 / ₦150,000<br>• NGO: $146 / ₦220,000<br><br>Which one — BN, Ltd or NGO? And what is your business name?';else if(low.includes('altra'))reply='AltraAI — my favourite! Your 24/7 AI team.<br><br>• Starter: $43 / ₦65,000<br>• Premium: $80 / ₦120,000<br>• Pro: $133 / ₦200,000<br><br>It replies to customers, remembers them, and works even when you sleep.<br><br><a href="altraai.html" style="color:#00E5B8;font-weight:900">Explore AltraAI →</a><br><br>What field is your business in — Salon, Real Estate, Clinic, Restaurant, School, E-commerce?';else if(low.includes('website')||low.includes('web'))reply='Website — perfect!<br><br>• Landing: $80 / ₦120,000<br>• Landing + Backend: $166 / ₦250,000<br>• Full Stack + Admin: $366 / ₦550,000<br><br>What type — shop, school or company?';else if(low.includes('branding')||low.includes('logo'))reply='Branding — very important!<br><br>• Essential: $43 / ₦65,000<br>• Premium: $83 / ₦125,000<br>• Complete: $166 / ₦250,000<br><br>Do you want simple &amp; classy or bold &amp; colourful?';else if(low.includes('tech hub')||low.includes('class'))reply='Tech Hub — Week A: Tue Global Business Geography, Fri Computer &amp; AI Tools. Week B: Tue History with AI, Fri Geography with AI. Bonus Saturday Q&amp;A monthly. YouTube: @ZenovaPeakTechHub';else if(low.includes('whatsapp')||low.includes('contact')||low.includes('phone'))reply='WhatsApp us: <b>+2349067862223</b><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900;margin-top:6px">Chat on WhatsApp</a>';else if(low.includes('hello')||low.includes('hi')||low.includes('hey'))reply='Hello! I am AltraAI — Krishnyansh Zenova Peaks Ltd, RC-9810296.<br><br>What is your name + business name? So I can help you properly.';else reply='Got it — thank you! To give you the right answer, tell me:<br><br>1. Your name + business name<br>2. Which service — CAC, Branding, Website or AltraAI?<br><br>Example: "Aisha, Divine Stores, CAC + Logo chahiye"';setTimeout(()=>altraAdd(reply+'<br><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">WhatsApp Us</a>','bot'),600);fetch('/api/zenova-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:'AltraAI Chat',raw:t,name:altraName})}).catch(()=>{})}
+function handleAltra(t){
+  altraAdd(t,'user');
+  altraAdd('AltraAI soch rahi hai...','bot');
+  fetch('/api/altra-ai-chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t})})
+  .then(r=>r.json())
+  .then(d=>{
+    const msgs=document.getElementById('altraMsgs');
+    msgs.lastChild.remove();
+    const reply=d.reply||d.text||d.answer||'Sorry, phir se bolo?';
+    altraAdd(reply+'<br><br><a href="https://wa.me/2349067862223" target="_blank" style="display:inline-block;background:#25D366;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-weight:900">WhatsApp Us</a>','bot');
+  })
+  .catch(e=>{
+    const msgs=document.getElementById('altraMsgs');
+    msgs.lastChild.remove();
+    altraAdd('Connection issue hai. WhatsApp karo: +2349067862223','bot');
+  });
+  fetch('/api/zenova-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service:'AltraAI Chat',raw:t})}).catch(()=>{});
+}
 </script>
 </body>
 </html>
