@@ -132,7 +132,8 @@ const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
 const IG_USER_ID = process.env.IG_USER_ID;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN || 'ZENOVA_VERIFY_2026';
 const GEMINI_KEY = process.env['GEM'+'INI_API_KEY'];
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+const ADMIN_USER = process.env.ADMIN_USER || process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASS || process.env.ADMIN_PASSWORD || '';
 const SITE_URL = process.env.SITE_URL || 'https://www.krishnyanshzenovapeaks.com';
 let MC = null;
 if (MODEL_API_KEY) {
